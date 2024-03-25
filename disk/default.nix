@@ -10,21 +10,38 @@
 ], ... }:
 
 let
-  luks = if luks == "" then
-    true
-  else if luks == "true" then
-    true
+  luks = if luks == true || luks == "" || luks == "true" then
+    "crypto"
   else if luks == "false" then
     false
+  else if luks == false then
+    luks
   else
-    luks;
-  luks = if luks == true then "crypto" else luks;
-  luks = assert luks == false || (builtins.isString luks
-    && builtins.match "(w|d|+|_|.)(w|d|+|_|.|-)*" != null);
-    luks;
+    (assert builtins.isString luks && builtins.match "(w|d|+|_|.)(w|d|+|_|.|-)*"
+      != null;
+      luks);
 
   perc = "0*((dd)(.d+)?|100)%";
   size = "(d+)(.d+)?(k|M|G|T|P)";
+
+  meminfo = builtins.readFile "/proc/meminfo";
+  memTotalLine = builtins.head
+    (builtins.filter (line: builtins.hasPrefix "MemTotal:" line)
+      (builtins.split "\n" meminfo));
+  memTotal = builtins.toNumber
+    (builtins.replaceStrings [ "MemTotal:" " kB" ] [ "" "" ] memTotalLine);
+
+  swap = if swap == false || swap == "false" then
+    false
+  else if swap == true || swap == "" || swap == "true" then
+    if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
+  else
+    (assert swap == true || swap == false || (builtins.isString swap
+      && !(builtins.match perc swap == null && builtins.match size == null));
+      if builtins.match perc swap then
+        (memTotal * (builtins.toNumber (substring 0 - 1 swap) / 100)) + "kB"
+      else
+        swap);
 
   swap = if swap == "" then
     true
@@ -37,14 +54,6 @@ let
   swap = assert swap == true || swap == false || (builtins.isString swap
     && !(builtins.match perc swap == null && builtins.match size == null));
     swap;
-
-  meminfo = builtins.readFile "/proc/meminfo";
-  memTotalLine = builtins.head
-    (builtins.filter (line: builtins.hasPrefix "MemTotal:" line)
-      (builtins.split "\n" meminfo));
-  memTotal =
-    builtins.replaceStrings [ "MemTotal:" " kB" ] [ "" "" ] memTotalLine;
-  memTotal = builtins.toNumber memTotal;
 
   swap = if swap == false then
     false
