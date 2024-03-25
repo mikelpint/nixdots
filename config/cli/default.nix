@@ -1,0 +1,19 @@
+{
+  imports = [
+    ./archive
+    ./bat
+    ./clipboard
+    ./eza
+    ./fd
+    ./fzf
+    ./git
+    ./http
+    ./jq
+    ./onefetch
+    ./pop
+    ./tmux
+    ./tree
+    ./zoxide
+    ./zsh
+  ];
+}
