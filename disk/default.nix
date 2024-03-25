@@ -39,7 +39,8 @@ let
     (assert swap == true || swap == false || (builtins.isString swap
       && !(builtins.match perc swap == null && builtins.match size == null));
       if builtins.match perc swap then
-        (memTotal * (builtins.toNumber (builtins.substring 0 -1 swap) / 100)) + "kB"
+        (memTotal * (builtins.toNumber (builtins.substring 0 - 1 swap) / 100))
+        + "kB"
       else
         swap);
 
@@ -137,7 +138,7 @@ in {
                 }
 
                 else
-                  inherit content;
+                  content;
               };
             };
           };

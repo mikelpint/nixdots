@@ -9,6 +9,7 @@
     ./mpd
     ./mpv
     ./peek
+    ./spicetify
     ./steam
     ./vscode
     ./zathura

@@ -60,7 +60,9 @@
     };
   };
 
-  outputs = inputs:
+  outputs = { self, nixpkgs, hyprland, home-manager,
+    # nixos-wsl,
+    spicetify-nix, disko, ... }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
       supportedSystems = [ "x86_64-linux" ];
@@ -68,106 +70,35 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-    in lib.mkFlake {
-      inherit inputs;
-      src = ./.;
+    in {
+      nixosConfigurations = {
+        desktop = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs hyprland spicetify-nix disko; };
+          modules = [
+            ./hosts/desktop/configuration.nix
 
-      channels-config = {
-        allowUnfree = true;
-        allowUnfreePredicate = pkg: true;
-        packageOverrides = pkgs: {
-          nur = import (builtins.fetchTarball {
-            url = "https://github.com/nix-community/NUR/archive/master.tar.gz";
-            sha256 =
-              "sha256:1gr3l5fcjsd7j9g6k9jamby684k356a36h82cwck2vcxf8yw8xa0";
-          }) { inherit pkgs; };
-        };
-      };
-
-      overlays = with inputs; [
-        neovim-nightly-overlay.overlay
-        (final: prev: {
-          sf-mono-liga-bin = prev.stdenvNoCC.mkDerivation rec {
-            pname = "sf-mono-liga-bin";
-            version = "dev";
-            src = inputs.sf-mono-liga-src;
-            dontConfigure = true;
-            installPhase = ''
-              mkdir -p $out/share/fonts/opentype
-              cp -R $src/*.otf $out/share/fonts/opentype/
-            '';
-          };
-
-          monolisa-script = prev.stdenvNoCC.mkDerivation {
-            pname = "monolisa";
-            version = "dev";
-            src = monolisa-script;
-            dontConfigure = true;
-            installPhase = ''
-              mkdir -p $out/share/fonts/opentype
-              cp -R $src/*.ttf $out/share/fonts/opentype/
-            '';
-          };
-        })
-      ];
-
-      systems = {
-        modules = {
-          nixos = with inputs; [
-            spicetify-nix.nixosModule
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useUserPackages = true;
+                useGlobalPkgs = false;
+                extraSpecialArgs = { inherit inputs spicetify-nix disko; };
+                users = { mikel = ./config/home.nix; };
+              };
+            }
+            hyprland.nixosModules.default
+            { programs = { hyprland = { enable = true; }; }; }
             disko.nixosModules.disko
           ];
         };
       };
 
-      systems = {
-        hosts = {
-          laptop = {
-            modules = with inputs;
-              [
-                (import ./disks/default.nix {
-                  inherit lib;
-                  device = "/dev/nvme0n1";
-                  luks = true;
-                  swap = true;
-                })
-              ];
-          };
-
-          desktop = {
-            modules = with inputs;
-              [
-                (import ./disks/default.nix {
-                  inherit lib;
-                  device = "/dev/nvme0n1";
-                })
-              ];
-          };
-
-          test = {
-            modules = with inputs;
-              [
-                (import ./disks/default.nix {
-                  inherit lib;
-                  device = "/dev/vda";
-                })
-              ];
-          };
-        };
-      };
-
-      templates = import ./templates { };
-
       devShells = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
-          default = pkgs.mkShell {
-            buildInputs = with pkgs; [ git nixpkgs-fmt statix ];
-          };
+          default = pkgs.mkShell { buildInputs = with pkgs; [ git statix ]; };
         });
-
-      formatter = {
-        x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-      };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
     };
 }
