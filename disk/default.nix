@@ -10,7 +10,7 @@
 ], ... }:
 
 let
-  luks = if luks == true || luks == "" || luks == "true" then
+  luksName = if luks == true || luks == "" || luks == "true" then
     "crypto"
   else if luks == "false" then
     false
@@ -31,7 +31,7 @@ let
   memTotal = builtins.toNumber
     (builtins.replaceStrings [ "MemTotal:" " kB" ] [ "" "" ] memTotalLine);
 
-  swap = if swap == false || swap == "false" then
+  swapSize = if swap == false || swap == "false" then
     false
   else if swap == true || swap == "" || swap == "true" then
     if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
@@ -39,30 +39,9 @@ let
     (assert swap == true || swap == false || (builtins.isString swap
       && !(builtins.match perc swap == null && builtins.match size == null));
       if builtins.match perc swap then
-        (memTotal * (builtins.toNumber (substring 0 - 1 swap) / 100)) + "kB"
+        (memTotal * (builtins.toNumber (builtins.substring 0 -1 swap) / 100)) + "kB"
       else
         swap);
-
-  swap = if swap == "" then
-    true
-  else if swap == "true" then
-    true
-  else if swap == "false" then
-    false
-  else
-    swap;
-  swap = assert swap == true || swap == false || (builtins.isString swap
-    && !(builtins.match perc swap == null && builtins.match size == null));
-    swap;
-
-  swap = if swap == false then
-    false
-  else if swap == true then
-    if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
-  else if builtins.match perc swap then
-    (memTotal * (builtins.toNumber (substring 0 - 1 swap) / 100)) + "kB"
-  else
-    swap;
 
   content = {
     type = "filesystem";
@@ -96,9 +75,9 @@ let
         mountpoint = "/tmp";
       };
 
-      "/swap" = lib.mkIf (swap != false) {
+      "/swap" = lib.mkIf (swapSize != false) {
         mountpoint = "/.swap";
-        swap = { sweapfile = { size = swap; }; };
+        swap = { swapfile = { size = swapSize; }; };
       };
     };
   };
@@ -141,9 +120,9 @@ in {
                 name = "nixos";
                 size = "100%";
 
-                content = if luks != false then {
+                content = if luksName != false then {
                   type = "luks";
-                  name = luks;
+                  name = luksName;
 
                   settings = {
                     allowDiscards = true;
@@ -158,7 +137,7 @@ in {
                 }
 
                 else
-                  content;
+                  inherit content;
               };
             };
           };
