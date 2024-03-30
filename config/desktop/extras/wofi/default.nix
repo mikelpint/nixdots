@@ -27,7 +27,7 @@
           border: 5px solid #181926;
           border-radius: 15px;
           background-color: rgba(24, 25, 38, 1);
-          font-family: "MonoLisa", "Font Awesome 6 Free Solid";
+          font-family: "FiraCode", "Font Awesome 6 Free Solid";
           font-size: 12px;
         }
 

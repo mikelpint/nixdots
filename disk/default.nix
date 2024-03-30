@@ -45,17 +45,12 @@ let
         swap);
 
   content = {
-    type = "filesystem";
-    format = "btrfs";
+    type = "btrfs";
     mountpoint = "/";
+    inherit mountOptions;
     extraArgs = [ "-f" ];
 
     subvolumes = {
-      "/root" = {
-        inherit mountOptions;
-        mountpoint = "/";
-      };
-
       "/home" = {
         inherit mountOptions;
         mountpoint = "/home";
@@ -89,7 +84,7 @@ in {
     devices = {
       disk = {
         main = {
-          inherit device;
+          device = builtins.toPath device;
           type = "disk";
 
           content = {

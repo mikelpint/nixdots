@@ -9,7 +9,6 @@
       fira-code-symbols
       (iosevka-bin.override { variant = "aile"; })
       material-design-icons
-      monolisa-script
       (nerdfonts.override { fonts = [ "FiraMono" "JetBrainsMono" ]; })
       nerdfix
       noto-fonts

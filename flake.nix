@@ -53,11 +53,6 @@
       url = "github:shaunsingh/SFMono-Nerd-Font-Ligaturized";
       flake = false;
     };
-
-    monolisa-script = {
-      url = "github:redyf/test2";
-      flake = false;
-    };
   };
 
   outputs = { self, nixpkgs, hyprland, home-manager,

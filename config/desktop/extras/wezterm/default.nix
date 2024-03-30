@@ -21,9 +21,9 @@
           enable_tab_bar = false,
           enable_wayland = false,
           font_size = 13,
-          font = wezterm.font('MonoLisa', { weight = 'Medium', italic = true }),
+          font = wezterm.font('FireCode', { weight = 'Medium', italic = true }),
           font = wezterm.font_with_fallback {
-          { family = 'MonoLisa-italic', weight = 'Medium', italic = true },
+          { family = 'FireCode-italic', weight = 'Medium', italic = true },
           'Noto Color Emoji',
           },
           freetype_load_flags = 'NO_HINTING',
