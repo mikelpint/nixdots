@@ -56,7 +56,6 @@
   };
 
   outputs = { self, nixpkgs, hyprland, home-manager,
-    # nixos-wsl,
     spicetify-nix, disko, ... }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;

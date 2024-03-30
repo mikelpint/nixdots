@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
   nixosVersion = lib.versions.majorMinor lib.version;
   config = if lib.versionOlder nixosVersion "23.05" then {

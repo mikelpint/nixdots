@@ -1,1 +1,1 @@
-{ environment = { systemPackages = with pkgs; [ fd ]; }; }
+{pkgs, ...}:{ environment = { systemPackages = with pkgs; [ fd ]; }; }

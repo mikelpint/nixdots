@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  home = { packages = [ vscode gnome.gnome-keyring ]; };
+  home = { packages = with pkgs; [ vscode gnome.gnome-keyring ]; };
 }

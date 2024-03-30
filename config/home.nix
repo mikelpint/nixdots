@@ -19,13 +19,11 @@
     ./env
     ./fonts
     ./graphics
-    ./hardware
     ./input
     ./langs
     ./locale
     ./net
     ./nix
-    ./packages
     ./rice
     ./security
     ./services

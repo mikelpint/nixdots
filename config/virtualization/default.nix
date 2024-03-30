@@ -1,1 +1,1 @@
-{ imports = [ ./vbox ]; }
+{ imports = [ ./kvm ]; }

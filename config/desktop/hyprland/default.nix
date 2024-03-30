@@ -76,7 +76,7 @@ in {
             border_size = 3;
 
             col = {
-              activity_border = "${catppucin_border}";
+              activity_border = "${catppuccin_border}";
               inactive_border = "${tokyonight_background}";
             };
 

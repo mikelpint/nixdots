@@ -4,7 +4,7 @@ let
   catppuccin-macchiato =
     (import ./palettes/catppuccin-macchiato.nix).colorscheme;
 in {
-  imports = [ inputs.nix-colors.homeManagerModule ./gtk.nix ./swww ];
+  imports = [ inputs.nix-colors.homeManagerModule ./gtk ./swww ];
 
   colorscheme = catppuccin-macchiato;
 }
