@@ -55,8 +55,8 @@
     };
   };
 
-  outputs = { self, nixpkgs, hyprland, home-manager,
-    spicetify-nix, disko, ... }@inputs:
+  outputs =
+    { self, nixpkgs, hyprland, home-manager, spicetify-nix, disko, ... }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
       supportedSystems = [ "x86_64-linux" ];
@@ -93,6 +93,5 @@
         in {
           default = pkgs.mkShell { buildInputs = with pkgs; [ git statix ]; };
         });
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.alejandra;
     };
 }

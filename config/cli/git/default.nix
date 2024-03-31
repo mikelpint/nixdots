@@ -6,11 +6,11 @@
       userName = "Mikel Pintado";
       userEmail = "mikelpint@protonmail.com";
 
-      extraCOnfig = {
+      extraConfig = {
         init = {
           defaultBranch = "main";
-          core.editor = "helix";
-          pull.rebase = false;
+          core = { editor = "helix"; };
+          pull = { rebase = false; };
         };
       };
     };

@@ -1,9 +1,12 @@
-{pkgs, ...}: {
-  environment.systemPackages = [
-    (pkgs.discord.override {
-      withOpenASAR = false;
-      withVencord = true;
-    })
-    pkgs.xwaylandvideobridge
-  ];
+{ pkgs, ... }: {
+  environment = {
+    systemPackages = with pkgs; [
+      (discord.override {
+        withOpenASAR = false;
+        withVencord = true;
+      })
+
+      xwaylandvideobridge
+    ];
+  };
 }

@@ -18,10 +18,8 @@
     ./desktop
     ./env
     ./fonts
-    ./graphics
     ./input
     ./langs
-    ./locale
     ./net
     ./nix
     ./rice

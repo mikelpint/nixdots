@@ -1,4 +1,4 @@
-{config, pkgs, lib, inputs, ...}: {
+{ config, pkgs, lib, inputs, ... }: {
   imports = [ ./hardware-configuration.nix ];
 
   networking = { hostName = "desktop"; };

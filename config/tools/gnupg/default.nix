@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 {
-  environment = { systemPackages = with pkgs; [ pinentry pinentry-curses ]; };
-
   services = {
     pcscd = {
       enable = true;
@@ -19,9 +17,11 @@
   };
 
   home = {
+    packages = with pkgs; [ pinentry pinentry-curses ];
+
     file.".local/share/gnupg/gpg-agent.conf".text =
       "pinentry-program /run/current-system/sw/bin/pinentry-curses";
-  };
 
-  environment = { variables = { GNUPGHOME = "$XDG_DATA_HOME/gnupg"; }; };
+    sessionVariables = { GNUPGHOME = "$XDG_DATA_HOME/gnupg"; };
+  };
 }

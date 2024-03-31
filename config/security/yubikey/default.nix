@@ -3,5 +3,5 @@
 {
   services = { udev = { packages = with pkgs; [ yubikey-personalization ]; }; };
 
-  enviroment = { systemPackages = with pkgs; [ yubioath-desktop ]; };
+  home = { packages = with pkgs; [ yubioath-flutter ]; };
 }

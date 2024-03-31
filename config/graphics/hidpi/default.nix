@@ -1,11 +1,11 @@
 { lib, pkgs, config, ... }:
 let
-  nixosVersion = lib.versions.majorMinor lib.version;
-  config = if lib.versionOlder nixosVersion "23.05" then {
-    hardware.video.hidpi.enable = lib.mkDefault true;
-  } else {
-    console.font =
-      lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
-    console.earlySetup = lib.mkDefault true;
+  config = {
+    console = {
+      packages = with pkgs; [ terminus_font ];
+      font = lib.mkDefault
+        "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
+      earlySetup = lib.mkDefault true;
+    };
   };
 in config
