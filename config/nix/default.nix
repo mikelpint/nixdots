@@ -1,1 +1,1 @@
-{ imports = [ ./cachix ./gc ./pkgs ]; }
+{ imports = [ ./cachix ./gc ./nix-ld ./pkgs ]; }

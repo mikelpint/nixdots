@@ -1,1 +1,1 @@
-{ imports = [ ./direnv ./gnupg ./nix-ld ]; }
+{ imports = [ ./direnv ./gnupg ]; }

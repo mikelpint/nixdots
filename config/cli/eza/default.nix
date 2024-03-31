@@ -1,13 +1,9 @@
 {
-  home = {
-    extraOptions = {
-      programs = {
+        programs = {
         eza = {
           enable = true;
           icons = true;
           enableAliases = true;
         };
       };
-    };
-  };
-}
+  }

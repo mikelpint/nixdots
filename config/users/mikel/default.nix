@@ -15,5 +15,5 @@
     groups = { mikel = { gid = 1000; }; };
   };
 
-  security = { doas = { extraRules = [{ users = [ "mikel" ]; }]; }; };
-}
+  security = { doas = { extraRules = [ users = [ "mikel" ]; ]; }; };
+ }

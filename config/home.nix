@@ -12,22 +12,13 @@
 
   imports = [
     ./apps
-    ./audio
-    ./boot
     ./cli
     ./desktop
     ./env
     ./fonts
-    ./input
     ./langs
-    ./net
-    ./nix
     ./rice
-    ./security
-    ./services
-    ./time
     ./tools
-    ./users
     ./virtualization
   ];
 

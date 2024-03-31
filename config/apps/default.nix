@@ -8,10 +8,12 @@
     ./mongodb-compass
     ./mpd
     ./mpv
+    ./noisetorch
     ./peek
     ./spicetify
     ./steam
     ./vscode
+    ./yubikey
     ./zathura
   ];
 }

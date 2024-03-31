@@ -4,8 +4,7 @@ let
     overlays = [ ];
   };
 in {
-  home-manager = {
-    users = {
+     users = {
       mikel = { pkgs, ... }: {
         programs = {
           zsh = {
@@ -55,5 +54,4 @@ in {
         };
       };
     };
-  };
 }

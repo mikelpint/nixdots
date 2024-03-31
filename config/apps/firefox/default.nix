@@ -52,7 +52,6 @@ in {
             user-agent-switcher
           ];
         };
-      };
 
       userChrome = builtins.readFile "${firefox-ui-fix}/css/leptonChrome.css";
       userContent = builtins.readFile "${firefox-ui-fix}/css/leptonContent.css";
@@ -162,6 +161,7 @@ in {
         identity = { fxaccouts = { enabled = false; }; };
       };
     };
+  };
   };
 
   xdg = {

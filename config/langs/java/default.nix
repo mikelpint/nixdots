@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment = { systemPackages = with pkgs; [ jetbrains.jdk ]; };
+  home = { packages = with pkgs; [ jetbrains.jdk ]; };
 }

@@ -1,1 +1,1 @@
-{ imports = [ ./noisetorch ./pipewire ./rkit ]; }
+{ imports = [ ./pipewire ./rkit ]; }

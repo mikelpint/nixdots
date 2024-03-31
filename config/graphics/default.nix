@@ -1,1 +1,1 @@
-{ imports = [ ./xdg ]; }
+{ imports = [ ./hidpi ./x ./xdg ]; }

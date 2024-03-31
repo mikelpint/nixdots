@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment = { systemPackages = with pkgs; [ marksman ]; };
+  home = { packages = with pkgs; [ marksman ]; };
 }

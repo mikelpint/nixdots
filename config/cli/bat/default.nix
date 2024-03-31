@@ -1,12 +1,8 @@
 {
-  home = {
-    extraOptions = {
-      programs = {
+     programs = {
         bat = {
           enable = true;
           config = { pager = "less -FR"; };
         };
       };
-    };
-  };
 }

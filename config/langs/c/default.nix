@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 {
-  environment = {
-    systemPackages = with pkgs; [
+  home = {
+    packages = with pkgs; [
       gcc
       clang
       tinycc
@@ -11,8 +11,7 @@
       gnumake
       gnupatch
 
-      clangd
-
+      libclang
       clang-tools
     ];
   };
