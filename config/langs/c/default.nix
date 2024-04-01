@@ -1,10 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home = {
     packages = with pkgs; [
-      gcc
-      clang
+      (lib.hiPrio gcc)
       tinycc
 
       cmake
@@ -12,7 +11,7 @@
       gnupatch
 
       libclang
-      clang-tools
+      (lib.hiPrio clang-tools)
     ];
   };
 }

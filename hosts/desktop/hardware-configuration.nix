@@ -6,45 +6,44 @@
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules =
-    [ "ata_piix" "ohci_pci" "ehci_pci" "ahci" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "ehci_pci" "ahci" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/4e44f229-ee32-4657-b2c3-475ab7bd8501";
-    fsType = "btrfs";
-  };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+      fsType = "btrfs";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/817F-1040";
-    fsType = "vfat";
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/C91A-373D";
+      fsType = "vfat";
+    };
 
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/4e44f229-ee32-4657-b2c3-475ab7bd8501";
-    fsType = "btrfs";
-    options = [ "subvol=home" ];
-  };
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
+    };
 
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/4e44f229-ee32-4657-b2c3-475ab7bd8501";
-    fsType = "btrfs";
-    options = [ "subvol=nix" ];
-  };
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+      fsType = "btrfs";
+      options = [ "subvol=nix" ];
+    };
 
-  fileSystems."/tmp" = {
-    device = "/dev/disk/by-uuid/4e44f229-ee32-4657-b2c3-475ab7bd8501";
-    fsType = "btrfs";
-    options = [ "subvol=tmp" ];
-  };
+  fileSystems."/tmp" =
+    { device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+      fsType = "btrfs";
+      options = [ "subvol=tmp" ];
+    };
 
-  fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/4e44f229-ee32-4657-b2c3-475ab7bd8501";
-    fsType = "btrfs";
-    options = [ "subvol=var" ];
-  };
+  fileSystems."/var" =
+    { device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+      fsType = "btrfs";
+      options = [ "subvol=var" ];
+    };
 
   swapDevices = [ ];
 
