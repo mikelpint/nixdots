@@ -1,1 +1,1 @@
-{ imports = [ ./pipewire ./rkit ]; }
+{ imports = [ ./pipewire ./rtkit ]; }

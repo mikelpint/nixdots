@@ -1,9 +1,9 @@
 {
-        programs = {
-        eza = {
-          enable = true;
-          icons = true;
-          enableAliases = true;
-        };
-      };
-  }
+  programs = {
+    eza = {
+      enable = true;
+      icons = true;
+      enableZshIntegration = true;
+    };
+  };
+}

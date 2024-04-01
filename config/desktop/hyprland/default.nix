@@ -168,7 +168,7 @@ in {
       "hypr/store/prev.txt".source = ./store/prev.txt;
       "hypr/store/latest_notif".source = ./store/latest_notif;
 
-      "hypr/scripts/launch_waybar".source = ../waybard/launch;
+      "hypr/scripts/launch_waybar".source = ../extras/waybar/launch;
 
       "hypr/scripts/dynamic".source = ./scripts/dynamic;
       "hypr/scripts/expand".source = ./scripts/expand;

@@ -1,1 +1,1 @@
-{pkgs, ...}: { home = { packages = with pkgs; [ noisetorch ]; }; }
+{ pkgs, ... }: { home = { packages = with pkgs; [ noisetorch ]; }; }

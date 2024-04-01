@@ -5,12 +5,15 @@ let
   waybar_style =
     import ./catppuccin/style.nix { inherit (config) colorscheme; };
 in {
-  programs.waybar = {
-    enable = true;
-    package = pkgs.waybar;
-    settings = waybar_config;
-    style = waybar_style;
+  programs = {
+    waybar = {
+      enable = true;
+      package = pkgs.waybar;
+      settings = waybar_config;
+      style = waybar_style;
+    };
   };
+
   xdg = {
     configFile = {
       "waybar/machiatto.css".text = ''

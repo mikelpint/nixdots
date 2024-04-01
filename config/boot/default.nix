@@ -1,41 +1,41 @@
 { config, ... }:
 
 {
-  #boot = {
-  #  kernelModules = [ "v4l2loopback" ];
-  #  extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot = {
+    kernelModules = [ "v4l2loopback" ];
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
-  #  supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = [ "btrfs" ];
 
-  #  loader = {
-  #    systemd-boot = {
-  #      enable = false;
-  #      editor = false;
-  #    };
+    loader = {
+      systemd-boot = {
+        enable = false;
+        editor = false;
+      };
 
-  #    timeout = 5;
+      timeout = 5;
 
-  #    efi = {
-  #      canTouchEfiVariables = true;
-  #      efiSysMountPoint = "/boot";
-  #    };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot";
+      };
 
-  #    grub = {
-  #      enable = true;
-  #      device = "nodev";
-  #      efiSupport = true;
-  #      useOSProber = true;
-  #      configurationLimit = 5;
-  #    };
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        useOSProber = true;
+        configurationLimit = 5;
+      };
 
-  #    grub2-theme = {
-  #      enable = true;
-  #      icon = "white";
-  #      theme = "whitesur";
-  #      screen = "1080p";
-  #      splashImage = ../../backgrounds/grub.jpg;
-  #      footer = true;
-  #    };
-  #  };
-  #};
+      #grub2-theme = {
+      #  enable = true;
+      #  icon = "white";
+      #  theme = "whitesur";
+      #  screen = "1080p";
+      #  splashImage = ../../backgrounds/grub.jpg;
+      #  footer = true;
+      #};
+    };
+  };
 }

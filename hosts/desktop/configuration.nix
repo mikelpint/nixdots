@@ -1,5 +1,5 @@
 { config, pkgs, lib, inputs, ... }: {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ../../config ./hardware-configuration.nix ];
 
   networking = { hostName = "desktop"; };
 
@@ -24,4 +24,6 @@
   #      ];
   #  };
   #};
+
+  system = { stateVersion = "23.11"; };
 }

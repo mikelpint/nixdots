@@ -7,7 +7,7 @@
       dejavu_fonts
       font-awesome
       fira-code-symbols
-      (iosevka-bin.override { variant = "aile"; })
+      (iosevka-bin.override { variant = "Aile"; })
       material-design-icons
       (nerdfonts.override { fonts = [ "FiraMono" "JetBrainsMono" ]; })
       nerdfix

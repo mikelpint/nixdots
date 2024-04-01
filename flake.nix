@@ -55,8 +55,8 @@
     };
   };
 
-  outputs =
-    { self, nixpkgs, hyprland, home-manager, spicetify-nix, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nur, hyprland, home-manager, spicetify-nix, disko
+    , ... }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
       supportedSystems = [ "x86_64-linux" ];
@@ -71,6 +71,8 @@
           specialArgs = { inherit inputs hyprland spicetify-nix disko; };
           modules = [
             ./hosts/desktop/configuration.nix
+
+            nur.nixosModules.nur
 
             home-manager.nixosModules.home-manager
             {

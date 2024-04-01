@@ -1,9 +1,6 @@
-{ pkgs, ... }:
-
-let pkgsUnstable = import <nixpkgs-unstable> { };
-in {
+{pkgs, ...}: {
   home = {
-    packages = with pkgsUnstable; [ fastfetch ];
+    packages = with pkgs; [ fastfetch ];
     file.".config/fastfetch/config.jsonc".text = ''
       {
           "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
