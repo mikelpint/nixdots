@@ -1,1 +1,1 @@
-{ imports = [ ./doas ./yubikey ]; }
+{ imports = [ ./doas ./polkit ./yubikey ]; }

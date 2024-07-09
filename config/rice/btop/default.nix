@@ -4,7 +4,7 @@
       enable = true;
 
       settings = {
-        color_theme = "catpuccin_macchiato";
+        # color_theme = "catppuccin_macchiato";
         theme_background = true;
         rounded_corners = true;
         truecolor = true;

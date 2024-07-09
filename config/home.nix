@@ -13,7 +13,7 @@ in {
 
     sessionPath = [ "$HOME/.local/bin" ];
 
-    stateVersion = "23.11";
+    stateVersion = "24.05";
   };
 
   programs = { home-manager = { enable = true; }; };
@@ -25,8 +25,9 @@ in {
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball {
           url =
-            "https://github.com/nix-community/NUR/archive/327169ed2b4766f8112d4fb144bc8f8a7cebf8bd.tar.gz";
-          sha256 = "03x11544zrlwwh30cfnjly0dd0d7w1ywz68qvz9dzypcdzmndc4z";
+            "https://github.com/nix-community/NUR/archive/e833883bd0f137e536ef87c04b7b36dd2d1c9fe7.tar.gz";
+          sha256 =
+            "5581dcc8bd00b1582ffc75d08568aa35227cd2fe38ccf0dfe6b264c78d47c401";
         }) { inherit pkgs; };
       };
     };
@@ -48,17 +49,6 @@ in {
       ];
   };
 
-  imports = [
-    ./apps
-    ./cli
-    ./desktop
-    ./env
-    ./fonts
-    ./langs
-    ./rice
-    ./tools
-    ./virtualization
-  ];
-
-  fonts = { fontconfig = { enable = true; }; };
+  # imports = [ ./cli ./desktop ./env ./fonts ./tools ./virtualization ];
+  imports = [ ./env ./fonts ./tools ./virtualization/home.nix ];
 }

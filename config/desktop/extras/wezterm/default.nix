@@ -1,4 +1,7 @@
-{
+let front_end = "OpenGL";
+in {
+  home = { shellAliases = { wezterm = "WAYLAND_DISPLAY=1 wezterm"; }; };
+
   programs = {
     wezterm = {
       enable = true;
@@ -7,7 +10,7 @@
         local wezterm = require "wezterm"
         local act = wezterm.action
         local xcursor_size = 32
-        local xcursor_theme = "macOS-BigSur"
+        local xcursor_theme = "Catppuccin-Macchiato-Dark"
         return {
           adjust_window_size_when_changing_font_size = false,
           animation_fps = 0,
@@ -21,14 +24,14 @@
           enable_tab_bar = false,
           enable_wayland = false,
           font_size = 13,
-          font = wezterm.font('FireCode', { weight = 'Medium', italic = true }),
+          font = wezterm.font('FiraCode', { weight = 'Medium', italic = true }),
           font = wezterm.font_with_fallback {
-          { family = 'FireCode-italic', weight = 'Medium', italic = true },
+          { family = 'FiraCode-italic', weight = 'Medium', italic = true },
           'Noto Color Emoji',
           },
           freetype_load_flags = 'NO_HINTING',
           freetype_load_target = 'Normal',
-          front_end = "WebGpu",
+          front_end = ${front_end},
           hide_tab_bar_if_only_one_tab = true,
           hide_mouse_cursor_when_typing = false,
           line_height = 1.0,

@@ -1,7 +1,11 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+
+    extraModprobeConfig = "options kvm_intel nested=1";
+
     kernelModules = [ "v4l2loopback" ];
     extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 

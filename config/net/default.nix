@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   networking = {
     networkmanager = { enable = true; };
 
@@ -8,5 +8,7 @@
       wait = "background";
       extraConfig = "noarp";
     };
+
+    hostName = lib.mkDefault "mikel";
   };
 }

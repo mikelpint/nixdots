@@ -7,5 +7,7 @@ let
         "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
       earlySetup = lib.mkDefault true;
     };
+
+    services = { displayManager = { sddm = { enableHidpi = true; }; }; };
   };
 in config

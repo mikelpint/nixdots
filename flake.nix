@@ -11,11 +11,6 @@
       inputs = { nixpkgs = { follows = "nixpkgs"; }; };
     };
 
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
-    };
-
     nixos-generators = { url = "github:nix-community/nixos-generators"; };
     nixos-generators = { inputs = { nixpkgs = { follows = "nixpkgs"; }; }; };
 
@@ -32,11 +27,20 @@
       inputs = { nixpkgs = { follows = "nixpkgs"; }; };
     };
 
-    hyprland = { url = "github:hyprwm/hyprland"; };
-    waybar-hyprland = { url = "github:hyprwm/hyprland"; };
-    xdg-portal-hyprland = {
-      url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    hyprland = {
+      type = "git";
+      url = "https://github.com/hyprwm/Hyprland";
+      submodules = true;
     };
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs = { hyprland = { follows = "hyprland"; }; };
+    };
+    waybar-hyprland = { url = "github:hyprwm/hyprland"; };
+    /* xdg-portal-hyprland = {
+          url = "github:hyprwm/xdg-desktop-portal-hyprland";
+        };
+    */
 
     nur = { url = "github:nix-community/NUR"; };
 
@@ -53,42 +57,71 @@
       url = "github:shaunsingh/SFMono-Nerd-Font-Ligaturized";
       flake = false;
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+    };
+
+    nix-ld-rs = { url = "github:nix-community/nix-ld-rs"; };
+
+    catppuccin = { url = "github:catppuccin/nix"; };
   };
 
-  outputs = { self, nixpkgs, nur, hyprland, home-manager, spicetify-nix, disko
-    , ... }@inputs:
+  outputs = { self, sops-nix, nixpkgs, nur, hyprland, home-manager
+    , spicetify-nix, disko, nix-ld-rs, catppuccin, ... }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
+
+      hosts = [ "desktop" "laptop" "vm" ];
       supportedSystems = [ "x86_64-linux" ];
 
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in {
-      nixosConfigurations = {
-        desktop = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = { inherit inputs hyprland spicetify-nix disko; };
-          modules = [
-            ./hosts/desktop/configuration.nix
+      nixosConfigurations = builtins.listToAttrs (map (host: {
+        name = host;
+        value = {
+          "${host}" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = { inherit inputs hyprland spicetify-nix disko; };
+            modules = [
+              ./hosts/${host}/configuration.nix
 
-            nur.nixosModules.nur
+              catppuccin.nixosModules.catppuccin
 
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useUserPackages = true;
-                useGlobalPkgs = false;
-                extraSpecialArgs = { inherit inputs spicetify-nix disko; };
-                users = { mikel = ./config/home.nix; };
-              };
-            }
-            hyprland.nixosModules.default
-            { programs = { hyprland = { enable = true; }; }; }
-            disko.nixosModules.disko
-          ];
+              sops-nix.nixosModules.sops
+
+              nur.nixosModules.nur
+
+              home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useUserPackages = true;
+                  useGlobalPkgs = false;
+                  extraSpecialArgs = { inherit inputs spicetify-nix disko; };
+                  users = {
+                    mikel = {
+                      imports = [
+                        ./config/home.nix
+                        ./hosts/${host}/home.nix
+                        catppuccin.homeManagerModules.catppuccin
+                      ];
+                    };
+                  };
+                  backupFileExtension = "bck";
+                };
+              }
+
+              hyprland.nixosModules.default
+              { programs = { hyprland = { enable = true; }; }; }
+
+              disko.nixosModules.disko
+            ];
+          };
         };
-      };
+      }) hosts);
 
       devShells = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};

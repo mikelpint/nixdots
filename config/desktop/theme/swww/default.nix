@@ -2,8 +2,10 @@
 
 { pkgs, ... }:
 
-let wallpaper = "../wallpapers/wallpaper.gif";
+let wallpaper = "/etc/nixos/config/desktop/theme/wallpapers/wallpaper.gif";
 in {
+  home = { packages = with pkgs; [ swww ]; };
+
   systemd = {
     user = {
       services = {
@@ -13,7 +15,7 @@ in {
             After = [ "graphical-session.target" ];
           };
 
-          Install.WantedBy = [ "graphical-session.target" ];
+          Install = { WantedBy = [ "graphical-session.target" ]; };
           Service = {
             Type = "simple";
             ExecStart = ''

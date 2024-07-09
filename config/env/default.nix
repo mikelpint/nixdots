@@ -1,1 +1,1 @@
-{ imports = [ ./xdg ]; }
+{ imports = [ ./gnupg ./xdg ]; }

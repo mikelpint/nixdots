@@ -6,4 +6,6 @@
       lib.optionals (!config.hardware.enableRedistributableFirmware)
       [ "ath3k" ];
   };
+
+  hardware = { bluetooth = { enable = true; }; };
 }

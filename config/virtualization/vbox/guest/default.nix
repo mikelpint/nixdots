@@ -1,5 +1,12 @@
 {
-  virtualisation = { virtualbox = { guest = { enable = true; }; }; };
+  virtualisation = {
+    virtualbox = {
+      guest = {
+        enable = true;
+        dragAndDrop = true;
+      };
+    };
+  };
 
   boot = { initrd = { checkJournalingFS = false; }; };
 

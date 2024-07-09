@@ -1,7 +1,7 @@
 # ASUS ROG Strix G15 G513IH-HN008
 
 {
-  import = [ ./bluetooth ./cpu ./gpu ./input ./power ./storage ];
+  imports = [ ./bluetooth ./cpu ./gpu ./net ./power ./storage ];
 
   services = {
     asusd = {

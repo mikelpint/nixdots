@@ -1,29 +1,31 @@
-{
-  imports = [ ./hardware/laptop ./hardware-configuration.nix ];
+{ config, pkgs, inputs, lib, ... }: {
+  imports = [
+    ./hardware-configuration.nix
 
-  networking = { hostname = "laptop"; };
+    ../../config
+    ../../config/hardware/laptop
 
-  presets = {
-    desktop = enabled;
-    dev = enabled;
-    gaming = disabled;
-    music = enabled;
-    rice = enabled;
-    social = enabled;
-    video = enabled;
-  };
+    ../../presets/desktop
+    ../../presets/dev
+    ../../presets/music
+    ../../presets/rice
+    ../../presets/social
+    ../../presets/video
+  ];
+
+  networking = { hostName = "laptopmikel"; };
 
   systems = {
-    laptop = {
-      modules = with inputs;
-        [
-          (import ../../disks/default.nix {
-            inherit lib;
-            device = "/dev/nvme0n1";
-            luks = true;
-            swap = true;
-          })
-        ];
-    };
+   laptop = {
+     modules = with inputs;
+       [
+         (import ../../disk/default.nix {
+           inherit lib;
+           device = "/dev/nvme0n1";
+           luks = true;
+           swap = true;
+         })
+       ];
+   };
   };
 }

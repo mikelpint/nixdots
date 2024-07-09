@@ -8,7 +8,6 @@ scripts=$hypr/scripts
 
 cooldown=0.1
 
-
 while true
 do
     case "$1" in

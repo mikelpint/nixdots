@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  fonts = { fontconfig = { enable = true; }; };
+
   home = {
     packages = with pkgs; [
       font-manager
@@ -9,7 +11,7 @@
       fira-code-symbols
       (iosevka-bin.override { variant = "Aile"; })
       material-design-icons
-      (nerdfonts.override { fonts = [ "FiraMono" "JetBrainsMono" ]; })
+      (nerdfonts.override { fonts = [ "Ubuntu" "FiraMono" "JetBrainsMono" ]; })
       nerdfix
       noto-fonts
       powerline-symbols

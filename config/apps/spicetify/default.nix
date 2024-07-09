@@ -9,6 +9,6 @@ in {
   programs.spicetify = {
     enable = true;
     theme = spicePkgs.themes.catppuccin;
-    colorScheme = "mocha";
+    colorScheme = "macchiatto";
   };
 }

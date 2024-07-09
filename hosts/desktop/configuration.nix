@@ -1,29 +1,30 @@
-{ config, pkgs, lib, inputs, ... }: {
-  imports = [ ../../config ./hardware-configuration.nix ];
+{ config, pkgs, inputs, lib, ... }: {
+  imports = [
+    ./hardware-configuration.nix
 
-  networking = { hostName = "desktop"; };
+    ../../config
+    ../../config/hardware/desktop
 
-  #presets = {
-  #  desktop = true;
-  #  dev = true;
-  #  gaming = true;
-  #  music = true;
-  #  rice = true;
-  #  social = true;
-  #  video = true;
-  #};
+    ../../presets/desktop
+    ../../presets/dev
+    ../../presets/gaming
+    ../../presets/music
+    ../../presets/rice
+    ../../presets/social
+    ../../presets/video
+  ];
 
-  #systems = {
-  #  desktop = {
-  #    modules = with inputs;
-  #      [
-  #        (import ../../disk/default.nix {
-  #          inherit lib;
-  #          device = "/dev/nvme0n1";
-  #        })
-  #      ];
-  #  };
-  #};
+  networking = { hostName = "desktopmikel"; };
 
-  system = { stateVersion = "23.11"; };
+  systems = {
+   desktop = {
+     modules = with inputs;
+       [
+         (import ../../disk/default.nix {
+           inherit lib;
+           device = "/dev/nvme0n1";
+         })
+       ];
+   };
+  };
 }

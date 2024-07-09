@@ -1,3 +1,1 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ mongodb-compass ]; };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ mongodb-compass ]; }; }

@@ -1,1 +1,5 @@
-{ imports = [ ./mikel ]; }
+{
+  users = { users = { root = { initialPassword = ""; }; }; };
+
+  imports = [ ./mikel ];
+}

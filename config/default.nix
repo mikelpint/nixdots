@@ -1,4 +1,4 @@
-{
+_: {
   imports = [
     ./audio
     ./boot
@@ -9,6 +9,9 @@
     ./security
     ./services
     ./time
+    ./system
     ./users
+    ./virtualization
+    ./virtualization/vbox/guest
   ];
 }

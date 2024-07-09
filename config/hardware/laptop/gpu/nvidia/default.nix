@@ -2,8 +2,24 @@
   hardware = {
     nvidia = {
       prime = {
-        amdgpuBusId = "PCI:05:00:0";
+        amdgpuBusId = "PCI:06:00:0";
         nvidiaBusId = "PCI:01:00:0";
+      };
+    };
+  };
+
+  system = {
+    userActivationScripts = {
+      hyprgpu = {
+        text = ''
+          if [[ ! -h "$HOME/.config/hypr/card" ]]; then
+            ln -s "$HOME/.config/hypr/card" "/dev/dri/by-path/pci-0000:06:00.0-card"
+          fi
+
+          if [[ ! -h "$HOME/.config/hypr/otherCard" ]]; then
+            ln -s "$HOME/.config/hypr/otherCard" "/dev/dri/by-path/pci-0000:01:00.0-card"
+          fi
+        '';
       };
     };
   };

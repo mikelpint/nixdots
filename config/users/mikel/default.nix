@@ -1,14 +1,25 @@
-{
+{ pkgs, ... }: {
   users = {
     users = {
       mikel = {
         isNormalUser = true;
         home = "/home/mikel";
         description = "Mikel Pintado";
-        extraGroups = [ "wheel" ];
+        extraGroups = [
+          "docker"
+          "input"
+          "kvm"
+          "libvirtd"
+          "networkmanager"
+          "openrazer"
+          "vboxsf"
+          "vboxusers"
+          "wheel"
+        ];
         hashedPassword = "";
         uid = 1000;
-        useDefaultShell = true;
+        shell = pkgs.zsh;
+        ignoreShellProgramCheck = true;
       };
     };
 

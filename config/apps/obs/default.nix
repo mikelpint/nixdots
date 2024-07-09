@@ -11,6 +11,4 @@
       ];
     };
   };
-
-  security = { polkit = { enable = true; }; };
 }
