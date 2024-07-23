@@ -34,26 +34,17 @@ let
 
   meminfo = builtins.readFile "/proc/meminfo";
   memTotalLine = builtins.head (
-    builtins.filter (line: builtins.hasPrefix "MemTotal:" line) (builtins.split "\n" meminfo)
+    (builtins.filter (line: lib.strings.hasPrefix "MemTotal:" line)) (lib.strings.splitString "\n" meminfo)
   );
-  memTotal = builtins.toNumber (
-    builtins.replaceStrings
-      [
-        "MemTotal:"
-        " kB"
-      ]
-      [
-        ""
-        ""
-      ]
-      memTotalLine
+  memTotal = lib.strings.toInt (
+    builtins.replaceStrings [ "MemTotal:" " kB"] [ ""  "" ] memTotalLine
   );
 
   swapSize =
     if swap == false || swap == "false" then
       false
     else if swap == true || swap == "" || swap == "true" then
-      if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
+      (builtins.toString (if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2))) + "K"
     else
       (
         assert
@@ -61,7 +52,7 @@ let
           || swap == false
           || (builtins.isString swap && !(builtins.match perc swap == null && builtins.match size == null));
         if builtins.match perc swap then
-          (memTotal * (builtins.toNumber (builtins.substring 0 - 1 swap) / 100)) + "kB"
+          (builtins.toString (memTotal * (lib.strings.toInt (builtins.substring 0 - 1 swap) / 100))) + "K"
         else
           swap
       );
