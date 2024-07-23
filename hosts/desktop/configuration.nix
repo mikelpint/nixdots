@@ -1,4 +1,11 @@
-{ config, pkgs, inputs, lib, ... }: {
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
 
@@ -14,17 +21,18 @@
     ../../presets/video
   ];
 
-  networking = { hostName = "desktopmikel"; };
+  networking = {
+    hostName = "desktopmikel";
+  };
 
   systems = {
-   desktop = {
-     modules = with inputs;
-       [
-         (import ../../disk/default.nix {
-           inherit lib;
-           device = "/dev/nvme0n1";
-         })
-       ];
-   };
+    desktop = {
+      modules = with inputs; [
+        (import ../../disk/default.nix {
+          inherit lib;
+          device = "/dev/nvme0n1";
+        })
+      ];
+    };
   };
 }

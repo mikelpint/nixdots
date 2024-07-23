@@ -1,1 +1,6 @@
-{ imports = [ ./hdd ./ssd ]; }
+{
+  imports = [
+    ./hdd
+    ./ssd
+  ];
+}

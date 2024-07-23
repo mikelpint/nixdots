@@ -1,27 +1,38 @@
-{ pkgs, inputs, config, ... }:
+{
+  pkgs,
+  inputs,
+  config,
+  ...
+}:
 let
-  cursorTheme =
-    (import ../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
+  cursorTheme = (import ../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
   opacity = "0.95";
   cursor = {
     name = cursorTheme.name;
     size = cursorTheme.size;
-    package = cursorTheme.package;
   };
-in {
+in
+{
   home = {
     packages = with pkgs; [
       hyprpicker
       hypridle
       hyprlock
+      hyprcursor
       polkit_gnome
-      cursor.package
+      glib
+      nwg-look
+      wl-clipboard
+      gsettings-desktop-schemas
+      dconf-editor
+
       (writeShellScriptBin "screenshot" ''
         grim -g "$(slurp)" - | wl-copy
       '')
       (writeShellScriptBin "screenshot-edit" ''
         wl-paste | swappy -f -
       '')
+
       (writeShellScriptBin "autostart" ''
         config=$HOME/.config/hypr
         scripts=$config/scripts
@@ -34,8 +45,27 @@ in {
         pkill dunst
         dunst &
 
+        hyprctl setcursor ${cursor.name} ${builtins.toString cursor.size}
+        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme ${cursor.name}
+
         ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
         dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
+
+        systemctl start --user swww
+        ${pkgs.swww}/bin/swww restore
+      '')
+
+      (writeShellScriptBin "importGsettings" ''
+        config="/home/mikel/.config/gtk-3.0/settings.ini"
+        if [ ! -f "$config" ]; then exit 1; fi
+        gtk_theme="$(grep 'gtk-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+        icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+        cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | sed 's/.*\s*=\s*//')"
+        font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
+        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
+        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface font-name "$font_name"
       '')
     ];
   };
@@ -44,11 +74,13 @@ in {
     windowManager = {
       hyprland = {
         enable = true;
-        package = (inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-          enableXWayland = true;
-          legacyRenderer = true;
-          withSystemd = true;
-        });
+        package = (
+          inputs.hyprland.packages."${pkgs.system}".hyprland.override {
+            enableXWayland = true;
+            legacyRenderer = false;
+            withSystemd = true;
+          }
+        );
 
         plugins = [
           inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix
@@ -60,9 +92,17 @@ in {
           variables = [ "--all" ];
         };
 
-        xwayland = { enable = true; };
+        xwayland = {
+          enable = true;
+        };
 
         settings = {
+          plugin = {
+            hyprtrails = {
+              color = "rgb(f5bde6)";
+            };
+          };
+
           envd = [
             "WLR_DRM_DEVICES,$HOME/.config/hypr/card:$HOME/.config/hypr/otherCard"
 
@@ -73,19 +113,19 @@ in {
             "XDG_SESSION_DESKTOP,Hyprland"
 
             "NIXOS_OZONE_WL,1"
+            "ELECTRON_OZONE_PLATFORM_HINT,auto"
 
             "GDK_BACKEND,wayland,x11"
             "QT_QPA_PLATFORM,wayland;xcb"
             "CLUTTER_BACKEND,wayland"
             "SDL_VIDEODRIVER,wayland"
+            "MOZ_ENABLE_WAYLAND,1"
 
             "QT_AUTO_SCREEN_SCALE_FACTOR,1"
             "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
             "QT_QPA_PLATFORMTHEME,qt6ct"
 
             "GDK_SCALE,2"
-
-            "WLR_NO_HARDWARE_CURSORS,0"
 
             "HYPRCURSOR_THEME,${cursor.name}"
             "HYPRCURSOR_SIZE,${builtins.toString cursor.size}"
@@ -96,7 +136,9 @@ in {
 
           monitor = [ ",highrr,auto,auto" ];
 
-          xwayland = { force_zero_scaling = true; };
+          xwayland = {
+            force_zero_scaling = true;
+          };
 
           input = {
             kb_layout = "us,es";
@@ -112,7 +154,9 @@ in {
             accel_profile = "flat";
             sensitivity = 0;
             force_no_accel = 1;
-            touchpad = { natural_scroll = 1; };
+            touchpad = {
+              natural_scroll = 1;
+            };
           };
 
           general = {
@@ -120,10 +164,8 @@ in {
             gaps_out = 2;
             border_size = 3;
 
-            "col.active_border" =
-              "rgb(8aadf4) rgb(24273A) rgb(24273A) rgb(8aadf4) 45deg";
-            "col.inactive_border" =
-              "rgb(24273A) rgb(24273A) rgb(24273A) rgb(24273A) 45deg";
+            "col.active_border" = "rgb(f5bde6) rgb(24273A) rgb(24273A) rgb(f5bde6) 45deg";
+            "col.inactive_border" = "rgb(24273A) rgb(24273A) rgb(24273A) rgb(24273A) 45deg";
 
             layout = "dwindle";
             apply_sens_to_raw = 1;
@@ -132,7 +174,7 @@ in {
           decoration = {
             rounding = 12;
             shadow_ignore_window = true;
-            drop_shadow = false;
+            drop_shadow = true;
             shadow_range = 20;
             shadow_render_power = 3;
 
@@ -140,7 +182,7 @@ in {
             "col.shadow_inactive" = "rgba(11111B00)";
 
             blur = {
-              enabled = false;
+              enabled = true;
               size = 5;
               passes = 3;
               new_optimizations = true;
@@ -177,7 +219,7 @@ in {
 
           cursor = {
             enable_hyprcursor = true;
-            no_hardware_cursors = false;
+            no_hardware_cursors = true;
             no_break_fs_vrr = false;
           };
 
@@ -188,7 +230,7 @@ in {
             disable_hyprland_logo = true;
             force_default_wallpaper = 0;
 
-            vfr = true;
+            vfr = false;
             vrr = false;
 
             no_direct_scanout = false;
@@ -213,15 +255,21 @@ in {
             no_gaps_when_only = false;
           };
 
-          gestures = { workspace_swipe = false; };
+          gestures = {
+            workspace_swipe = false;
+          };
 
           debug = {
             disable_logs = false;
             damage_tracking = 2;
           };
 
-          exec-once =
-            [ "autostart" "hypridle" "easyeffects --gapplication-service" ];
+          exec-once = [
+            "autostart"
+            "hypridle"
+            "easyeffects --gapplication-service"
+            "importGsettings"
+          ];
 
           "$mainMod" = "SUPER";
           "$altMod" = "ALT";
@@ -293,7 +341,10 @@ in {
             "$mainMod,mouse:273,resizewindow"
           ];
 
-          windowrule = [ "tile,title:^(wezterm)$" "tile,^(Spotify)$" ];
+          windowrule = [
+            "tile,title:^(wezterm)$"
+            "tile,^(Spotify)$"
+          ];
 
           windowrulev2 = [
             "opacity ${opacity} ${opacity},class:^(thunar)$"
@@ -422,11 +473,6 @@ in {
           on-resume = brightnessctl -rd rgb:kbd_backlight
         }
 
-        # listener {
-        #   timeout = 300
-        #   on-timeout = loginctl lock-session
-        # }
-
         listener {
           timeout = 300
           on-timeout = hyprctl dispatch dpms off
@@ -441,13 +487,15 @@ in {
       "hypr/hyprlock.conf".text = ''
         source = $HOME/.config/hypr/macchiato.conf
 
-        $accent = $mauve
-        $accentAlpha = $mauveAlpha
+        $accent = $pink
+        $accentAlpha = $pinkAlpha
         $font = JetBrainsMono Nerd Font
 
         general {
             disable_loading_bar = true
             hide_cursor = true
+
+            ignore_empty_input = true
         }
 
         background {

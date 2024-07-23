@@ -1,1 +1,7 @@
-{ imports = [ ./btop ./cava ./fastfetch ]; }
+{
+  imports = [
+    ./btop
+    ./cava
+    ./fastfetch
+  ];
+}

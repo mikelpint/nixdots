@@ -1,0 +1,1 @@
+{ imports = [ ./gpu/home.nix ]; }

@@ -1,1 +1,6 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ easyeffects ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ easyeffects ];
+  };
+}

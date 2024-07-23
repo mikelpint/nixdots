@@ -6,7 +6,7 @@ _: {
     ../../config/apps/yubikey
     ../../config/apps/zathura
 
-    ../../config/cli/archive
+    ../../config/cli/clipboard
 
     ../../config/desktop
   ];

@@ -2,12 +2,27 @@
 
 { pkgs, ... }:
 
-let wallpaper = "/etc/nixos/config/desktop/theme/wallpapers/wallpaper.gif";
-in {
-  home = { packages = with pkgs; [ swww ]; };
+let
+  wallpaper = "/etc/nixos/config/desktop/theme/wallpapers/wallpaper.gif";
+in
+{
+  home = {
+    packages = with pkgs; [ swww ];
+  };
 
   systemd = {
     user = {
+      #timers = {
+      #  wallpaper = {
+      #    Install = { WantedBy = [ "timers.target" ]; };
+      #    
+      #    Timer = {
+      #      OnBootSec = "1s";
+      #      Unit = "wallpaper.service";
+      #    };
+      #  }; 
+      #}; 
+
       services = {
         swww = {
           Unit = {
@@ -15,28 +30,46 @@ in {
             After = [ "graphical-session.target" ];
           };
 
-          Install = { WantedBy = [ "graphical-session.target" ]; };
+          Install = {
+            WantedBy = [ "graphical-session.target" ];
+          };
+
           Service = {
             Type = "simple";
-            ExecStart = ''
-              ${pkgs.swww}/bin/swww-daemon
-            '';
+
+            ExecStart = ''${pkgs.swww}/bin/swww-daemon --no-cache'';
             ExecStop = "${pkgs.swww}/bin/swww kill";
+
             Restart = "on-failure";
+            StartLimitIntervalSec = 0;
+            StartLimitBurst = 0;
           };
         };
 
         wallpaper = {
           Unit = {
             Requires = [ "swww.service" ];
-            After = [ "swww.service" ];
+            After = [
+              "swww.service"
+              "hyprland-session.target"
+            ];
             PartOf = [ "swww.service" ];
           };
 
-          Install = { WantedBy = [ "swww.service" ]; };
+          Install = {
+            WantedBy = [
+              "swww.service"
+              "hyprland-session.target"
+            ];
+          };
+
           Service = {
             ExecStart = ''${pkgs.swww}/bin/swww img "${wallpaper}"'';
+
             Restart = "on-failure";
+            StartLimitIntervalSec = 0;
+            StartLimitBurst = 0;
+
             Type = "oneshot";
           };
         };

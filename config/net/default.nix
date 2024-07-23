@@ -1,6 +1,15 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
+  imports = [
+    ./dns
+    ./firewall
+    ./nat
+  ];
+
   networking = {
-    networkmanager = { enable = true; };
+    networkmanager = {
+      enable = true;
+    };
 
     enableIPv6 = false;
 

@@ -1,1 +1,6 @@
-_: { imports = [ ../../config/apps/discord ../../config/apps/noisetorch ]; }
+_: {
+  imports = [
+    ../../config/apps/discord
+    ../../config/apps/noisetorch
+  ];
+}

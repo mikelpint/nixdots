@@ -1,5 +1,7 @@
 {
-  networking = { hostName = "desktopmikel"; };
+  networking = {
+    hostName = "desktopmikel";
+  };
   boot = {
     kernel = {
       sysctl = {

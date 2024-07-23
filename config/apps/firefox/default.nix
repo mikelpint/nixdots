@@ -1,62 +1,154 @@
 # https://raw.githubusercontent.com/TLATER/dotfiles/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
 
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  home = {
+    activation = {
+      "chrome" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        rm -rf /home/mikel/.mozilla/firefox/mikel/chrome
+        cp -r /etc/nixos/config/apps/firefox/chrome /home/mikel/.mozilla/firefox/mikel
+      '';
+    };
+  };
+
   programs = {
     firefox = {
       enable = true;
+      package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
 
       profiles = {
         mikel = {
+          isDefault = true;
+
           search = {
             default = "DuckDuckGo";
             force = true;
           };
 
-          # extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          #   auto-tab-discard
-          #   clearurls
-          #   darkreader
-          #   decentraleyes
-          #   duckduckgo-privacy-essentials
-          #   enhanced-github
-          #   tampermonkey
-          #   stylus
-          #   ublock-origin
-          #   user-agent-switcher
-          # ];
+          extensions =
+            with (import inputs.nur {
+              inherit pkgs;
+              nurpkgs = pkgs;
+            }).repos.rycee.firefox-addons; [
+              anchors-reveal
+              auto-tab-discard
+              clearurls
+              cookie-autodelete
+              darkreader
+              decentraleyes
+              duckduckgo-privacy-essentials
+              enhanced-github
+              libredirect
+              link-cleaner
+              linkhints
+              reddit-enhancement-suite
+              skip-redirect
+              tampermonkey
+              stylus
+              ublock-origin
+              user-agent-string-switcher
+            ];
+
+          userChrome = ''
+            @import 'includes/cascade-config.css';
+            @import 'includes/cascade-colours.css';
+
+            @import 'includes/cascade-layout.css';
+            @import 'includes/cascade-responsive.css';
+            @import 'includes/cascade-floating-panel.css';
+
+            @import 'includes/cascade-nav-bar.css';
+            @import 'includes/cascade-tabs.css';
+          '';
 
           settings = {
-            gfx = { webrender = { all = true; }; };
+            toolkit = {
+              legacyUserProfileCustomizations = {
+                stylesheets = true;
+              };
+            };
 
-            media = { ffmpeg = { vaapi = { enabled = true; }; }; };
+            gfx = {
+              webrender = {
+                all = true;
+              };
+            };
 
-            widget = { dmabuf = { force-enabled = true; }; };
+            media = {
+              ffmpeg = {
+                vaapi = {
+                  enabled = true;
+                };
+              };
+
+              hardware-video-decoding = {
+                force-enabled = true;
+              };
+            };
+
+            widget = {
+              dmabuf = {
+                force-enabled = true;
+              };
+
+              wayland = {
+                opaque-region = {
+                  enabled = false;
+                };
+              };
+            };
 
             privacy = {
-              webrtc = { legacyGlobalIndicator = true; };
+              webrtc = {
+                legacyGlobalIndicator = true;
+              };
 
               trackingprotection = {
                 enabled = true;
-                socialtracking = { enabled = true; };
+                socialtracking = {
+                  enabled = true;
+                };
               };
             };
 
             app = {
-              shield = { optoutstudies = { enabled = false; }; };
+              shield = {
+                optoutstudies = {
+                  enabled = false;
+                };
+              };
 
-              update = { auto = false; };
+              update = {
+                auto = false;
+              };
             };
 
             browser = {
-              bookmarks = { restore_default_bookmarks = false; };
+              bookmarks = {
+                restore_default_bookmarks = false;
+              };
 
-              contentblocking = { category = "strict"; };
+              contentblocking = {
+                category = "strict";
+              };
 
-              ctrlTab = { recentlyUsedOrder = false; };
+              ctrlTab = {
+                recentlyUsedOrder = false;
+              };
 
-              discovery = { enabled = false; };
+              discovery = {
+                enabled = false;
+              };
 
-              laterrun = { enabled = false; };
+              laterrun = {
+                enabled = false;
+              };
 
               newtabpage = {
                 activity-stream = {
@@ -69,7 +161,9 @@
                     };
                   };
 
-                  feeds = { snippets = false; };
+                  feeds = {
+                    snippets = false;
+                  };
 
                   improvesearch = {
                     topSiteSearchShortcuts = {
@@ -78,7 +172,11 @@
                     };
                   };
 
-                  section = { highlights = { includePocket = false; }; };
+                  section = {
+                    highlights = {
+                      includePocket = false;
+                    };
+                  };
 
                   showSponsored = false;
                   showSponsoredTopSites = false;
@@ -87,20 +185,34 @@
                 pinned = false;
               };
 
-              protections_panel = { infoMessage = { seen = true; }; };
+              protections_panel = {
+                infoMessage = {
+                  seen = true;
+                };
+              };
 
-              quitShortcut = { disabled = true; };
+              quitShortcut = {
+                disabled = true;
+              };
 
-              shell = { checkDefaultBrowser = false; };
+              shell = {
+                checkDefaultBrowser = false;
+              };
 
-              ssb = { enabled = true; };
+              ssb = {
+                enabled = true;
+              };
 
               toolbars = {
-                bookmarks = { visibility = "never"; };
+                bookmarks = {
+                  visibility = "never";
+                };
 
                 urlbar = {
                   placeHolderName = "DuckDuckGo";
-                  suggest = { openpage = false; };
+                  suggest = {
+                    openpage = false;
+                  };
                 };
               };
             };
@@ -120,14 +232,28 @@
             };
 
             extensions = {
-              getAddons = { showPane = false; };
+              autoDisableScopes = 0;
 
-              htmlaboutaddons = { recommendations = { enabled = false; }; };
+              getAddons = {
+                showPane = false;
+              };
 
-              pocket = { enabled = false; };
+              htmlaboutaddons = {
+                recommendations = {
+                  enabled = false;
+                };
+              };
+
+              pocket = {
+                enabled = false;
+              };
             };
 
-            identity = { fxaccouts = { enabled = false; }; };
+            identity = {
+              fxaccouts = {
+                enabled = false;
+              };
+            };
           };
         };
       };

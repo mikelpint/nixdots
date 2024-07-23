@@ -1,42 +1,55 @@
 { pkgs, config, ... }:
 
 let
-  cursor =
-    ((import ../cursor/default.nix) { inherit pkgs; }).home.pointerCursor;
-in {
+  flavor = config.catppuccin.flavor;
+  accent = config.catppuccin.accent;
+in
+{
+  home = {
+    packages = with pkgs; [
+      gsettings-desktop-schemas
+      dconf-editor
+    ];
+  };
+
   gtk = {
     enable = true;
 
-    cursorTheme = {
-      name = cursor.name;
-      size = cursor.size;
-      package = cursor.package;
+    font = {
+      name = "JetBrains Nerd Font";
     };
 
-    theme = {
-      name = "Catppuccin-Macchiato-Compact-Pink-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        accents = [ "pink" ];
-        size = "compact";
-        tweaks = [ "rimless" "black" ];
-        variant = "macchiato";
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = true;
       };
     };
 
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-folders;
+    catppuccin = {
+      inherit flavor;
+      inherit accent;
+
+      icon = {
+        enable = true;
+
+        inherit flavor;
+        inherit accent;
+      };
+
+      size = "compact";
+      tweaks = [
+        "rimless"
+        "black"
+      ];
     };
   };
 
   xdg = {
-    configFile = {
-      "gtk-4.0/assets".source =
-        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
-      "gtk-4.0/gtk.css".source =
-        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
-      "gtk-4.0/gtk-dark.css".source =
-        "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
+    systemDirs = {
+      data = [
+        "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+        "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+      ];
     };
   };
 }

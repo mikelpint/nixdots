@@ -1,16 +1,47 @@
 { config, lib, ... }:
 
 {
-  environment = { sessionVariables = { NIXOS_OZONE_WL = "1"; }; };
+  environment = {
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
+  };
 
   services = {
-    xserver = { enable = true; };
+    xserver = {
+      enable = true;
+    };
+
+    greetd = {
+      enable = true;
+      vt = 7;
+
+      restart = true;
+
+      settings = {
+        default_session = {
+          command = "hyprland";
+          user = "mikel";
+        };
+
+        initial_session = {
+          command = "hyprland";
+          user = "mikel";
+        };
+      };
+    };
 
     displayManager = {
+      enable = lib.mkForce false;
+
       sddm = {
-        enable = true;
-        wayland = { enable = true; };
-        autoLogin = { relogin = true; };
+        enable = false;
+        wayland = {
+          enable = true;
+        };
+        autoLogin = {
+          relogin = true;
+        };
       };
 
       autoLogin = {
@@ -22,8 +53,12 @@
     libinput = {
       enable = true;
 
-      mouse = { accelProfile = "flat"; };
-      touchpad = { accelProfile = "flat"; };
+      mouse = {
+        accelProfile = "flat";
+      };
+      touchpad = {
+        accelProfile = "flat";
+      };
     };
   };
 }

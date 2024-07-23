@@ -1,17 +1,37 @@
+{ pkgs, inputs, ... }:
 {
+  imports = [ inputs.nur.hmModules.nur ];
+
   nixpkgs = {
     config = {
       allowUnfree = true;
+
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball {
-          url =
-            "https://github.com/nix-community/NUR/archive/327169ed2b4766f8112d4fb144bc8f8a7cebf8d.tar.gz";
-          sha256 = "03x11544zrlwwh30cfnjly0dd0d7w1ywz68qvz9dzypcdzmndc4z";
+          url = "https://github.com/nix-community/NUR/archive/960c1f77cca3e17cd398519496dcd0bb6e495871.tar.gz";
+          sha256 = "06vnzp0jkahqrrn61xdprvw3rc94j70m79irrjxsqhvyl62lg48g";
         }) { inherit pkgs; };
       };
     };
+
+    overlays = with inputs; [
+      (final: prev: {
+        sf-mono-liga-bin = prev.stdenvNoCC.mkDerivation {
+          pname = "sf-mono-liga-bin";
+          version = "dev";
+          src = sf-mono-liga-src;
+          dontConfigure = true;
+          installPhase = ''
+            mkdir -p $out/share/fonts/opentype
+            cp -R $src/*.otf $out/share/fonts/opentype/
+          '';
+        };
+      })
+    ];
   };
 
-  home-manager = { useGlobalPkgs = false; };
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = false;
+  };
 }
-

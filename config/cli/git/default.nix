@@ -7,12 +7,20 @@
       userEmail = "mikelpint@protonmail.com";
 
       extraConfig = {
-        hub = { username = "mikelpint"; };
+        hub = {
+          username = "mikelpint";
+        };
 
         init = {
           defaultBranch = "main";
-          core = { editor = "helix"; };
-          pull = { rebase = false; };
+
+          core = {
+            editor = "helix";
+          };
+
+          pull = {
+            rebase = false;
+          };
         };
       };
     };

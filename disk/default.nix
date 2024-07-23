@@ -1,48 +1,70 @@
 # sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/default.nix --arg device '"/dev/nvme0n1"'
 
-{ lib, device ? throw "No disk device.", luks ? false, swap ? false
-, mountOptions ? [
-  "compress=zstd:3"
-  "noatime"
-  "ssd"
-  "space_cache=v2"
-  "commit=120"
-], ... }:
+{
+  lib,
+  device ? throw "No disk device.",
+  luks ? false,
+  swap ? false,
+  mountOptions ? [
+    "compress=zstd:3"
+    "noatime"
+    "ssd"
+    "space_cache=v2"
+    "commit=120"
+  ],
+  ...
+}:
 
 let
-  luksName = if luks == true || luks == "" || luks == "true" then
-    "crypto"
-  else if luks == "false" then
-    false
-  else if luks == false then
-    luks
-  else
-    (assert builtins.isString luks && builtins.match "(w|d|+|_|.)(w|d|+|_|.|-)*"
-      != null;
-      luks);
+  luksName =
+    if luks == true || luks == "" || luks == "true" then
+      "crypto"
+    else if luks == "false" then
+      false
+    else if luks == false then
+      luks
+    else
+      (
+        assert builtins.isString luks && builtins.match "(w|d|+|_|.)(w|d|+|_|.|-)*" != null;
+        luks
+      );
 
   perc = "0*((dd)(.d+)?|100)%";
   size = "(d+)(.d+)?(k|M|G|T|P)";
 
   meminfo = builtins.readFile "/proc/meminfo";
-  memTotalLine = builtins.head
-    (builtins.filter (line: builtins.hasPrefix "MemTotal:" line)
-      (builtins.split "\n" meminfo));
-  memTotal = builtins.toNumber
-    (builtins.replaceStrings [ "MemTotal:" " kB" ] [ "" "" ] memTotalLine);
+  memTotalLine = builtins.head (
+    builtins.filter (line: builtins.hasPrefix "MemTotal:" line) (builtins.split "\n" meminfo)
+  );
+  memTotal = builtins.toNumber (
+    builtins.replaceStrings
+      [
+        "MemTotal:"
+        " kB"
+      ]
+      [
+        ""
+        ""
+      ]
+      memTotalLine
+  );
 
-  swapSize = if swap == false || swap == "false" then
-    false
-  else if swap == true || swap == "" || swap == "true" then
-    if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
-  else
-    (assert swap == true || swap == false || (builtins.isString swap
-      && !(builtins.match perc swap == null && builtins.match size == null));
-      if builtins.match perc swap then
-        (memTotal * (builtins.toNumber (builtins.substring 0 - 1 swap) / 100))
-        + "kB"
-      else
-        swap);
+  swapSize =
+    if swap == false || swap == "false" then
+      false
+    else if swap == true || swap == "" || swap == "true" then
+      if memTotal < 8 * 1024 * 1024 then memTotal else (memTotal / 2) + "kB"
+    else
+      (
+        assert
+          swap == true
+          || swap == false
+          || (builtins.isString swap && !(builtins.match perc swap == null && builtins.match size == null));
+        if builtins.match perc swap then
+          (memTotal * (builtins.toNumber (builtins.substring 0 - 1 swap) / 100)) + "kB"
+        else
+          swap
+      );
 
   content = {
     type = "btrfs";
@@ -73,11 +95,16 @@ let
 
       "/swap" = lib.mkIf (swapSize != false) {
         mountpoint = "/.swap";
-        swap = { swapfile = { size = swapSize; }; };
+        swap = {
+          swapfile = {
+            size = swapSize;
+          };
+        };
       };
     };
   };
-in {
+in
+{
   disko = {
     enableConfig = false;
 
@@ -116,24 +143,26 @@ in {
                 name = "nixos";
                 size = "100%";
 
-                content = if luksName != false then {
-                  type = "luks";
-                  name = luksName;
+                content =
+                  if luksName != false then
+                    {
+                      type = "luks";
+                      name = luksName;
 
-                  settings = {
-                    allowDiscards = true;
-                    keyFile = "../../secrets/luks/root.key";
-                  };
+                      settings = {
+                        allowDiscards = true;
+                        keyFile = "../../secrets/luks/root.key";
+                      };
 
-                  additionalKeyfiles = builtins.filter
-                    (file: builtins.hasSuffix ".key" file && file != "root.key")
-                    (builtins.readDir "../../secrets/luks");
+                      additionalKeyfiles = builtins.filter (file: builtins.hasSuffix ".key" file && file != "root.key") (
+                        builtins.readDir "../../secrets/luks"
+                      );
 
-                  inherit content;
-                }
+                      inherit content;
+                    }
 
-                else
-                  content;
+                  else
+                    content;
               };
             };
           };

@@ -1,4 +1,1 @@
-{
-  imports = [ # ../../config/services/mongodb
-  ];
-}
+{ imports = [ ../../config/services/mongodb ]; }

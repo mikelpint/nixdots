@@ -1,12 +1,31 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+
+let
+  flavor = "macchiato";
+  accent = "pink";
+in
+{
   home = {
     pointerCursor = {
-      gtk = { enable = true; };
-      x11 = { enable = true; };
+      gtk = {
+        enable = true;
+      };
 
-      name = "Catppuccin-Macchiato-Dark-Cursors";
+      x11 = {
+        enable = true;
+      };
+
+      name = "catppuccin-${flavor}-${accent}-cursors";
       size = 24;
-      package = pkgs.catppuccin-cursors.macchiatoDark;
+    };
+  };
+
+  catppuccin = {
+    pointerCursor = {
+      enable = true;
+
+      inherit flavor;
+      inherit accent;
     };
   };
 }

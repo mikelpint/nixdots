@@ -1,1 +1,1 @@
-{ imports = [ ./c ]; }
+{ imports = [ ]; }

@@ -1,19 +1,21 @@
 { inputs, pkgs, ... }:
 
 let
-  pkgs-unstable =
-    inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in {
-  imports = [ ./amd ./nvidia ];
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+{
+  imports = [
+    ./amd
+    ./nvidia
+  ];
 
   hardware = {
-    opengl = {
+    graphics = {
       package = pkgs-unstable.mesa.drivers;
       package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
 
       enable = true;
-      # driSupport = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
     };
   };
 }

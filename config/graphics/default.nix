@@ -1,1 +1,13 @@
-{ imports = [ ./hidpi ./x ./xdg ]; }
+{
+  imports = [
+    ./hidpi
+    ./x
+    ./xdg
+  ];
+
+  catppuccin = {
+    enable = true;
+    flavor = "macchiato";
+    accent = "pink";
+  };
+}

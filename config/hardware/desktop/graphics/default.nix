@@ -1,6 +1,9 @@
 {
   boot = {
-    kernelParams = [ "video=DP-0:2560x1440@165" "video=DP-1:1920x1080@60" ];
+    kernelParams = [
+      "video=DP-0:2560x1440@165"
+      "video=DP-1:1920x1080@60"
+    ];
   };
 
   services = {

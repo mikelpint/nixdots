@@ -4,12 +4,23 @@ _: {
     position = "top";
     mod = "dock";
 
-    modules-left =
-      [ "custom/launcher" "hyprland/workspaces" "cpu" "memory" "filesystem" ];
-    modules-right = [ "tray" "network" "pulseaudio" "clock" ];
+    modules-left = [
+      "custom/launcher"
+      "hyprland/workspaces"
+      "cpu"
+      "memory"
+      "disk"
+    ];
+
+    modules-right = [
+      "tray"
+      "pulseaudio"
+      "network"
+      "clock"
+    ];
 
     "custom/launcher" = {
-      format = "󱗼";
+      format = " 󱗼 ";
       tooltip = false;
       on-click-release = "bemenu-run";
     };
@@ -33,7 +44,7 @@ _: {
         "7" = "7";
         "8" = "8";
         "9" = "9";
-        "10" = "0";
+        "10" = "10";
 
         sort-by-number = true;
       };
@@ -57,7 +68,7 @@ _: {
     };
 
     "clock" = {
-      format = "{:󰥔 %T} ";
+      format = "󰥔 {:%T} ";
       tooltip = true;
       on-click = "";
     };
@@ -65,25 +76,49 @@ _: {
     "cpu" = {
       format = " {usage}%";
       tooltip = false;
-      interval = 2;
+
+      interval = 5;
+      states = {
+        warning = 50;
+        critical = 80;
+      };
+
       on-click = "wezterm -e btop";
       on-click-right = "wezterm -e fastfetch";
     };
 
     "memory" = {
-      format = " {}%";
+      format = " {}%";
       on-click = "wezterm -e btop";
+    };
+
+    "disk" = {
+      interval = "60";
+
+      path = "/";
+
+      states = {
+        warning = 70;
+        critical = 90;
+      };
+
+      format = " {percentage_used}%";
     };
 
     "backlight" = {
       format = "{icon}{percent}%";
-      format-icons = [ "󰃞 " "󰃟 " "󰃠 " ];
+      format-icons = [
+        "󰃞 "
+        "󰃟 "
+        "󰃠 "
+      ];
+
       on-scroll-up = "light -A 1";
       on-scroll-down = "light -U 1";
     };
 
     "battery" = {
-      interval = 30;
+      interval = 5;
 
       full-at = 99;
       states = {
@@ -96,7 +131,19 @@ _: {
       format-charging = "󰂄 {capacity}%";
       format-plugged = " ";
       format-alt = "{time} {icon}";
-      format-icons = [ "  " "  " "  " "  " "  " ];
+      format-icons = [
+        "󰂎 "
+        "󰁺 "
+        "󰁻 "
+        "󰁼 "
+        "󰁽 "
+        "󰁾 "
+        "󰁿 "
+        "󰂀 "
+        "󰂁 "
+        "󰂂 "
+        "󰁹 "
+      ];
     };
 
     "network" = {
@@ -111,7 +158,14 @@ _: {
     "pulseaudio" = {
       format = "{icon}";
       format-muted = " 󰝟 ";
-      format-icons = { default = [ "  " "  " "  " ]; };
+      format-icons = {
+        default = [
+          "  "
+          "  "
+          "  "
+        ];
+      };
+
       on-click = "pavucontrol &";
     };
 

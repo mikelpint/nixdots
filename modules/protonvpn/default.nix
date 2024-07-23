@@ -1,11 +1,18 @@
 # https://raw.githubusercontent.com/emmanuelrosa/erosanix/a051e8e26d07618c45bb0846109461ad3db1195d/modules/protonvpn.nix
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 
-let cfg = config.services.protonvpn;
-in {
+let
+  cfg = config.services.protonvpn;
+in
+{
   options = {
     services.protonvpn = {
       enable = mkEnableOption "Enable ProtonVPN (using Wireguard).";
@@ -22,16 +29,14 @@ in {
           default = "protonvpn";
           example = "wg0";
           type = types.str;
-          description =
-            "The name of the Wireguard network interface to create. Go to https://account.protonmail.com/u/0/vpn/WireGuard to create a Linux Wireguard certificate and download it. You'll need it's content to set the options for this module.";
+          description = "The name of the Wireguard network interface to create. Go to https://account.protonmail.com/u/0/vpn/WireGuard to create a Linux Wireguard certificate and download it. You'll need it's content to set the options for this module.";
         };
 
         ip = mkOption {
           default = "10.2.0.2/32";
           example = "10.2.0.2/32";
           type = types.str;
-          description =
-            "The IP address of the interface. See your Wireguard certificate.";
+          description = "The IP address of the interface. See your Wireguard certificate.";
         };
 
         port = mkOption {
@@ -44,8 +49,7 @@ in {
         privateKeyFile = mkOption {
           example = "/root/secrets/protonvpn";
           type = types.path;
-          description =
-            "The path to a file containing the private key for this interface/peer. Only root should have access to the file. See your Wireguard certificate.";
+          description = "The path to a file containing the private key for this interface/peer. Only root should have access to the file. See your Wireguard certificate.";
         };
 
         dns = {
@@ -60,8 +64,7 @@ in {
             default = "10.2.0.1";
             example = "10.2.0.1";
             type = types.str;
-            description =
-              "The IP address of the DNS provided by the VPN. See your Wireguard certificate.";
+            description = "The IP address of the DNS provided by the VPN. See your Wireguard certificate.";
           };
         };
       };
@@ -70,23 +73,20 @@ in {
         publicKey = mkOption {
           example = "23*********************************************=";
           type = types.str;
-          description =
-            "The public key of the VPN endpoint. See your Wireguard certificate.";
+          description = "The public key of the VPN endpoint. See your Wireguard certificate.";
         };
 
         ip = mkOption {
           example = "48.1.3.4";
           type = types.str;
-          description =
-            "The IP address of the VPN endpoint. See your Wireguard certificate.";
+          description = "The IP address of the VPN endpoint. See your Wireguard certificate.";
         };
 
         port = mkOption {
           default = 51820;
           example = 51820;
           type = types.port;
-          description =
-            "The port number of the VPN peer endpoint. See your Wireguard certificate.";
+          description = "The port number of the VPN peer endpoint. See your Wireguard certificate.";
         };
       };
     };
@@ -100,11 +100,16 @@ in {
       address = [ cfg.interface.ip ];
       listenPort = cfg.interface.port;
 
-      peers = [{
-        publicKey = cfg.endpoint.publicKey;
-        allowedIPs = [ "0.0.0.0/0" "::/0" ];
-        endpoint = "${cfg.endpoint.ip}:${builtins.toString cfg.endpoint.port}";
-      }];
+      peers = [
+        {
+          publicKey = cfg.endpoint.publicKey;
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::/0"
+          ];
+          endpoint = "${cfg.endpoint.ip}:${builtins.toString cfg.endpoint.port}";
+        }
+      ];
     };
   };
 

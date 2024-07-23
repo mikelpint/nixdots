@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   users = {
     users = {
       mikel = {
@@ -14,6 +15,7 @@
           "openrazer"
           "vboxsf"
           "vboxusers"
+          "video"
           "wheel"
         ];
         hashedPassword = "";
@@ -23,8 +25,16 @@
       };
     };
 
-    groups = { mikel = { gid = 1000; }; };
+    groups = {
+      mikel = {
+        gid = 1000;
+      };
+    };
   };
 
-  security = { doas = { extraRules = [{ users = [ "mikel" ]; }]; }; };
+  security = {
+    doas = {
+      extraRules = [ { users = [ "mikel" ]; } ];
+    };
+  };
 }

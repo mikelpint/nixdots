@@ -1,1 +1,5 @@
-{ time = { timeZone = "Europe/Madrid"; }; }
+{
+  time = {
+    timeZone = "Europe/Madrid";
+  };
+}

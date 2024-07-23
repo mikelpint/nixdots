@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
     packages = with pkgs; [ fastfetch ];
 
@@ -28,11 +29,11 @@
               },
               {
                   "type": "cpu",
-                  "key": "├ "
+                  "key": "├ "
               },
               {
                   "type": "memory",
-                  "key": "├ "
+                  "key": "├ "
               },
               {
                   "type": "gpu",
@@ -45,7 +46,7 @@
               },
               {
                   "type": "battery",
-                  "key": "├ "
+                  "key": "├ "
               },
               {
                   "type": "poweradapter",

@@ -11,15 +11,7 @@
   system = {
     userActivationScripts = {
       hyprgpu = {
-        text = ''
-          if [[ ! -h "$HOME/.config/hypr/card" ]]; then
-            ln -s "$HOME/.config/hypr/card" "/dev/dri/by-path/pci-0000:06:00.0-card"
-          fi
-
-          if [[ ! -h "$HOME/.config/hypr/otherCard" ]]; then
-            ln -s "$HOME/.config/hypr/otherCard" "/dev/dri/by-path/pci-0000:01:00.0-card"
-          fi
-        '';
+        text = builtins.readFile ../hyprgpu;
       };
     };
   };
@@ -30,8 +22,12 @@
       options nouveau modeset=0
     '';
 
-    blacklistedKernelModules =
-      [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+    blacklistedKernelModules = [
+      "nouveau"
+      "nvidia"
+      "nvidia_drm"
+      "nvidia_modeset"
+    ];
   };
 
   services = {

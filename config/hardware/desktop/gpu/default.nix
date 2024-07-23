@@ -1,10 +1,14 @@
 { inputs, pkgs, ... }:
 
 let
-  pkgs-unstable =
-    inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in {
-  imports = [ ./vfio ];
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+{
+  imports = [
+    ./amd
+    ./nvidia
+    ./vfio
+  ];
 
   hardware = {
     opengl = {
@@ -12,10 +16,21 @@ in {
       package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
 
       enable = true;
-      # driSupport = true;
-      driSupport32Bit = true;
+      enable32bit = true;
     };
   };
 
-  environment = { variables = { __GL_VRR_ALLOWED = "0"; }; };
+  system = {
+    userActivationScripts = {
+      hyprgpu = {
+        text = builtins.readFile ../hyprgpu;
+      };
+    };
+  };
+
+  environment = {
+    variables = {
+      __GL_VRR_ALLOWED = "0";
+    };
+  };
 }

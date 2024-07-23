@@ -1,9 +1,18 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
+  environment.systemPackages = [ pkgs.xdg-desktop-portal-hyprland ];
+
   xdg = {
     portal = {
-      config = { common = { default = "*"; }; };
-      extraPortals = [ # inputs.xdg-portal-hyprland
-        pkgs.xdg-desktop-portal-gtk
+      config = {
+        common = {
+          default = "*";
+        };
+      };
+
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-wlr
       ];
     };
   };

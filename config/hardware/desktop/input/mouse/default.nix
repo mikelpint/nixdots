@@ -1,7 +1,15 @@
-{ pkgs, ... }: {
-  hardware = { openrazer = { enable = true; }; };
+{ pkgs, ... }:
+{
+  hardware = {
+    openrazer = {
+      enable = true;
+    };
+  };
 
   environment = {
-    systemPackages = with pkgs; [ openrazer-daemon polychromatic ];
+    systemPackages = with pkgs; [
+      openrazer-daemon
+      polychromatic
+    ];
   };
 }

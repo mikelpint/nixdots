@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; [ tree ]; };
+  environment = {
+    systemPackages = with pkgs; [ tree ];
+  };
 }

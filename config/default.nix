@@ -2,6 +2,8 @@ _: {
   imports = [
     ./audio
     ./boot
+    ./console
+    ./cli
     ./graphics
     ./locale
     ./net
@@ -12,6 +14,5 @@ _: {
     ./system
     ./users
     ./virtualization
-    ./virtualization/vbox/guest
   ];
 }

@@ -1,1 +1,11 @@
-{ imports = [ ./cachix ./features ./gc ./pkgs ]; }
+{
+  imports = [
+    ./autoupgrade
+    ./cachix
+    ./features
+    ./gc
+    ./manix
+    ./nixfmt
+    ./pkgs
+  ];
+}

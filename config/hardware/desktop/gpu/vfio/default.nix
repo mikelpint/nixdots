@@ -6,14 +6,36 @@ let
   graphics = "73df";
   audio = "ab28";
 
-  ids = [ "${vendor}:${graphics}" "${vendor}:${audio}" ];
-in { pkgs, lib, config, ... }: {
+  ids = [
+    "${vendor}:${graphics}"
+    "${vendor}:${audio}"
+  ];
+in
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   boot = {
-    initrd = { kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ]; };
+    initrd = {
+      kernelModules = [
+        "vfio_pci"
+        "vfio"
+        "vfio_iommu_type1"
+      ];
+    };
 
-    kernelParams =
-      [ "amd_iommu=on" ("vfio-pci.ids=" + lib.concatStringsSep "," ids) ];
+    kernelParams = [
+      "amd_iommu=on"
+      ("vfio-pci.ids=" + lib.concatStringsSep "," ids)
+    ];
   };
 
-  virtualisation = { spiceUSBRedirection = { enable = true; }; };
+  virtualisation = {
+    spiceUSBRedirection = {
+      enable = true;
+    };
+  };
 }
