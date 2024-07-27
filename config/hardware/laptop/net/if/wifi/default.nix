@@ -3,8 +3,8 @@
     network = {
       links = {
         "10-wifi" = {
-          matchConfig.PermanentMACAddress = "ec:2e:98:d4:01:29";
-          linkConfig.Name = "wifi";
+          matchConfig = { Name = "wlp3s0"; };
+          linkConfig = { Name = "wifi"; };
         };
       };
     };

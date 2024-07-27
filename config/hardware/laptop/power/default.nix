@@ -1,18 +1,7 @@
 {
-  imports = [
-    ./auto-cpufreq
-    ./tlp
-  ];
+  imports = [ ./auto-cpufreq ./tlp ];
 
-  services = {
-    power-profiles-daemon = {
-      enable = false;
-    };
-  };
+  services = { power-profiles-daemon = { enable = false; }; };
 
-  powerManagement = {
-    powertop = {
-      enable = true;
-    };
-  };
+  powerManagement = { powertop = { enable = true; }; };
 }

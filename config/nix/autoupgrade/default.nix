@@ -7,12 +7,8 @@
       operation = "switch";
 
       flake = "/etc/nixos";
-      flags = [
-        "--update-input"
-        "nixpkgs"
-        "--update-input"
-        "--commit-lock-file"
-      ];
+      flags =
+        [ "--update-input" "nixpkgs" "--update-input" "--commit-lock-file" ];
     };
   };
 }

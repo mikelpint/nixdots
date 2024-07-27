@@ -1,14 +1,7 @@
 {
-  imports = [
-    ./dconf
-    ./git
-    ./gnupg
-    ./http
-    ./hwutils
-    ./nix-ld
-  ];
+  imports = [ ./dconf ./git ./gnupg ./http ./hwutils ./nix-ld ];
 
-  system = {
-    stateVersion = "24.05";
-  };
+  fileSystems = { "/var/log" = { neededForBoot = true; }; };
+
+  system = { stateVersion = "24.05"; };
 }

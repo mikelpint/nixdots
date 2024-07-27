@@ -1,12 +1,9 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   hardware = {
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-      modesetting = {
-        enable = true;
-      };
+      modesetting = { enable = true; };
 
       powerManagement = {
         enable = false;
@@ -22,23 +19,25 @@
       extraPackages = with pkgs; [
         nvidia-vaapi-driver
         libvdpau-va-gl
+        vaapiVdpau
+        mesa
+        nv-codec-headers-12
       ];
-      extraPackages32 = with pkgs.pkgsi686Linux; [ nvidia-vaapi-driver ];
+
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        nvidia-vaapi-driver
+        mesa
+        libvdpau-va-gl
+        vaapiVdpau
+      ];
     };
   };
 
-  services = {
-    videoDrivers = [ "nvidia" ];
-  };
+  services = { videoDrivers = [ "nvidia" ]; };
 
   boot = {
     initrd = {
-      kernelModules = [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_uvm"
-        "nvidia_drm"
-      ];
+      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
       extraModProbeConfig = ''
         options nvidia_drm modeset=1 fbdev=1
@@ -54,8 +53,6 @@
       nvidia-persistenced
     ];
 
-    sessionVariables = {
-      LIBVA_DRIVER_NAME = "nvidia";
-    };
+    sessionVariables = { LIBVA_DRIVER_NAME = "nvidia"; };
   };
 }

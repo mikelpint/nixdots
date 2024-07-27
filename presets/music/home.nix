@@ -1,6 +1,1 @@
-{
-  imports = [
-    ../../config/apps/mpd
-    ../../config/apps/spicetify
-  ];
-}
+{ imports = [ ../../config/apps/mpd ../../config/apps/spicetify ]; }

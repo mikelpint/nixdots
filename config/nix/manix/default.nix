@@ -1,6 +1,1 @@
-{ inputs, ... }:
-{
-  environment = {
-    systemPackages = [ inputs.manix ];
-  };
-}
+{ inputs, ... }: { environment = { systemPackages = [ inputs.manix ]; }; }

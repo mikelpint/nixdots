@@ -1,24 +1,19 @@
 # https://github.com/redyf/nixdots/blob/main/pkgs/insomnia.nix
 
-{
-  pkgs,
-  makeWrapper,
-  lib,
-  ...
-}:
+{ pkgs, makeWrapper, lib, ... }:
 let
   pname = "insomnia";
-  version = "8.6.1";
+  version = "9.3.2";
   name = "${pname}-${version}";
 
   src = pkgs.fetchurl {
-    url = "https://github.com/Kong/insomnia/releases/download/core%40${version}/Insomnia.Core-${version}.AppImage";
-    sha256 = "sha256-3ofrn+/w7dnvXnBrXBcPB+j8hvOJG5kR3UNZp+Gm5O0=";
+    url =
+      "https://github.com/Kong/insomnia/releases/download/core%40${version}/Insomnia.Core-${version}.AppImage";
+    sha256 = "1rjzbwj0imrwccmwgbc4g4v521hzfcwmcc4lwfgds31g1iqdc5bs";
   };
 
   appimageContents = pkgs.appimageTools.extractType2 { inherit name src; };
-in
-pkgs.appimageTools.wrapType2 rec {
+in pkgs.appimageTools.wrapType2 rec {
   inherit name src;
 
   extraInstallCommands = ''

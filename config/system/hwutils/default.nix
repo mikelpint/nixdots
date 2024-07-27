@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./lshw
-    ./pciutils
-  ];
-}
+{ imports = [ ./lshw ./pciutils ]; }

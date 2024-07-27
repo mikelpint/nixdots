@@ -1,7 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   home = {
-    packages = with pkgs; [ steam ];
+    packages = [
+      pkgs.steam
+      (import inputs.nur {
+        inherit pkgs;
+        nurpkgs = pkgs;
+      }).repos.ataraxiasjel.proton-ge
+    ];
   };
 }

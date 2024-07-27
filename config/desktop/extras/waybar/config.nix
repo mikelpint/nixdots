@@ -4,20 +4,10 @@ _: {
     position = "top";
     mod = "dock";
 
-    modules-left = [
-      "custom/launcher"
-      "hyprland/workspaces"
-      "cpu"
-      "memory"
-      "disk"
-    ];
+    modules-left =
+      [ "custom/launcher" "hyprland/workspaces" "cpu" "memory" "disk" ];
 
-    modules-right = [
-      "tray"
-      "pulseaudio"
-      "network"
-      "clock"
-    ];
+    modules-right = [ "tray" "pulseaudio" "network" "clock" ];
 
     "custom/launcher" = {
       format = " 󱗼 ";
@@ -107,11 +97,7 @@ _: {
 
     "backlight" = {
       format = "{icon}{percent}%";
-      format-icons = [
-        "󰃞 "
-        "󰃟 "
-        "󰃠 "
-      ];
+      format-icons = [ "󰃞 " "󰃟 " "󰃠 " ];
 
       on-scroll-up = "light -A 1";
       on-scroll-down = "light -U 1";
@@ -131,19 +117,7 @@ _: {
       format-charging = "󰂄 {capacity}%";
       format-plugged = " ";
       format-alt = "{time} {icon}";
-      format-icons = [
-        "󰂎 "
-        "󰁺 "
-        "󰁻 "
-        "󰁼 "
-        "󰁽 "
-        "󰁾 "
-        "󰁿 "
-        "󰂀 "
-        "󰂁 "
-        "󰂂 "
-        "󰁹 "
-      ];
+      format-icons = [ "󰂎 " "󰁺 " "󰁻 " "󰁼 " "󰁽 " "󰁾 " "󰁿 " "󰂀 " "󰂁 " "󰂂 " "󰁹 " ];
     };
 
     "network" = {
@@ -158,13 +132,7 @@ _: {
     "pulseaudio" = {
       format = "{icon}";
       format-muted = " 󰝟 ";
-      format-icons = {
-        default = [
-          "  "
-          "  "
-          "  "
-        ];
-      };
+      format-icons = { default = [ "  " "  " "  " ]; };
 
       on-click = "pavucontrol &";
     };

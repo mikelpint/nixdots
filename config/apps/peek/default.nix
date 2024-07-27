@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
 {
-  home = {
-    packages = with pkgs; [ peek ];
-  };
+  home = { packages = with pkgs; [ peek ]; };
 }

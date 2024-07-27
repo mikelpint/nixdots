@@ -1,7 +1,1 @@
-{
-  services = {
-    hdapsd = {
-      enable = true;
-    };
-  };
-}
+{ services = { hdapsd = { enable = true; }; }; }

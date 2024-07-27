@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; [ wget curl httpie openssl ]; };
+  home = { packages = with pkgs; [ wget curl openssl ]; };
 }

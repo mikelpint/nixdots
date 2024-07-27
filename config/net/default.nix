@@ -1,23 +1,17 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   imports = [
+    ./dhcp
     ./dns
     ./firewall
+    ./if
+    ./ip
+    ./mac
     ./nat
+    ./networkmanager
+    ./systemd-networkd
+    ./vpn
+    ./wpa_supplicant
   ];
 
-  networking = {
-    networkmanager = {
-      enable = true;
-    };
-
-    enableIPv6 = false;
-
-    dhcpcd = {
-      wait = "background";
-      extraConfig = "noarp";
-    };
-
-    hostName = lib.mkDefault "mikel";
-  };
+  networking = { hostName = lib.mkDefault "mikel"; };
 }

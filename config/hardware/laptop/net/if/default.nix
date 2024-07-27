@@ -1,7 +1,1 @@
-{
-  imports = [ ./wifi.nix ];
-
-  networking = {
-    usePredictableInterfaceNames = true;
-  };
-}
+{ imports = [ ./eth ./wifi ]; }

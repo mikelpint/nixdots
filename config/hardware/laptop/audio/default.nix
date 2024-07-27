@@ -4,8 +4,7 @@ let
   quantum = 32;
   rate = 96000;
   quantumRate = rate / quantum;
-in
-{
+in {
   services = {
     pipewire = {
       extraConfig = {
@@ -13,24 +12,15 @@ in
           "99-lowlatency" = {
             context = {
               properties = {
-                default = {
-                  clock = {
-                    min-quantum = quantum;
-                  };
-                };
+                default = { clock = { min-quantum = quantum; }; };
               };
 
               modules = [
                 {
                   name = "libpipewire-module-rtkit";
-                  flags = [
-                    "if-exists"
-                    "nofail"
-                  ];
+                  flags = [ "if-exists" "nofail" ];
                   args = {
-                    nice = {
-                      level = -15;
-                    };
+                    nice = { level = -15; };
 
                     rt = {
                       prio = 88;
@@ -60,38 +50,25 @@ in
 
                 {
                   name = "libpipewire-module-allow-passthrough";
-                  flags = [
-                    "if-exists"
-                    "nofail"
-                  ];
+                  flags = [ "if-exists" "nofail" ];
                 }
 
                 {
                   name = "libpipewire-module-allow-24bit";
-                  flags = [
-                    "if-exists"
-                    "nofail"
-                  ];
+                  flags = [ "if-exists" "nofail" ];
                 }
 
                 {
                   name = "libpipewire-module-allow-32bit";
-                  flags = [
-                    "if-exists"
-                    "nofail"
-                  ];
+                  flags = [ "if-exists" "nofail" ];
                 }
               ];
 
               stream = {
                 properties = {
-                  node = {
-                    latency = quantumRate;
-                  };
+                  node = { latency = quantumRate; };
 
-                  resample = {
-                    quality = 1;
-                  };
+                  resample = { quality = 1; };
                 };
               };
             };
@@ -101,40 +78,27 @@ in
     };
 
     wireplumber = {
-      configPackages =
-        let
-          matches =
-            toLua
-              {
-                multiline = false;
-                indent = false;
-              }
-              [
-                [
-                  [
-                    "node.name"
-                    "matches"
-                    "alsa_output.*"
-                  ]
-                ]
-              ];
+      configPackages = let
+        matches = toLua {
+          multiline = false;
+          indent = false;
+        } [[[ "node.name" "matches" "alsa_output.*" ]]];
 
-          apply_properties = toLua { } {
-            "audio.format" = "S32LE";
-            "audio.rate" = rate * 2;
-            "api.alsa.period-size" = 2;
-          };
-        in
-        [
-          (pkgs.writeTextDir "share/lowlatency.lua.d/99-alsa-lowlatency.lua" ''
-            alsa_monitor.rules = {
-              {
-                matches = ${matches};
-                apply_properties = ${apply_properties};
-              }
+        apply_properties = toLua { } {
+          "audio.format" = "S32LE";
+          "audio.rate" = rate * 2;
+          "api.alsa.period-size" = 2;
+        };
+      in [
+        (pkgs.writeTextDir "share/lowlatency.lua.d/99-alsa-lowlatency.lua" ''
+          alsa_monitor.rules = {
+            {
+              matches = ${matches};
+              apply_properties = ${apply_properties};
             }
-          '')
-        ];
+          }
+        '')
+      ];
     };
   };
 }

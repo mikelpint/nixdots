@@ -1,9 +1,1 @@
-{
-  imports = [
-    ./dunst
-    ./screenshot
-    ./waybar
-    ./wezterm
-    ./wofi
-  ];
-}
+{ imports = [ ./dunst ./screenshot ./waybar ./wezterm ./wofi ]; }

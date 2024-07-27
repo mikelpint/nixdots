@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./gnupg
-    ./xdg
-  ];
-}
+{ imports = [ ./gnupg ./xdg ]; }

@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  lib,
-  ...
-}:
-{
+{ config, pkgs, inputs, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
 
@@ -21,18 +14,17 @@
     ../../presets/video
   ];
 
-  networking = {
-    hostName = "nixvm";
-  };
+  networking = { hostName = "nixvm"; };
 
   systems = {
     vm = {
-      modules = with inputs; [
-        (import ../../disk/default.nix {
-          inherit lib;
-          device = "/dev/sda";
-        })
-      ];
+      modules = with inputs;
+        [
+          (import ../../disk/default.nix {
+            inherit lib;
+            device = "/dev/sda";
+          })
+        ];
     };
   };
 }

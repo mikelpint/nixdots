@@ -1,7 +1,4 @@
 _: {
-  imports = [
-    ../../config/apps/mpv
-    ../../config/apps/obs
-    ../../config/apps/peek
-  ];
+  imports =
+    [ ../../config/apps/mpv ../../config/apps/obs ../../config/apps/peek ];
 }

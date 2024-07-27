@@ -1,9 +1,4 @@
 {
-  imports = [
-    ./clamav
-    ./doas
-    ./pam
-    ./polkit
-    ./yubikey
-  ];
+  imports =
+    [ ./clamav ./doas ./firejail ./kernel ./pam ./polkit ./tpm ./yubikey ];
 }

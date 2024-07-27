@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ pciutils ];
-  };
-}
+{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ pciutils ]; }; }

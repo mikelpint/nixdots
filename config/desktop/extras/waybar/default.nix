@@ -1,11 +1,4 @@
-{
-  osConfig,
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ osConfig, config, lib, pkgs, ... }: {
   programs = {
     waybar = {
       enable = true;

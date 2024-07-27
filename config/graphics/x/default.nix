@@ -1,16 +1,10 @@
 { config, lib, ... }:
 
 {
-  environment = {
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
-  };
+  environment = { sessionVariables = { NIXOS_OZONE_WL = "1"; }; };
 
   services = {
-    xserver = {
-      enable = true;
-    };
+    xserver = { enable = true; };
 
     greetd = {
       enable = true;
@@ -36,12 +30,8 @@
 
       sddm = {
         enable = false;
-        wayland = {
-          enable = true;
-        };
-        autoLogin = {
-          relogin = true;
-        };
+        wayland = { enable = true; };
+        autoLogin = { relogin = true; };
       };
 
       autoLogin = {
@@ -53,12 +43,8 @@
     libinput = {
       enable = true;
 
-      mouse = {
-        accelProfile = "flat";
-      };
-      touchpad = {
-        accelProfile = "flat";
-      };
+      mouse = { accelProfile = "flat"; };
+      touchpad = { accelProfile = "flat"; };
     };
   };
 }

@@ -1,27 +1,25 @@
 { config, lib, ... }:
 
-let
-  kver = config.boot.kernelPackages.kernel.version;
-in
-{
-  hardware = {
-    cpu = {
-      amd = {
-        updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-      };
-    };
-  };
+let kver = config.boot.kernelPackages.kernel.version;
+in {
+  imports = [ ../../common/cpu/amd ];
 
   boot = lib.mkMerge [
-    (lib.mkIf ((lib.versionAtLeast kver "5.17") && (lib.versionOlder kver "6.1")) {
-      kernelParams = [ "initcall_blacklist=acpi_cpufreq_init" ];
-      kernelModules = [ "amd-pstate" ];
-    })
+    (lib.mkIf
+      ((lib.versionAtLeast kver "5.17") && (lib.versionOlder kver "6.1")) {
+        kernelParams = [ "initcall_blacklist=acpi_cpufreq_init" ];
+        kernelModules = [ "amd-pstate" ];
+      })
 
-    (lib.mkIf ((lib.versionAtLeast kver "6.1") && (lib.versionOlder kver "6.3")) {
-      kernelParams = [ "amd_pstate=passive" ];
-    })
+    (lib.mkIf
+      ((lib.versionAtLeast kver "6.1") && (lib.versionOlder kver "6.3")) {
+        kernelParams = [ "amd_pstate=passive" ];
+      })
 
-    (lib.mkIf (lib.versionAtLeast kver "6.3") { kernelParams = [ "amd_pstate=active" ]; })
+    (lib.mkIf (lib.versionAtLeast kver "6.3") {
+      kernelParams = [ "amd_pstate=active" ];
+    })
   ];
+
+  nix = { settings = { cores = 3; }; };
 }

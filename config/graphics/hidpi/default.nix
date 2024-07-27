@@ -1,24 +1,13 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}:
+{ lib, pkgs, config, ... }:
 let
   config = {
     console = {
       packages = with pkgs; [ terminus_font ];
-      font = lib.mkDefault "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
+      font = lib.mkDefault
+        "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
       earlySetup = lib.mkDefault true;
     };
 
-    services = {
-      displayManager = {
-        sddm = {
-          enableHidpi = true;
-        };
-      };
-    };
+    services = { displayManager = { sddm = { enableHidpi = true; }; }; };
   };
-in
-config
+in config

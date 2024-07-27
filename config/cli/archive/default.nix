@@ -1,10 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment = {
-    systemPackages = with pkgs; [
-      p7zip
-      unzip
-    ];
-  };
+  environment = { systemPackages = with pkgs; [ p7zip unzip ]; };
 }

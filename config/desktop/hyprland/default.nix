@@ -1,18 +1,13 @@
-{
-  pkgs,
-  inputs,
-  config,
-  ...
-}:
+{ pkgs, inputs, config, ... }:
 let
-  cursorTheme = (import ../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
+  cursorTheme =
+    (import ../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
   opacity = "0.95";
   cursor = {
     name = cursorTheme.name;
     size = cursorTheme.size;
   };
-in
-{
+in {
   home = {
     packages = with pkgs; [
       hyprpicker
@@ -46,7 +41,9 @@ in
         dunst &
 
         hyprctl setcursor ${cursor.name} ${builtins.toString cursor.size}
-        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme ${cursor.name}
+        XDG_DATA_DIRS="${
+          pkgs.glib.getSchemaPath pkgs.glib
+        }" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme ${cursor.name}
 
         ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
         dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
@@ -62,10 +59,18 @@ in
         icon_theme="$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
         cursor_theme="$(grep 'gtk-cursor-theme-name' "$config" | sed 's/.*\s*=\s*//')"
         font_name="$(grep 'gtk-font-name' "$config" | sed 's/.*\s*=\s*//')"
-        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
-        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
-        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
-        XDG_DATA_DIRS="${pkgs.glib.getSchemaPath pkgs.glib}" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface font-name "$font_name"
+        XDG_DATA_DIRS="${
+          pkgs.glib.getSchemaPath pkgs.glib
+        }" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+        XDG_DATA_DIRS="${
+          pkgs.glib.getSchemaPath pkgs.glib
+        }" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme "$icon_theme"
+        XDG_DATA_DIRS="${
+          pkgs.glib.getSchemaPath pkgs.glib
+        }" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+        XDG_DATA_DIRS="${
+          pkgs.glib.getSchemaPath pkgs.glib
+        }" ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface font-name "$font_name"
       '')
     ];
   };
@@ -74,13 +79,11 @@ in
     windowManager = {
       hyprland = {
         enable = true;
-        package = (
-          inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-            enableXWayland = true;
-            legacyRenderer = false;
-            withSystemd = true;
-          }
-        );
+        package = (inputs.hyprland.packages."${pkgs.system}".hyprland.override {
+          enableXWayland = true;
+          legacyRenderer = false;
+          withSystemd = true;
+        });
 
         plugins = [
           inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix
@@ -92,16 +95,10 @@ in
           variables = [ "--all" ];
         };
 
-        xwayland = {
-          enable = true;
-        };
+        xwayland = { enable = true; };
 
         settings = {
-          plugin = {
-            hyprtrails = {
-              color = "rgb(f5bde6)";
-            };
-          };
+          plugin = { hyprtrails = { color = "rgb(f5bde6)"; }; };
 
           envd = [
             "WLR_DRM_DEVICES,$HOME/.config/hypr/card:$HOME/.config/hypr/otherCard"
@@ -136,9 +133,7 @@ in
 
           monitor = [ ",highrr,auto,auto" ];
 
-          xwayland = {
-            force_zero_scaling = true;
-          };
+          xwayland = { force_zero_scaling = true; };
 
           input = {
             kb_layout = "us,es";
@@ -154,9 +149,7 @@ in
             accel_profile = "flat";
             sensitivity = 0;
             force_no_accel = 1;
-            touchpad = {
-              natural_scroll = 1;
-            };
+            touchpad = { natural_scroll = 1; };
           };
 
           general = {
@@ -164,8 +157,10 @@ in
             gaps_out = 2;
             border_size = 3;
 
-            "col.active_border" = "rgb(f5bde6) rgb(24273A) rgb(24273A) rgb(f5bde6) 45deg";
-            "col.inactive_border" = "rgb(24273A) rgb(24273A) rgb(24273A) rgb(24273A) 45deg";
+            "col.active_border" =
+              "rgb(f5bde6) rgb(24273A) rgb(24273A) rgb(f5bde6) 45deg";
+            "col.inactive_border" =
+              "rgb(24273A) rgb(24273A) rgb(24273A) rgb(24273A) 45deg";
 
             layout = "dwindle";
             apply_sens_to_raw = 1;
@@ -255,9 +250,7 @@ in
             no_gaps_when_only = false;
           };
 
-          gestures = {
-            workspace_swipe = false;
-          };
+          gestures = { workspace_swipe = false; };
 
           debug = {
             disable_logs = false;
@@ -341,10 +334,7 @@ in
             "$mainMod,mouse:273,resizewindow"
           ];
 
-          windowrule = [
-            "tile,title:^(wezterm)$"
-            "tile,^(Spotify)$"
-          ];
+          windowrule = [ "tile,title:^(wezterm)$" "tile,^(Spotify)$" ];
 
           windowrulev2 = [
             "opacity ${opacity} ${opacity},class:^(thunar)$"

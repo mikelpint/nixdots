@@ -1,1 +1,1 @@
-{ imports = [ ./touchpad ]; }
+{ imports = [ ./keyboard ./touchpad ]; }
