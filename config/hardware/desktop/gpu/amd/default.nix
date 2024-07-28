@@ -1,13 +1,15 @@
 { pkgs, ... }: {
   boot = {
-    initrd = { kernelModules = [ "amdgpu radeon" ]; };
+    initrd = { kernelModules = [ "amdgpu" ]; };
+
+    blacklistedKernelModules = [ "radeon" ];
 
     extraModprobeConfig = ''
       options radeon si_support=0
       options radeon cik_support=0
 
       options amdgpu si_support=0
-      options amdgpu cik_support=1
+      options amdgpu cik_support=0
     '';
   };
 
