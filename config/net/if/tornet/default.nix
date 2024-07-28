@@ -1,6 +1,6 @@
 # https://www.void.gr/kargig/blog/2016/12/12/firejail-with-tor-howto/
 
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   address = "10.100.100.1";
@@ -25,7 +25,7 @@ in {
         tornet = {
           matchConfig = { Name = "tornet"; };
 
-          DCHP = "no";
+          DHCP = "no";
 
           networkConfig = {
             ConfigureWithoutCarrier = true;
@@ -72,7 +72,7 @@ in {
           enable = true;
 
           name = "filter";
-          family = "bridge";
+          family = "inet";
 
           content = ''
             chain input {
@@ -83,10 +83,10 @@ in {
 
             chain forward {
                 iifname "tornet" oifname "eth" ip protocol tcp accept
-                iifname "tornet" oifname "eth" ip protocol udp dport 53 accept
+                iifname "tornet" oifname "eth" ip protocol udp udp dport 53 accept
 
                 iifname "tornet" oifname "wifi" ip protocol tcp accept
-                iifname "tornet" oifname "wifi" ip protocol udp dport 53 accept
+                iifname "tornet" oifname "wifi" ip protocol udp udp dport 53 accept
             }
           '';
         };
@@ -95,13 +95,13 @@ in {
           enable = true;
 
           name = "nat";
-          family = "bridge";
+          family = "inet";
 
           content = ''
             chain prerouting {
                 type nat hook prerouting priority 0; policy drop;
 
-                iifname "tornet" ip protocol udp dport 32 dnat to 127.0.0.1:5353
+                iifname "tornet" ip protocol udp udp dport 32 dnat to 127.0.0.1:5353
                 iifname "tornet" ip protocol tcp dnat to 127.0.0.1:9040
             }
 
@@ -130,7 +130,7 @@ in {
         VirtualAddrNetwork = "172.30.0.0/16";
         DNSPort = 5353;
         IsolateDestAddr = true;
-        AutomapHostsOnResolve = 1;
+        AutomapHostsOnResolve = true;
       };
     };
 

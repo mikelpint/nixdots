@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   imports = [ ./dnscrypt-proxy ];
 
   networking = {
@@ -6,6 +6,6 @@
 
     dhcpcd = { extraConfig = "nohook resolv.conf"; };
 
-    networkmanager = { dns = "none"; };
+    networkmanager = { dns = lib.mkOverride 75 "none"; };
   };
 }

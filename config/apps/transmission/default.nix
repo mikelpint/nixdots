@@ -1,11 +1,3 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ transmission-gtk ]; };
-
-  services = {
-    transmission = {
-      settings = {
-        download-dir = config.home.sessionVariables.XDG_DOWNLOAD_DIR;
-      };
-    };
-  };
+{ config, pkgs, ... }: {
+  home = { packages = with pkgs; [ transmission_4-gtk ]; };
 }

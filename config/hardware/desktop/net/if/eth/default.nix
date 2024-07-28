@@ -3,7 +3,7 @@
     network = {
       links = {
         "10-eth" = {
-          matchConfig = { Name = "enp8s0"; };
+          matchConfig = { MACAddress = "04:d9:f5:d2:4f:bf"; };
           linkConfig = { Name = "eth"; };
         };
       };

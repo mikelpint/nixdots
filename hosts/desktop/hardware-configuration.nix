@@ -4,46 +4,53 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports = [ ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules =
-    [ "ata_piix" "ohci_pci" "ehci_pci" "ahci" "sd_mod" "sr_mod" ];
+    [ "nvme" "xhci_pci" "ahci" "usb_storage" "uas" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
     fsType = "btrfs";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/C91A-373D";
+    device = "/dev/disk/by-uuid/CD56-BFF9";
     fsType = "vfat";
+    options = [ "fmask=0022" "dmask=0022" ];
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
     fsType = "btrfs";
     options = [ "subvol=home" ];
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
     fsType = "btrfs";
     options = [ "subvol=nix" ];
   };
 
   fileSystems."/tmp" = {
-    device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
     fsType = "btrfs";
     options = [ "subvol=tmp" ];
   };
 
-  fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/2d8f4dd6-31e0-4abf-bb12-b891708ca865";
+  fileSystems."/var/lib" = {
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
     fsType = "btrfs";
-    options = [ "subvol=var" ];
+    options = [ "subvol=var/lib" ];
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/d4c5c1e9-aec3-423c-bae3-20a90f522198";
+    fsType = "btrfs";
+    options = [ "subvol=var/log" ];
   };
 
   swapDevices = [ ];
@@ -53,8 +60,10 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp8s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp7s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  virtualisation.virtualbox.guest.enable = true;
+  hardware.cpu.amd.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

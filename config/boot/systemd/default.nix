@@ -1,1 +1,1 @@
-{ import = [ ./journal ]; }
+{ imports = [ ./journal ]; }

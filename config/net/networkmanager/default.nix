@@ -1,5 +1,7 @@
 {
   networking = { networkmanager = { enable = true; }; };
 
-  services = { NetworkManager-wait-online = { enable = true; }; };
+  systemd = {
+    services = { NetworkManager-wait-online = { enable = false; }; };
+  };
 }

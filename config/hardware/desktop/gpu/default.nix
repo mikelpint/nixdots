@@ -7,18 +7,18 @@ in {
   imports = [ ./amd ./nvidia ./vfio ];
 
   hardware = {
-    opengl = {
+    graphics = {
       package = pkgs-unstable.mesa.drivers;
       package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
 
       enable = true;
-      enable32bit = true;
+      enable32Bit = true;
     };
   };
 
   system = {
     userActivationScripts = {
-      hyprgpu = { text = builtins.readFile ../hyprgpu; };
+      hyprgpu = { text = builtins.readFile ./hyprgpu; };
     };
   };
 

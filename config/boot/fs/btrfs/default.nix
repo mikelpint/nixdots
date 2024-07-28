@@ -3,5 +3,5 @@
 
   boot = { supportedFilesystems = [ "btrfs" ]; };
 
-  enviroment = { systemPackages = with pkgs; [ btrfs-progs ]; };
+  environment = { systemPackages = with pkgs; [ btrfs-progs ]; };
 }

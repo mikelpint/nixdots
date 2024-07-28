@@ -22,7 +22,7 @@
 
   services = {
     xserver = {
-      xkb = {
+      xkb = lib.mkDefault {
         variant = "";
         layout = "us";
       };

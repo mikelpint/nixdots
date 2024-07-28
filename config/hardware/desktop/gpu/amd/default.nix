@@ -1,19 +1,17 @@
-{
+{ pkgs, ... }: {
   boot = {
-    initrd = {
-      kernelModules = [ "amdgpu radeon" ];
+    initrd = { kernelModules = [ "amdgpu radeon" ]; };
 
-      extraModProbeConfig = ''
-        options radeon si_support=0
-        options radeon cik_support=0
+    extraModprobeConfig = ''
+      options radeon si_support=0
+      options radeon cik_support=0
 
-        options amdgpu si_support=0
-        options amdgpu cik_support=1
-      '';
-    };
+      options amdgpu si_support=0
+      options amdgpu cik_support=1
+    '';
   };
 
-  services = { videoDrivers = [ "amdgpu" ]; };
+  services = { xserver = { videoDrivers = [ "amdgpu" ]; }; };
 
   systemd = {
     tmpfiles = {
@@ -24,10 +22,10 @@
   };
 
   hardware = {
-    opengl = {
-      extraPackages = [ pkgs.rocmPackages.hip rocm-opencl-icd amdvlk ];
+    graphics = {
+      extraPackages = with pkgs; [ rocmPackages.hipcc rocm-opencl-icd amdvlk ];
 
-      extraPackages32 = [ driversi686Linux.amdvlk ];
+      extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
     };
   };
 }

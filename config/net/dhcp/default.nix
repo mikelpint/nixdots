@@ -1,4 +1,4 @@
-{
+{ lib, ... }: {
   networking = {
     dhcpcd = {
       enable = lib.mkDefault true;

@@ -1,9 +1,9 @@
-{
-  console = { keyMap = "es"; };
+{ lib, ... }: {
+  console = { keyMap = lib.mkForce "es"; };
 
   services = {
     xserver = {
-      xkb = {
+      xkb = lib.mkForce {
         variant = "";
         layout = "es";
       };

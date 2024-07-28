@@ -8,17 +8,6 @@ in {
 
   systemd = {
     user = {
-      #timers = {
-      #  wallpaper = {
-      #    Install = { WantedBy = [ "timers.target" ]; };
-      #    
-      #    Timer = {
-      #      OnBootSec = "1s";
-      #      Unit = "wallpaper.service";
-      #    };
-      #  }; 
-      #}; 
-
       services = {
         swww = {
           Unit = {

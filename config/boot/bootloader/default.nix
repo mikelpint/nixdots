@@ -2,7 +2,7 @@
   imports = [ ./grub ./systemd-boot ];
 
   boot = {
-    loader = { timeout = 0; };
+    loader = { timeout = 3; };
 
     kernelParams = [ "splash" ];
   };

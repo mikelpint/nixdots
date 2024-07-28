@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ pkgs, lib, ... }: {
   imports = [ ./modules ./patches ];
 
   boot = {

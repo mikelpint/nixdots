@@ -3,7 +3,7 @@
     firejail = {
       enable = true;
 
-      wrappingBinaries = {
+      wrappedBinaries = {
         discord = {
           executable = "${lib.getBin pkgs.discord}/bin/discord";
           profile = "${pkgs.firejail}/etc/firejail/discord.profile";
@@ -65,7 +65,7 @@
         };
 
         tor-browser = {
-          executable = "${lib.getBin pkgs.tor-browser-bundle}/bin/tor-browser";
+          executable = "${lib.getBin pkgs.tor-browser}/bin/tor-browser";
           profile = "${pkgs.firejail}/etc/firejail/tor-browser.profile";
         };
 

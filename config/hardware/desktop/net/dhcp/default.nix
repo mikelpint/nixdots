@@ -1,1 +1,1 @@
-{ dhcdp = { enable = false; }; }
+{ networking = { dhcpcd = { enable = false; }; }; }

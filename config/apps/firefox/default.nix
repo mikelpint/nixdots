@@ -16,8 +16,9 @@ in {
   programs = {
     firefox = {
       enable = true;
-      package = (pkgs.wrapFirefox
-        (pkgs.${firefox} - unwrapped.override { pipewireSupport = true; }) { });
+      package = (pkgs.wrapFirefox (pkgs."${firefox}-unwrapped".override
+        { # pipewireSupport = true;
+        }) { });
 
       profiles = {
         mikel = {
