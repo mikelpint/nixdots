@@ -33,15 +33,15 @@
     };
   };
 
-  services = { xserver = { videoDrivers = [ "nvidia" ]; }; };
+  #services = { xserver = { videoDrivers = [ "nvidia" ]; }; };
 
   boot = {
     initrd = {
-      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+      #kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     };
 
     extraModprobeConfig = ''
-      options nvidia_drm modeset=1 fbdev=1
+      options nvidia_drm modeset=0 fbdev=1
       options nvidia NVreg_RegistryDwords="PowerMizerEnable=0x1; PerfLevelSrc=0x2222; PowerMizerLevel=0x3; PowerMizerDefault=0x3; PowerMizerDefaultAC=0x3"
     '';
   };

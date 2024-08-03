@@ -12,7 +12,7 @@ in {
 
       netdevs = {
         tornet = {
-          enable = lib.mkDefault true;
+          enable = lib.mkDefault false;
 
           netdevConfig = {
             Kind = "bridge";
@@ -21,7 +21,7 @@ in {
         };
       };
 
-      networks = {
+      networks = lib.mkIf config.systemd.network.netdevs.tornet.enable {
         tornet = {
           matchConfig = { Name = "tornet"; };
 

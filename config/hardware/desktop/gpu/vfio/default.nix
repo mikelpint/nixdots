@@ -17,13 +17,13 @@ let
     }
   ];
 
-  ids = builtins.map (group: [ "${group.vendor}:${group.graphics}" "${group.vendor}:${group.audio}" ]) pic-groups;
+  ids = builtins.map (group: [ "${group.vendor}:${group.graphics}" "${group.vendor}:${group.audio}" ]) pci-groups;
 in { pkgs, lib, config, ... }: {
   boot = {
     initrd = { kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ]; };
 
     kernelParams =
-      [ "amd_iommu=on" ("vfio-pci.ids=" + lib.concatStringsSep "," builtins.elemAt ids 1) ];
+      [ "amd_iommu=on" ("vfio-pci.ids=" + lib.concatStringsSep "," (builtins.elemAt ids 0)) ];
   };
 
   virtualisation = { spiceUSBRedirection = { enable = true; }; };
