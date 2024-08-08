@@ -3,6 +3,7 @@ _: {
     ../../config/apps/easyeffects
     ../../config/apps/firefox
     ../../config/apps/libreoffice
+    ../../config/apps/nautilus
     ../../config/apps/tor-browser
     ../../config/apps/transmission
     ../../config/apps/yubikey

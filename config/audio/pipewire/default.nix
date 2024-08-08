@@ -6,6 +6,9 @@
       wireplumber = {
         enable = true;
 
+        extraConfig =
+          [{ profiles = { main = { "monitor.libcamera" = "disabled"; }; }; }];
+
         extraConfig = {
           bluetoothEnhancements = {
             "monitor.bluez.properties" = {

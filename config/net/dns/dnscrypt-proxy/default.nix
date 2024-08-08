@@ -1,6 +1,6 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/dns.nix
 
-{
+{ lib, config, ... }: {
   services = {
     dnscrypt-proxy2 = {
       enable = true;
@@ -39,6 +39,10 @@
         };
       };
     };
+
+    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable {
+      enable = lib.mkForce false;
+    };
   };
 
   systemd = {
@@ -46,6 +50,13 @@
       dnscrypt-proxy2 = {
         serviceConfig = { StateDirectory = "dnscrypt-proxy"; };
       };
+    };
+  };
+
+  networking = lib.mkIf config.services.dnscrypt-proxy2.enable {
+    firewall = {
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [ 53 ];
     };
   };
 }

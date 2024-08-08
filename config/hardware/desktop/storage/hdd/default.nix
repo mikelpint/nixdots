@@ -1,1 +1,1 @@
-{ services = { hdapsd = { enable = true; }; }; }
+{ imports = [ ../../../common/storage/hdd ]; }

@@ -1,1 +1,5 @@
-{ security = { polkit = { enable = true; }; }; }
+{
+  imports = [ ./rules ];
+
+  security = { polkit = { enable = true; }; };
+}

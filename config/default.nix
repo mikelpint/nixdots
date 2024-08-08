@@ -5,6 +5,7 @@ _: {
     ./console
     ./cli
     ./graphics
+    ./input
     ./locale
     ./net
     ./nix

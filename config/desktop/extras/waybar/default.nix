@@ -1,8 +1,13 @@
-{ osConfig, config, lib, pkgs, ... }: {
+{ pkgs, ... }:
+
+{
   programs = {
     waybar = {
       enable = true;
-      package = pkgs.waybar;
+
+      package = pkgs.waybar.overrideAttrs (oldAttrs: {
+        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+      });
     };
   };
 }

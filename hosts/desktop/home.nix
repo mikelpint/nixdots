@@ -7,5 +7,9 @@
     ../../presets/rice/home.nix
     ../../presets/social/home.nix
     ../../presets/video/home.nix
+
+    ../../config/desktop/extras/waybar/presets/desktop
+
+    ../../config/hardware/desktop/home.nix
   ];
 }

@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   boot = {
-    initrd = { kernelModules = [ "amdgpu" ]; };
+    initrd = { kernelModules = [ "amdgpu kvm-amd" ]; };
 
     blacklistedKernelModules = [ "radeon" ];
 
@@ -13,7 +13,7 @@
     '';
   };
 
-  services = { xserver = { videoDrivers = [ "amdgpu" ]; }; };
+  services = { xserver = { videoDrivers = lib.mkForce [ "amdgpu" ]; }; };
 
   systemd = {
     tmpfiles = {
@@ -25,9 +25,28 @@
 
   hardware = {
     graphics = {
-      extraPackages = with pkgs; [ rocmPackages.hipcc rocm-opencl-icd amdvlk ];
+      extraPackages = with pkgs; [
+        libvdpau-va-gl
+        vaapiVdpau
+        mesa
 
-      extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
+        rocmPackages.hipcc
+        rocm-opencl-icd
+        amdvlk
+      ];
+
+      extraPackages32 = with pkgs;
+        with pkgsi686Linux; [
+          mesa
+          libvdpau-va-gl
+          vaapiVdpau
+
+          driversi686Linux.amdvlk
+        ];
     };
+  };
+
+  environment = {
+    sessionVariables = { LIBVA_DRIVER_NAME = lib.mkForce "amdgpu"; };
   };
 }

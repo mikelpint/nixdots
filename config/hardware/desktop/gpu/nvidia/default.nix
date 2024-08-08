@@ -1,7 +1,10 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+
+let package = config.boot.kernelPackages.nvidiaPackages.stable;
+in {
   hardware = {
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      inherit package;
 
       modesetting = { enable = true; };
 
@@ -33,11 +36,13 @@
     };
   };
 
-  #services = { xserver = { videoDrivers = [ "nvidia" ]; }; };
+  services = { xserver = { videoDrivers = [ "nvidia" ]; }; };
 
   boot = {
+    extraModulePackages = [ package ];
+
     initrd = {
-      #kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     };
 
     extraModprobeConfig = ''
@@ -48,7 +53,5 @@
 
   environment = {
     systemPackages = with pkgs; with config.boot.kernelPackages; [ nvidia_x11 ];
-
-    sessionVariables = { LIBVA_DRIVER_NAME = "nvidia"; };
   };
 }

@@ -17,6 +17,7 @@
           "networkmanager"
           "openrazer"
           "sev"
+          "storage"
           "vboxsf"
           "vboxusers"
           "video"

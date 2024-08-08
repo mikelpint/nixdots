@@ -14,5 +14,12 @@
 
   nixpkgs = { config = { allowUnfree = true; }; };
 
-  imports = [ ./cli/home.nix ./env ./fonts ./tools ./virtualization/home.nix ];
+  imports = [
+    ./cli/home.nix
+    ./env
+    ./fonts
+    ./graphics/home.nix
+    ./tools
+    ./virtualization/home.nix
+  ];
 }

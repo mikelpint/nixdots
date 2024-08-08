@@ -25,7 +25,10 @@
             ];
         });
 
-      catppuccin = { enable = true; };
+      catppuccin = {
+        enable = true;
+        flavor = "macchiato";
+      };
 
       defaultEditor = true;
 

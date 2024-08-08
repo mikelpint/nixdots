@@ -1,1 +1,10 @@
-{ imports = [ ./gpu/home.nix ]; }
+_: {
+  imports = [
+    ../common/home.nix
+
+    ./gpu/home.nix
+    ./display/home.nix
+    ./memory/home.nix
+    ./storage/home.nix
+  ];
+}

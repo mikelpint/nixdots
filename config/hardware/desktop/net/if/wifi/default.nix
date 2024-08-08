@@ -7,17 +7,12 @@
           linkConfig = { Name = "wifi"; };
         };
       };
-    };
-  };
 
-  networking = {
-    interfaces = {
-      wifi = {
-        ipv4 = {
-          addresses = [{
-            address = "192.168.1.104";
-            prefixLength = 24;
-          }];
+      networks = {
+        wifi = {
+          enable = true;
+
+          addresses = [{ Address = "192.168.1.104/24"; }];
         };
       };
     };

@@ -1,6 +1,6 @@
 {
   "tray" = {
-    spacing = "10";
+    spacing = "20";
     icon-size = "13";
   };
 }

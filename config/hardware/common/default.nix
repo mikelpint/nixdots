@@ -1,4 +1,5 @@
-{
-  imports = [ ./cpu ./display ./usb ];
+_: {
+  imports = [ ./cpu ./display ./gpu ./storage ./usb ];
+
   hardware = { enableAllFirmware = true; };
 }

@@ -1,1 +1,1 @@
-{ services = { fstrim = { enable = true; }; }; }
+{ imports = [ ../../../common/storage/ssd ../../../common/storage/ssd/nvme ]; }

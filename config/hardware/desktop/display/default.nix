@@ -1,6 +1,6 @@
 {
   boot = {
-    kernelParams = [ "video=DP-0:2560x1440@59.95" "video=DP-1:1920x1080@165" ];
+    kernelParams = [ "video=DP-1:2560x1440@59.95" "video=DP-2:1920x1080@165" ];
 
     loader = { grub = { gfxmodeEfi = "2560x1440x32"; }; };
   };
@@ -12,7 +12,7 @@
       profiles = {
         desktop = {
           config = {
-            DP-0 = {
+            DP-1 = {
               enable = true;
               primary = true;
 
@@ -21,7 +21,7 @@
               rate = "59.95";
             };
 
-            DP-1 = {
+            DP-2 = {
               enable = true;
 
               mode = "1920x1080";

@@ -11,8 +11,10 @@
       inputs = { nixpkgs = { follows = "nixpkgs"; }; };
     };
 
-    nixos-generators = { url = "github:nix-community/nixos-generators"; };
-    nixos-generators = { inputs = { nixpkgs = { follows = "nixpkgs"; }; }; };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+    };
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -38,6 +40,11 @@
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
+      inputs = { hyprland = { follows = "hyprland"; }; };
+    };
+
+    hycov = {
+      url = "github:DreamMaoMao/hycov";
       inputs = { hyprland = { follows = "hyprland"; }; };
     };
 

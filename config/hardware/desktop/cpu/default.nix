@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ../../common/cpu/amd ];
+  imports = [ ../../common/cpu/vendor/amd ];
 
   nixpkgs = {
     overlays = [

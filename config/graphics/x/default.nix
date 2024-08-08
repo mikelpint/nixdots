@@ -30,7 +30,9 @@
 
       sddm = {
         enable = false;
+
         wayland = { enable = true; };
+
         autoLogin = { relogin = true; };
       };
 
@@ -38,13 +40,6 @@
         enable = true;
         user = "mikel";
       };
-    };
-
-    libinput = {
-      enable = true;
-
-      mouse = { accelProfile = "flat"; };
-      touchpad = { accelProfile = "flat"; };
     };
   };
 }

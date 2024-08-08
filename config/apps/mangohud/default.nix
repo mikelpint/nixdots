@@ -27,7 +27,7 @@ in {
         position = "top-left";
         round_corners = 5;
 
-        table_columns = 4;
+        table_columns = 3;
         cellpadding_y = 5.0e-2;
 
         inherit background_color;
@@ -59,7 +59,7 @@ in {
 
         cpu_text = "CPU";
         inherit cpu_color;
-        cpu_mhz = true;
+        cpu_mhz = false;
         cpu_stats = true;
         cpu_temp = true;
         cpu_load_change = true;

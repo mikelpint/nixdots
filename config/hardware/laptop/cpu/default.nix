@@ -2,7 +2,7 @@
 
 let kver = config.boot.kernelPackages.kernel.version;
 in {
-  imports = [ ../../common/cpu/amd ];
+  imports = [ ../../common/cpu/vendor/amd ];
 
   boot = lib.mkMerge [
     (lib.mkIf
