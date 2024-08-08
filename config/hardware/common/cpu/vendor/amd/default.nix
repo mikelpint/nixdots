@@ -1,5 +1,5 @@
 { config, lib, ... }: {
-  imports = [ ../iso/x86_64 ./sev ];
+  imports = [ ../iso/x86_64 ./sev ./smu ];
 
   hardware = {
     cpu = {

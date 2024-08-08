@@ -1,5 +1,16 @@
 # sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/default.nix --arg device '"/dev/nvme0n1"'
 
+# - Partition 1: 1MB, emtpy
+# - Partition 2: 512MB, ESP
+# - Partition 3: 100%, BTRFS (+ LUKS if enabled, not tested)
+#   - Subvolumes:
+#     - /home
+#     - /nix
+#     - /var/lib
+#     - /var/log
+#     - /tmp
+# - Partition 4: arbitrary size (not tested) or 50% of installed memory if unspecified, swap (optional)
+
 { lib, device ? throw "No disk device.", luks ? false, swap ? false
 , mountOptions ? [
   "compress=zstd:3"

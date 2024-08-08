@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./nvidia ];
+  imports = [ ./amd ./nvidia ];
 
   hardware = {
     graphics = {

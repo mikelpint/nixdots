@@ -13,6 +13,7 @@
     ./gpu
     ./input
     ./memory
+    ./motherboard
     ./net
     ./storage
   ];

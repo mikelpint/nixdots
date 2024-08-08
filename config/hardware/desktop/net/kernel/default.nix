@@ -1,4 +1,6 @@
-{
+_: {
+  imports = [ ./drivers ];
+
   boot = {
     kernel = {
       sysctl = {

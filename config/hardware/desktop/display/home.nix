@@ -19,6 +19,8 @@ let
 
 in {
   home = {
+    sessionVariables = { SDL_VIDEODRIVER = "wayland,x11,windows"; };
+
     packages = with pkgs;
       [
         (writeShellScriptBin "set_primary_monitor" ''

@@ -20,6 +20,7 @@
     extraModulePackages = [ config.boot.kernelPackages.kernel ];
 
     kernel = { sysctl = { "kernel.sched_cfs_bandwith_slice_us" = 5000; }; };
+    kernelParams = [ "amd_pstate=guided" ];
   };
 
   nix = { settings = { cores = 6; }; };

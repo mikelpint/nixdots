@@ -1,5 +1,1 @@
-{
-  imports = [
-    #./rust
-  ];
-}
+{ imports = [ ./rust ]; }
