@@ -11,7 +11,8 @@ let
 
   load_value = "50,90";
   load_color = "${text_color},F5A97F,ED8796";
-in {
+in
+{
   programs = {
     mangohud = {
       enable = true;
@@ -35,8 +36,7 @@ in {
 
         font_size = 24;
         font_scale_media_player = 0.75;
-        font_file =
-          "/usr/share/fonts/nerd-fonts-complete/TTF/Ubuntu Mono Bold Nerd Font Complete Mono.ttf";
+        font_file = "/usr/share/fonts/nerd-fonts-complete/TTF/Ubuntu Mono Bold Nerd Font Complete Mono.ttf";
         inherit text_color;
         text_outline = true;
         inherit text_outline_color;

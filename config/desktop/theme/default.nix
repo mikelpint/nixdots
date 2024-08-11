@@ -1,5 +1,12 @@
-{ inputs, config, ... }: {
-  imports = [ inputs.nix-colors.homeManagerModule ./cursor ./gtk ./nix ./swww ];
+{ inputs, config, ... }:
+{
+  imports = [
+    inputs.nix-colors.homeManagerModule
+    ./cursor
+    ./gtk
+    ./nix
+    ./swww
+  ];
 
   catppuccin = {
     enable = true;

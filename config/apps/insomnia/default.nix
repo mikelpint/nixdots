@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
-    packages = with pkgs;
-      [ (pkgs.callPackage ../../../pkgs/insomnia { src = insomnia; }) ];
+    packages = with pkgs; [ (pkgs.callPackage ../../../pkgs/insomnia { src = insomnia; }) ];
   };
 }

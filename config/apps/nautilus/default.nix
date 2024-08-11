@@ -1,1 +1,9 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ nautilus sushi ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [
+      nautilus
+      sushi
+    ];
+  };
+}

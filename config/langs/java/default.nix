@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; [ jetbrains.jdk ]; };
+  home = {
+    packages = with pkgs; [ jetbrains.jdk ];
+  };
 }

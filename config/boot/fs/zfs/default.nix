@@ -1,6 +1,18 @@
-{ config, ... }: {
+{ config, lib, ... }:
+{
   boot = {
-    kernelPackages =
-      [ config.boot.zfs.package.package.latestCompatibleLinuxPackages ];
+    kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
+  };
+
+  services = {
+    zfs = {
+        autoScrub = {
+            enable = true;
+        };
+
+        autoSnapshot = {
+            enable = true;
+        };
+    };
   };
 }

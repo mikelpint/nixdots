@@ -4,7 +4,8 @@
   home = {
     file = {
       "firefox-sync" = {
-        target = "/home/mikel/.local/bin/firefox-sync.sh";
+        target = "/home/mikel/.local/bin/firefox-sync.sh.source";
+        onChange = ''cat /home/mikel/.local/bin/firefox-sync.sh.source > /home/mikel/.local/bin/firefox-sync.sh && chmod +x /home/mikel/.local/bin/firefox-sync.sh'';
         text = ''
           #!/bin/sh
 
@@ -18,7 +19,7 @@
           cd ~/.mozilla/firefox
 
           if [ ! -r $volatile ]; then
-              mkdir -m0700 $volatile
+              mkdir -p -m0700 $volatile
           fi
 
           if [ "$(readlink $link)" != "$volatile" ]; then
@@ -41,8 +42,12 @@
     user = {
       services = {
         firefox-profile = {
-          Unit = { Description = "Sync Firefox profile to disk."; };
-          Install = { WantedBy = [ "default.target" ]; };
+          Unit = {
+            Description = "Sync Firefox profile to disk.";
+          };
+          Install = {
+            WantedBy = [ "default.target" ];
+          };
           Service = {
             Type = "oneshot";
 
@@ -58,17 +63,24 @@
             Description = "Run the firefox-profile service on shutdown/reboot.";
             DefaultDependencies = false;
             After = [ "final.target" ];
+            Wants = [ "firefox-profile.service" ];
           };
-          Wants = [ "firefox-profile.service" ];
-          Install = { WantedBy = [ "final.target" ]; };
+
+          Install = {
+            WantedBy = [ "final.target" ];
+          };
         };
       };
 
       timers = {
         firefox-profile = {
-          Unit = { Description = "Run firefox-profile every 30 minutes."; };
+          Unit = {
+            Description = "Run firefox-profile every 30 minutes.";
+          };
 
-          Install = { WantedBy = [ "timers.target" ]; };
+          Install = {
+            WantedBy = [ "timers.target" ];
+          };
 
           Timer = {
             OnStartupSec = "30min";

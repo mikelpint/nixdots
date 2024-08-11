@@ -1,5 +1,13 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; with jetbrains; [ idea-ultimate clion ]; };
+  home = {
+    packages =
+      with pkgs;
+      with jetbrains;
+      [
+        idea-ultimate
+        clion
+      ];
+  };
 }

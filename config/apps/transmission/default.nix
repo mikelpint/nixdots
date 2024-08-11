@@ -1,3 +1,6 @@
-{ config, pkgs, ... }: {
-  home = { packages = with pkgs; [ transmission_4-gtk ]; };
+{ config, pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ transmission_4-gtk ];
+  };
 }

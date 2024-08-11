@@ -1,10 +1,11 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   environment = {
     systemPackages = with config.boot.kernelPackages; [
-      acpi-call
+      acpi_call
 
-      asus-ec-sensors-unstable
-      asus-wmi-sensors-unstable
+      #asus-ec-sensors-unstable
+      #asus-wmi-sensors-unstable
     ];
   };
 }

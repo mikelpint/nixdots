@@ -1,4 +1,9 @@
-{ inputs, pkgs, lib, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home = lib.mkForce {
@@ -10,9 +15,17 @@
     stateVersion = "24.05";
   };
 
-  programs = { home-manager = { enable = true; }; };
+  programs = {
+    home-manager = {
+      enable = true;
+    };
+  };
 
-  nixpkgs = { config = { allowUnfree = true; }; };
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   imports = [
     ./cli/home.nix

@@ -9,7 +9,8 @@ let
       sha256 = "sha256-I8rAg3ecLxW4emtY1VpKpUMIaXfSks416LLkHtLZSsI=";
     };
   };
-in {
+in
+{
   programs = {
     tmux = {
       enable = true;

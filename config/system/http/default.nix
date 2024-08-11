@@ -1,5 +1,11 @@
 { pkgs, ... }:
 
 {
-  environment = { systemPackages = with pkgs; [ wget curl openssl ]; };
+  environment = {
+    systemPackages = with pkgs; [
+      wget
+      curl
+      openssl
+    ];
+  };
 }

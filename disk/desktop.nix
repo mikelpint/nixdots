@@ -4,24 +4,35 @@
 # NO swap (80 GB RAM is more than enough)
 # Unencrypted
 
-{ device ? throw "No disk device." }:
+{
+  device ? throw "No disk device.",
+  ...
+}:
 
 let
-    rootFsOptions = {
-        atime = "off";
-        xattr = "sa";
-        ashift = "13";
-        compression = "lz4";
-        recordsize = "64K";
-    };
-in {
+  rootFsOptions = {
+    acltype = "posixacl";
+    atime = "off";
+    xattr = "sa";
+    compression = "lz4";
+    recordsize = "64K";
+  };
+
+  options = {
+    ashift = "13";
+    autotrim = "on";
+  };
+in
+{
   disko = {
     devices = {
       disk = {
-        "${device}" = {
-          main = {
-            device = builtins.toPath device;
-            type = "disk";
+        main = {
+          device = builtins.toPath device;
+          type = "disk";
+
+          content = {
+            type = "gpt";
 
             partitions = {
               ESP = {
@@ -29,10 +40,16 @@ in {
                 size = "1G";
 
                 type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                };
               };
 
               zfs = {
                 size = "100%";
+
                 content = {
                   type = "zfs";
                   pool = "zroot";
@@ -45,86 +62,108 @@ in {
 
       zpool = {
         zroot = {
-            type = "zpool";
-            mode = "mirror";
+          type = "zpool";
+          mode = "";
 
-            rootFsOptions = rootFsOptions // { # https://jrs-s.net/2018/08/17/zfs-tuning-cheat-sheet/
+          rootFsOptions = rootFsOptions // {
+            # https://jrs-s.net/2018/08/17/zfs-tuning-cheat-sheet/
+            "com.sun:auto-snapshot" = "false";
+          };
+
+          inherit options;
+
+          datasets = {
+            reserved = {
+              type = "zfs_fs";
+              options = {
+                mountpoint = "none";
+                reservation = "200G";
+              };
+            };
+
+            "user" = {
+              type = "zfs_fs";
+              options = {
+                mountpoint = "none";
+              };
+            };
+
+            "user/home" = {
+              type = "zfs_fs";
+              mountpoint = "/home";
+              options = {
                 "com.sun:auto-snapshot" = "false";
+              };
             };
 
-            mountpoint = "/";
-
-            datasets = {
-                reserved = {
-                    size = "20%";
-                    options = {
-                        "com.sun:auto-snapshot" = "false";
-                        mountpoint = "none";
-                    };
-                };
-
-                home = {
-                    type = "zfs_fs";
-                    mountpoint = "/home";
-                    options = {
-                        "com.sun:auto-snapshot" = "true";
-                    };
-                };
-
-                nix = {
-                    type = "zfs_fs";
-                    mountpoint = "/nix";
-                    options = {
-                        "com.sun:auto-snapshot" = "false";
-                    };
-                };
-
-                tmp = {
-                    type = "zfs_fs";
-                    mountpoint = "/tmp";
-                    options = {
-                        "com.sun:auto-snapshot" = "false";
-                    };
-                };
-
-                root = {
-                    type = "zfs_fs";
-                    mountpoint = "/root";
-                    options = {
-                        "com.sun:auto-snapshot" = "true";
-                    };
-                };
-
-                var = {
-                    type = "zfs_fs";
-                    mountpoint = "/var";
-                    options = {
-                        acltype="posixacl";
-                        "com.sun:auto-snapshot" = "true";
-                    };
-                };
-            };
-        };
-
-        libvirt = {
-            type = "zpool";
-            mode = "mirror";
-
-            size = "50%";
-
-            rootFsOptions = rootFsOptions // {
+            "user/home/mikel" = {
+              type = "zfs_fs";
+              mountpoint = "/home/mikel";
+              options = {
                 "com.sun:auto-snapshot" = "true";
-                canmount = "off";
+              };
             };
 
-            mountpoint = "/libvirt";
-
-            datasets = {
-                windows = {
-                    type = "zfs_volume";
-                    size = "50%";
-                };
+            "user/home/root" = {
+              type = "zfs_fs";
+              mountpoint = "/root";
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
             };
+
+            system = {
+              type = "zfs_fs";
+              options = {
+                mountpoint = "none";
+              };
+            };
+
+            "system/nix" = {
+              type = "zfs_fs";
+              mountpoint = "/nix";
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
+            };
+
+            tmp = {
+              type = "zfs_fs";
+              mountpoint = "/tmp";
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
+            };
+
+            "system/root" = {
+              type = "zfs_fs";
+              mountpoint = "/";
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
+            };
+
+            "system/var" = {
+              type = "zfs_fs";
+              mountpoint = "/var";
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
+            };
+
+            "libvirt" = {
+              type = "zfs_fs";
+              mountpoint = "/libvirt";
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
+            };
+
+            "libvirt/windows" = {
+              type = "zfs_volume";
+              size = "500G";
+            };
+          };
         };
       };
     };

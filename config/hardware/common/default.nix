@@ -1,5 +1,13 @@
 _: {
-  imports = [ ./cpu ./display ./gpu ./storage ./usb ];
+  imports = [
+    ./cpu
+    ./display
+    ./gpu
+    ./storage
+    ./usb
+  ];
 
-  hardware = { enableAllFirmware = true; };
+  hardware = {
+    enableAllFirmware = true;
+  };
 }

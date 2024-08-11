@@ -1,1 +1,7 @@
-{ services = { xserver = { videoDrivers = [ "vboxvideo" ]; }; }; }
+{
+  services = {
+    xserver = {
+      videoDrivers = [ "vboxvideo" ];
+    };
+  };
+}

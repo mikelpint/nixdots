@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   imports = [
     ./dhcp
     ./dns
@@ -13,5 +14,7 @@
     ./wpa_supplicant
   ];
 
-  networking = { hostName = lib.mkDefault "mikel"; };
+  networking = {
+    hostName = lib.mkDefault "mikel";
+  };
 }

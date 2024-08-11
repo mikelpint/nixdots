@@ -1,14 +1,12 @@
 { lib, pkgs, ... }:
 let
-  cursorTheme = (import ../../theme/cursor/default.nix {
-    inherit pkgs;
-  }).home.pointerCursor;
+  cursorTheme = (import ../../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
   cursor = {
     name = cursorTheme.name;
     size = cursorTheme.size;
   };
-
-in {
+in
+{
   home = {
     packages = with pkgs; [
       glib

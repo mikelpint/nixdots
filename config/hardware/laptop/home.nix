@@ -1,1 +1,6 @@
-_: { imports = [ ./display/home.nix ../common/home.nix ]; }
+_: {
+  imports = [
+    ./display/home.nix
+    ../common/home.nix
+  ];
+}

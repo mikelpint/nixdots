@@ -1,10 +1,13 @@
 { inputs, pkgs, ... }:
 
 let
-  pkgs-unstable =
-    inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in {
-  imports = [ ./amd ./nvidia ];
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+{
+  imports = [
+    ./amd
+    ./nvidia
+  ];
 
   hardware = {
     graphics = {

@@ -1,10 +1,15 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ easyeffects ]; };
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ easyeffects ];
+  };
 
   wayland = {
     windowManager = {
       hyprland = {
-        settings = { exec-once = [ "easyeffects --gapplication-service" ]; };
+        settings = {
+          exec-once = [ "easyeffects --gapplication-service" ];
+        };
       };
     };
   };

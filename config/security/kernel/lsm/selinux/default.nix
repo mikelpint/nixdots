@@ -1,5 +1,10 @@
-{ pkgs, ... }: {
-  systemd = { package = pkgs.systemd.override { withSelinux = true; }; };
+{ pkgs, ... }:
+{
+  systemd = {
+    package = pkgs.systemd.override { withSelinux = true; };
+  };
 
-  environment = { systemPackages = with pkgs; [ policycoreutils ]; };
+  environment = {
+    systemPackages = with pkgs; [ policycoreutils ];
+  };
 }

@@ -1,7 +1,12 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./borg ];
 
-  boot = { supportedFilesystems = [ "btrfs" ]; };
+  boot = {
+    supportedFilesystems = [ "btrfs" ];
+  };
 
-  environment = { systemPackages = with pkgs; [ btrfs-progs ]; };
+  environment = {
+    systemPackages = with pkgs; [ btrfs-progs ];
+  };
 }

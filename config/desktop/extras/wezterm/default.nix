@@ -1,6 +1,12 @@
-let front_end = "WebGpu";
-in {
-  home = { shellAliases = { wezterm = "WAYLAND_DISPLAY=1 wezterm"; }; };
+let
+  front_end = "WebGpu";
+in
+{
+  home = {
+    shellAliases = {
+      wezterm = "WAYLAND_DISPLAY=1 wezterm";
+    };
+  };
 
   programs = {
     wezterm = {

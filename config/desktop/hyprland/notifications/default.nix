@@ -1,14 +1,14 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
-    packages = with pkgs;
-      [
-        (writeShellScriptBin "hyprsetup_notifications" ''
-          hyprctl dismissnotify
+    packages = with pkgs; [
+      (writeShellScriptBin "hyprsetup_notifications" ''
+        hyprctl dismissnotify
 
-          pkill dunst
-          dunst &
-        '')
-      ];
+        pkill dunst
+        dunst &
+      '')
+    ];
   };
 
   wayland = {

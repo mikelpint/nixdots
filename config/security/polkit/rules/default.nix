@@ -1,1 +1,6 @@
-{ imports = [ ./nopasswd ./udisk ]; }
+{
+  imports = [
+    ./nopasswd
+    ./udisk
+  ];
+}

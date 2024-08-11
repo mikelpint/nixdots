@@ -1,1 +1,6 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ tor-browser-bundle-bin ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ tor-browser-bundle-bin ];
+  };
+}

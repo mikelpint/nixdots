@@ -1,5 +1,9 @@
 {
-  imports = [ ./btrfs ];
+  imports = [ ];
 
-  fileSystems = { "/" = { noCheck = true; }; };
+  fileSystems = {
+    "/" = {
+      noCheck = true;
+    };
+  };
 }

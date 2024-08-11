@@ -1,6 +1,7 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/dns.nix
 
-{ lib, config, ... }: {
+{ lib, config, ... }:
+{
   services = {
     dnscrypt-proxy2 = {
       enable = true;
@@ -33,22 +34,21 @@
             ];
 
             cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
-            minisign_key =
-              "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+            minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
           };
         };
       };
     };
 
-    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable {
-      enable = lib.mkForce false;
-    };
+    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable { enable = lib.mkForce false; };
   };
 
   systemd = {
     services = {
       dnscrypt-proxy2 = {
-        serviceConfig = { StateDirectory = "dnscrypt-proxy"; };
+        serviceConfig = {
+          StateDirectory = "dnscrypt-proxy";
+        };
       };
     };
   };

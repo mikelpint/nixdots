@@ -1,5 +1,8 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ cava ]; };
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ cava ];
+  };
 
   xdg = {
     configFile = {

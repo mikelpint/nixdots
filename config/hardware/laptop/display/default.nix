@@ -1,11 +1,20 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+{
   boot = {
     kernelParams = [ "video=eDP-1:1920x1080@60" ];
 
-    loader = { grub = { gfxmodeEfi = "1920x1080x32"; }; };
+    loader = {
+      grub = {
+        gfxmodeEfi = "1920x1080x32";
+      };
+    };
   };
 
-  programs = { light = { enable = true; }; };
+  programs = {
+    light = {
+      enable = true;
+    };
+  };
 
   services = {
     udev = {

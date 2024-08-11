@@ -1,4 +1,11 @@
-{ lib, inputs, pkgs, config, ... }: {
+{
+  lib,
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
+{
   imports = [
     ./apps
     ./bar
@@ -32,12 +39,13 @@
       hyprland = {
         enable = true;
 
-        package = (inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-          withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
-          legacyRenderer = false;
-          enableXWayland =
-            config.wayland.windowManager.hyprland.xwayland.enable;
-        });
+        package = (
+          inputs.hyprland.packages."${pkgs.system}".hyprland.override {
+            withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
+            legacyRenderer = false;
+            enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
+          }
+        );
 
         settings = {
           misc = {

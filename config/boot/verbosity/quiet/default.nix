@@ -1,22 +1,31 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   nixpkgs = {
     overlays = [
       (self: super: {
-        preempt = pkgs.linuxPackagesFor
-          (config.boot.kernelPackages.kernel.override {
+        preempt = pkgs.linuxPackagesFor (
+          config.boot.kernelPackages.kernel.override {
             structuredExtraConfig = with lib.kernel; {
               CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER = yes;
             };
 
             ignoreConfigErrors = true;
-          });
+          }
+        );
       })
     ];
   };
 
   boot = {
     consoleLogLevel = 0;
-    initrd = { verbose = false; };
+    initrd = {
+      verbose = false;
+    };
     kernelParams = [
       "loglevel=3"
       "quiet"

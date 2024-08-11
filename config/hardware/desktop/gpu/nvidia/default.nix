@@ -1,12 +1,16 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-let package = config.boot.kernelPackages.nvidiaPackages.stable;
-in {
-  hardware = {
+let
+  package = config.boot.kernelPackages.nvidiaPackages.stable;
+in
+{
+  hardware = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     nvidia = {
       inherit package;
 
-      modesetting = { enable = true; };
+      modesetting = {
+        enable = true;
+      };
 
       powerManagement = {
         enable = false;
@@ -18,7 +22,7 @@ in {
       nvidiaSettings = true;
     };
 
-    graphics = {
+    graphics = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
       extraPackages = with pkgs; [
         nvidia-vaapi-driver
         libvdpau-va-gl
@@ -36,13 +40,22 @@ in {
     };
   };
 
-  services = { xserver = { videoDrivers = [ "nvidia" ]; }; };
+  services = {
+    xserver = {
+      videoDrivers = [ "nvidia" ];
+    };
+  };
 
-  boot = {
+  boot = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     extraModulePackages = [ package ];
 
     initrd = {
-      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+      kernelModules = [
+        "nvidia"
+        "nvidia_modeset"
+        "nvidia_uvm"
+        "nvidia_drm"
+      ];
     };
 
     extraModprobeConfig = ''
@@ -51,7 +64,7 @@ in {
     '';
   };
 
-  environment = {
+  environment = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
     systemPackages = with pkgs; with config.boot.kernelPackages; [ nvidia_x11 ];
   };
 }

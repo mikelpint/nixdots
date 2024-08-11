@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs = {
     btop = {
       enable = true;
@@ -12,8 +13,7 @@
 
         vim_keys = false;
 
-        presets =
-          "cpu:1:default,proc:0:default cpu:0:default,mem:0:default,net:0:default cpu:0:block,net:0:tty";
+        presets = "cpu:1:default,proc:0:default cpu:0:default,mem:0:default,net:0:default cpu:0:block,net:0:tty";
 
         graph_symbol = "braille";
         graph_symbol_cpu = "default";
@@ -91,13 +91,15 @@
 
   xdg = {
     configFile = {
-      "btop/themes/catppuccin_macchiato.theme".text = builtins.readFile
-        (pkgs.fetchFromGitHub {
+      "btop/themes/catppuccin_macchiato.theme".text = builtins.readFile (
+        pkgs.fetchFromGitHub {
           owner = "catppuccin";
           repo = "btop";
           rev = "ecb8562bb6181bb9f2285c360bbafeb383249ec3";
           sha256 = "sha256-ovVtupO5jWUw6cwA3xEzRe1juUB8ykfarMRVTglx3mk=";
-        } + "/catppuccin_macchiato.theme");
+        }
+        + "/catppuccin_macchiato.theme"
+      );
     };
   };
 }

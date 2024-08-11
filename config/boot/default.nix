@@ -1,6 +1,18 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [ ./bootloader ./efi ./fs ./kernel ./plymouth ./systemd ./verbosity ];
+  imports = [
+    ./bootloader
+    ./efi
+    ./fs
+    ./kernel
+    ./plymouth
+    ./systemd
+    ./verbosity
+  ];
 }
