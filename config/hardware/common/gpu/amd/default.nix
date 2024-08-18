@@ -4,8 +4,17 @@
   pkgs,
   ...
 }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
+  ifamdgpu = lib.mkIf (builtins.elem "amdgpu" config.services.xserver.videoDrivers);
+in
+{
   ifamdgpu = lib.mkIf (builtins.elem "amdgpu" config.services.xserver.videoDrivers);
 in
 {
@@ -55,6 +64,11 @@ in
               hipblas
               clr
             ];
+            paths = with pkgs.rocmPackages; [
+              rocblas
+              hipblas
+              clr
+            ];
           }
         }"
       ];
@@ -64,6 +78,9 @@ in
       lactd = {
         description = "AMDGPU Control Daemon";
         enable = true;
+        serviceConfig = {
+          ExecStart = "${pkgs.lact}/bin/lact daemon";
+        };
         serviceConfig = {
           ExecStart = "${pkgs.lact}/bin/lact daemon";
         };

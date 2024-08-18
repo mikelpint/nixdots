@@ -14,6 +14,7 @@
 
         ovmf = {
           enable = true;
+
           packages = with pkgs; [
             (OVMF.override {
               secureBoot = true;

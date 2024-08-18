@@ -1,6 +1,6 @@
 {
   imports = [
-    #./clamav
+    ./clamav
     ./doas
     ./firejail
     ./kernel

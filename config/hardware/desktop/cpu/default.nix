@@ -16,8 +16,6 @@
             structuredExtraConfig = with lib.kernel; {
               CONFIG_PREEMPT = yes;
             };
-
-            ignoreConfigErrors = true;
           }
         );
       })

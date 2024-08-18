@@ -11,8 +11,6 @@ in
         enable = true;
       };
 
-      #x11 = { enable = true; };
-
       name = "catppuccin-${flavor}-${accent}-cursors";
       size = 24;
     };
