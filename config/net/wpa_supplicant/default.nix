@@ -3,7 +3,9 @@
     wireless = {
       enable = false;
 
-      userControlled = { enable = true; };
+      userControlled = {
+        enable = true;
+      };
     };
   };
 }

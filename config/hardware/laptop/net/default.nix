@@ -1,5 +1,7 @@
 {
   imports = [ ./if ];
 
-  networking = { hostName = "laptopmikel"; };
+  networking = {
+    hostName = "laptopmikel";
+  };
 }

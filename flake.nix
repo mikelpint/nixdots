@@ -4,33 +4,49 @@
   description = "mikelpint's dotfiles";
 
   inputs = {
-    nixpkgs = { url = "github:nixos/nixpkgs/nixos-unstable"; };
+    nixpkgs-stable = {
+      url = "github:nixos/nixpkgs/nixos-24.05";
+    };
+
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
+
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
-    };
-
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
-    };
-
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     manix = {
       url = "github:nix-community/manix";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
-    helix = { url = "github:helix-editor/helix"; };
+    helix = {
+      url = "github:helix-editor/helix";
+    };
 
     hyprland = {
       type = "git";
@@ -40,70 +56,123 @@
 
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-      inputs = { hyprland = { follows = "hyprland"; }; };
+      inputs = {
+        hyprland = {
+          follows = "hyprland";
+        };
+      };
     };
 
     hycov = {
       url = "github:DreamMaoMao/hycov";
-      inputs = { hyprland = { follows = "hyprland"; }; };
+      inputs = {
+        hyprland = {
+          follows = "hyprland";
+        };
+      };
     };
 
-    waybar-hyprland = { url = "github:hyprwm/hyprland"; };
+    waybar-hyprland = {
+      url = "github:hyprwm/hyprland";
+    };
 
     xdg-desktop-portal-hyprland = {
       url = "github:hyprwm/xdg-desktop-portal-hyprland";
     };
 
-    nur = { url = "github:nix-community/NUR"; };
-
-    nix-colors = { url = "github:misterio77/nix-colors"; };
-
-    spicetify-nix = {
-      url = "github:the-argus/spicetify-nix";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+    nur = {
+      url = "github:nix-community/NUR";
     };
 
-    disko = { url = "github:nix-community/disko"; };
+    nix-colors = {
+      url = "github:misterio77/nix-colors";
+    };
+
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
 
     sf-mono-liga-src = {
       url = "github:shaunsingh/SFMono-Nerd-Font-Ligaturized";
       flake = false;
     };
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs = { nixpkgs = { follows = "nixpkgs"; }; };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
-    nix-ld-rs = { url = "github:nix-community/nix-ld-rs"; };
+    nix-ld-rs = {
+      url = "github:nix-community/nix-ld-rs";
+    };
 
-    catppuccin = { url = "github:catppuccin/nix"; };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+    };
+
+    wezterm = {
+      url = "github:wez/wezterm?dir=nix";
+    };
   };
 
-  outputs = { self, helix, sops-nix, nixpkgs, nur, hyprland, home-manager
-    , spicetify-nix, disko, nix-ld-rs, catppuccin, ... }@inputs:
+  outputs =
+    {
+      self,
+      helix,
+      agenix,
+      nixpkgs,
+      lix-module,
+      nixpkgs-stable,
+      nur,
+      hyprland,
+      home-manager,
+      spicetify-nix,
+      nix-ld-rs,
+      catppuccin,
+      ...
+    }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
 
-      hosts = [ "desktop" "laptop" "vm" ];
+      hosts = [
+        "desktop"
+        "laptop"
+        "vm"
+      ];
+
       supportedSystems = [ "x86_64-linux" ];
 
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
-    in {
-      nixosConfigurations = nixpkgs.lib.genAttrs hosts (host:
+    in
+    {
+      nixosConfigurations = nixpkgs.lib.genAttrs hosts (
+        host:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
-          specialArgs = { inherit inputs hyprland spicetify-nix disko; };
+          specialArgs = {
+            inherit inputs hyprland;
+          };
 
           modules = [
+            lix-module.nixosModules.default
+
             ./hosts/${host}/configuration.nix
 
             catppuccin.nixosModules.catppuccin
 
-            sops-nix.nixosModules.sops
+            agenix.nixosModules.default
 
             nur.nixosModules.nur
             nur.hmModules.nur
@@ -111,7 +180,9 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
-                extraSpecialArgs = { inherit inputs spicetify-nix disko; };
+                extraSpecialArgs = {
+                  inherit inputs spicetify-nix;
+                };
 
                 users = {
                   mikel = {
@@ -123,21 +194,27 @@
                   };
                 };
 
-                backupFileExtension = "bck";
+                backupFileExtension = "backup";
               };
             }
-
-            hyprland.nixosModules.default
-            { programs = { hyprland = { enable = true; }; }; }
-
-            disko.nixosModules.disko
           ];
-        });
+        }
+      );
 
-      devShells = forAllSystems (system:
-        let pkgs = nixpkgsFor.${system};
-        in {
-          default = pkgs.mkShell { buildInputs = with pkgs; [ git statix ]; };
-        });
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              git
+              statix
+              nixfmt-rfc-style
+            ];
+          };
+        }
+      );
     };
 }

@@ -1,15 +1,23 @@
 {
   security = {
-    sudo = { enable = false; };
+    sudo = {
+      enable = false;
+    };
 
     doas = {
       enable = true;
-      extraRules = [{
-        noPass = true;
-        keepEnv = true;
-      }];
+      extraRules = [
+        {
+          noPass = true;
+          keepEnv = true;
+        }
+      ];
     };
   };
 
-  environment = { shellAliases = { sudo = "doas"; }; };
+  environment = {
+    shellAliases = {
+      sudo = "doas";
+    };
+  };
 }

@@ -21,13 +21,28 @@ let
     }
   ];
 
-  ids = builtins.map (group:
-    builtins.map (attr: "${group.vendor}:${group.${attr}}")
-    (builtins.filter (attr: attr != "vendor") (builtins.attrNames group)))
-    pci-groups;
-in { pkgs, lib, config, ... }: {
+  ids = builtins.map (
+    group:
+    builtins.map (attr: "${group.vendor}:${group.${attr}}") (
+      builtins.filter (attr: attr != "vendor") (builtins.attrNames group)
+    )
+  ) pci-groups;
+in
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   boot = {
-    initrd = { kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ]; };
+    initrd = {
+      kernelModules = [
+        "vfio_pci"
+        "vfio"
+        "vfio_iommu_type1"
+      ];
+    };
 
     kernelParams = [
       "amd_iommu=on"
@@ -36,5 +51,9 @@ in { pkgs, lib, config, ... }: {
     ];
   };
 
-  virtualisation = { spiceUSBRedirection = { enable = true; }; };
+  virtualisation = {
+    spiceUSBRedirection = {
+      enable = true;
+    };
+  };
 }

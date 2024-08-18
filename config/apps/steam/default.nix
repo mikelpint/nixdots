@@ -1,14 +1,21 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
-let
-  proton-ge = (import inputs.nur {
-    inherit pkgs;
-    nurpkgs = pkgs;
-  }).repos.ataraxiasjel.proton-ge;
-in {
-  home = {
-    packages = with pkgs; [ steam proton-ge ];
+{
+  programs = {
+    steam = {
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
 
-    sessionVariables = { STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${proton-ge}"; };
+      extest = {
+        enable = true;
+      };
+
+      dedicatedServer = {
+        openFirewall = true;
+      };
+
+      localNetworkGameTransfers = {
+        openFirewall = false;
+      };
+    };
   };
 }

@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
@@ -6,8 +7,7 @@
           monitor = lib.mkDefault [ ",highrr,auto,auto" ];
 
           envd = [
-            "WLR_DRM_DEVICES,$HOME/.config/hypr/card:$HOME/.config/hypr/otherCard"
-            #"WLR_RENDERER,vulkan"
+            "WLR_DRM_DEVICES,$HOME/.config/hypr/card"
 
             "XDG_CURRENT_DESKTOP,Hyprland"
             "XDG_SESSION_TYPE,wayland"
@@ -24,11 +24,16 @@
             "NIXOS_XDG_OPEN_USE_PORTAL,1"
           ];
 
+          render = {
+            explicit_sync = lib.mkDefault 1;
+            explicit_sync_kms = lib.mkDefault 1;
+
+            direct_scanout = lib.mkDefault true;
+          };
+
           misc = {
             vfr = lib.mkDefault false;
             vrr = lib.mkDefault false;
-
-            no_direct_scanout = lib.mkDefault false;
           };
         };
       };

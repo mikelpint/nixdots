@@ -7,8 +7,6 @@
         settings = {
           general = {
             layout = "dwindle";
-
-            apply_sens_to_raw = 1;
           };
 
           master = {

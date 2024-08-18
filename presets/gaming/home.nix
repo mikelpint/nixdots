@@ -1,7 +1,7 @@
 _: {
   imports = [
-    ../../config/apps/mangohud
-    ../../config/apps/steam
+    ../../config/apps/mangohud/home.nix
+    ../../config/apps/steam/home.nix
 
     #../../config/tools/wine-discord-ipc-bridge
   ];

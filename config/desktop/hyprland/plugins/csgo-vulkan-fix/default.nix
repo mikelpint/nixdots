@@ -1,9 +1,9 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
-        plugins =
-          [ inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix ];
+        plugins = [ inputs.hyprland-plugins.packages.${pkgs.system}.csgo-vulkan-fix ];
 
         settings = {
           plugin = {

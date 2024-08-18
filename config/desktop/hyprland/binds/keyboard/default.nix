@@ -8,7 +8,7 @@
             "$mainMod CTRL SHIFT, Q, exec, hyprctl kill"
 
             "$mainMod, Q, killactive,"
-            "$mainMod, space, togglefloating,"
+            "$mainMod SHIFT, space, togglefloating,"
             "$mainMod, g, togglegroup"
 
             "$mainMod, left, movefocus, l"

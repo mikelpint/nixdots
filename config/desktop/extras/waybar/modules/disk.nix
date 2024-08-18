@@ -10,5 +10,7 @@
     };
 
     format = " {percentage_used}%";
+
+    on-click = "wezterm -e ncdu / -q -2 -t $(nproc) --exclude-kernfs";
   };
 }

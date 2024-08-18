@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
     packages = with pkgs; [ fastfetch ];
 
@@ -13,7 +14,9 @@
               },
               "display": {
                   "separator": "",
-                  "keyWidth": 6,
+                  "key": {
+                    "width": 6
+                  },
                   "color": "white",
                   "percent": {
                       "color": {

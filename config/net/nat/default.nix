@@ -1,1 +1,5 @@
-{ networking = { nat = { }; }; }
+{
+  networking = {
+    nat = { };
+  };
+}

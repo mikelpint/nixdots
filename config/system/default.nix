@@ -1,5 +1,14 @@
 {
-  imports = [ ./dconf ./git ./gnupg ./http ./hwutils ./nix-ld ];
+  imports = [
+    ./dconf
+    ./git
+    ./gnupg
+    ./http
+    ./hwutils
+    ./nix-ld
+  ];
 
-  system = { stateVersion = "24.05"; };
+  system = {
+    stateVersion = "24.05";
+  };
 }

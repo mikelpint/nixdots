@@ -1,14 +1,12 @@
 { lib, pkgs, ... }:
 let
-  cursorTheme = (import ../../theme/cursor/default.nix {
-    inherit pkgs;
-  }).home.pointerCursor;
+  cursorTheme = (import ../../theme/cursor/default.nix { inherit pkgs; }).home.pointerCursor;
   cursor = {
     name = cursorTheme.name;
     size = cursorTheme.size;
   };
-
-in {
+in
+{
   home = {
     packages = with pkgs; [
       glib
@@ -40,6 +38,8 @@ in {
 
           cursor = {
             enable_hyprcursor = true;
+
+            sync_gsettings_theme = true;
 
             no_hardware_cursors = lib.mkDefault false;
             no_break_fs_vrr = lib.mkDefault false;

@@ -1,7 +1,6 @@
 { lib, ... }:
 
 let
-  "custom/launcher" = (import ../../modules/custom/launcher.nix)."custom/launcher";
   "custom/powermenu" = (import ../../modules/custom/powermenu.nix)."custom/powermenu";
 
   "hyprland/language" = (import ../../modules/hyprland/language.nix)."hyprland/language";
@@ -30,8 +29,6 @@ in
     mod = "dock";
 
     modules-left = [
-      "custom/launcher"
-
       "hyprland/workspaces"
 
       "cpu"
@@ -50,7 +47,6 @@ in
       "clock"
     ];
 
-    inherit "custom/launcher";
     inherit "custom/powermenu";
 
     inherit "hyprland/language";

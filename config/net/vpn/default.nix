@@ -1,1 +1,1 @@
-{ imports = [ ]; }
+_: { imports = [ ./wireguard ]; }

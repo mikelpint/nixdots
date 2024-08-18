@@ -1,1 +1,1 @@
-{ imports = [ ./firefox ]; }
+{ imports = [ ./firefox/home.nix ]; }

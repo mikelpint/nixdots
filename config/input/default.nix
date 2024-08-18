@@ -1,1 +1,6 @@
-_: { imports = [ ./mouse ./touchpad ]; }
+_: {
+  imports = [
+    ./mouse
+    ./touchpad
+  ];
+}

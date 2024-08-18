@@ -1,7 +1,11 @@
 { pkgs, ... }:
 
 {
-  fonts = { fontconfig = { enable = true; }; };
+  fonts = {
+    fontconfig = {
+      enable = true;
+    };
+  };
 
   home = {
     packages = with pkgs; [
@@ -12,7 +16,13 @@
       (iosevka-bin.override { variant = "Aile"; })
       material-design-icons
       (nerdfonts.override {
-        fonts = [ "Ubuntu" "FiraCode" "FiraMono" "JetBrainsMono" ];
+        fonts = [
+          "Ubuntu"
+          "UbuntuMono"
+          "FiraCode"
+          "FiraMono"
+          "JetBrainsMono"
+        ];
       })
       nerdfix
       noto-fonts

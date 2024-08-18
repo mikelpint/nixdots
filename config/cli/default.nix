@@ -1,1 +1,7 @@
-{ imports = [ ./archive ./fd ./tree ]; }
+{
+  imports = [
+    ./archive
+    ./fd
+    ./tree
+  ];
+}

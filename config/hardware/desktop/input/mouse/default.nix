@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   hardware = {
     openrazer = {
       enable = true;
@@ -10,7 +11,7 @@
       batteryNotifier = {
         enable = false;
         frequency = 600;
-        frequency = 33;
+        percentage = 33;
       };
     };
   };

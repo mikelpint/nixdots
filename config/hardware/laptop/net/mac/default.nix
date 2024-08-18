@@ -1,1 +1,9 @@
-{ systemd = { services = { macchanger = { enable = true; }; }; }; }
+{
+  systemd = {
+    services = {
+      macchanger = {
+        enable = true;
+      };
+    };
+  };
+}

@@ -8,20 +8,18 @@
     };
   };
 
-  system = {
-    userActivationScripts = {
-      hyprgpu = { text = builtins.readFile ../hyprgpu; };
-    };
-  };
-
   boot = {
     extraModprobeConfig = ''
       blacklist nouveau
       options nouveau modeset=0
     '';
 
-    blacklistedKernelModules =
-      [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
+    blacklistedKernelModules = [
+      "nouveau"
+      "nvidia"
+      "nvidia_drm"
+      "nvidia_modeset"
+    ];
   };
 
   services = {

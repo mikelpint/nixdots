@@ -1,8 +1,11 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
-    packages = with pkgs;
+    packages =
+      with pkgs;
       with libsForQt5;
-      with kdePackages; [
+      with kdePackages;
+      [
         qt5ct
         qt5.qtwayland
 

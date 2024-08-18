@@ -1,1 +1,9 @@
-{ imports = [ ./docker ./kvm ./libvirtd ./vbox ]; }
+{
+  imports = [
+    ./docker
+    ./kvm
+    ./libvirtd
+    ./spice
+    ./vbox
+  ];
+}

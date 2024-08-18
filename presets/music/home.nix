@@ -1,1 +1,6 @@
-{ imports = [ ../../config/apps/mpd ../../config/apps/spicetify ]; }
+{
+  imports = [
+    ../../config/apps/mpd/home.nix
+    ../../config/apps/spotify/home.nix
+  ];
+}

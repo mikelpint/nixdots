@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   boot = {
-    initrd = { kernelModules = [ "amdgpu kvm-amd" ]; };
+    initrd = {
+      kernelModules = [ "amdgpu kvm-amd" ];
+    };
 
     blacklistedKernelModules = [ "radeon" ];
 
@@ -13,5 +16,9 @@
     '';
   };
 
-  services = { xserver = { videoDrivers = lib.mkForce [ "amdgpu" ]; }; };
+  services = {
+    xserver = {
+      videoDrivers = lib.mkForce [ "amdgpu" ];
+    };
+  };
 }

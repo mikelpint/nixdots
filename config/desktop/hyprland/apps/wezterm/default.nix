@@ -3,8 +3,7 @@
     windowManager = {
       hyprland = {
         settings = {
-          bind =
-            [ "$mainMod, RETURN, exec, wezterm start --always-new-process" ];
+          bind = [ "$mainMod, RETURN, exec, wezterm start --always-new-process" ];
 
           windowrule = [ "tile,title:^(wezterm)$" ];
 

@@ -1,4 +1,6 @@
 {
+  imports = [ ./firefox ];
+
   boot = {
     kernel = {
       sysctl = {

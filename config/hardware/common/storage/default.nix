@@ -1,5 +1,17 @@
-{ lib, ... }: {
-  services = { hdapsd = { enable = lib.mkDefault false; }; };
+{ lib, ... }:
+{
+  services = {
+    hdapsd = {
+      enable = lib.mkDefault false;
+    };
+  };
 
-  boot = { initrd = { availableKernelModules = [ "sd_mod" "ahci" ]; }; };
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "sd_mod"
+        "ahci"
+      ];
+    };
+  };
 }

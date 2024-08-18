@@ -1,4 +1,12 @@
-{ lib, inputs, pkgs, config, ... }: {
+{
+  lib,
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
+
+let
   imports = [
     ./apps
     ./bar
@@ -26,20 +34,54 @@
     ./wallpaper
     ./xwayland
   ];
+in
+{
+  inherit imports;
 
   wayland = {
     windowManager = {
       hyprland = {
         enable = true;
 
-        package = (inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-          withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
-          legacyRenderer = false;
-          enableXWayland =
-            config.wayland.windowManager.hyprland.xwayland.enable;
-        });
+        package = (
+          inputs.hyprland.packages."${pkgs.system}".hyprland.override {
+            withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
+            legacyRenderer = false;
+            enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
+          }
+        );
 
         settings = {
+          exec-once = lib.mkForce (
+            lib.lists.sort
+              (
+                a: b:
+                !(builtins.elem a
+                  ((import ./bar) { inherit pkgs; }).wayland.windowManager.hyprland.settings.exec-once
+                )
+              )
+              (
+                lib.lists.flatten (
+                  builtins.map (x: x.wayland.windowManager.hyprland.settings.exec-once or [ "a" ]) (
+                    builtins.filter (x: x ? wayland.windowManager.hyprland.settings.exec-once) (
+                      builtins.map (
+                        x:
+                        if builtins.isFunction x then
+                          x {
+                            inherit pkgs;
+                            inherit config;
+                            inherit lib;
+                            inherit inputs;
+                          }
+                        else
+                          x
+                      ) (builtins.map (x: import x) imports)
+                    )
+                  )
+                )
+              )
+          );
+
           misc = {
             disable_autoreload = lib.mkDefault false;
 

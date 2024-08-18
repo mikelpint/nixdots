@@ -1,13 +1,14 @@
 _: {
   imports = [
-    ../../config/apps/easyeffects
-    ../../config/apps/firefox
-    ../../config/apps/libreoffice
-    ../../config/apps/nautilus
-    ../../config/apps/tor-browser
-    ../../config/apps/transmission
-    ../../config/apps/yubikey
-    ../../config/apps/zathura
+    ../../config/apps/bitwarden/home.nix
+    ../../config/apps/easyeffects/home.nix
+    ../../config/apps/firefox/home.nix
+    ../../config/apps/libreoffice/home.nix
+    ../../config/apps/nautilus/home.nix
+    ../../config/apps/tor-browser/home.nix
+    ../../config/apps/transmission/home.nix
+    ../../config/apps/yubikey/home.nix
+    ../../config/apps/zathura/home.nix
 
     ../../config/cli/clipboard
 

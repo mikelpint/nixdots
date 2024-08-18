@@ -1,4 +1,11 @@
-{ config, pkgs, inputs, lib, ... }: {
+{
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
 
@@ -13,5 +20,7 @@
     ../../presets/video
   ];
 
-  networking = { hostName = "laptopmikel"; };
+  networking = {
+    hostName = "laptopmikel";
+  };
 }

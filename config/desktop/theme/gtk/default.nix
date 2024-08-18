@@ -3,15 +3,27 @@
 let
   flavor = config.catppuccin.flavor;
   accent = config.catppuccin.accent;
-in {
-  home = { packages = with pkgs; [ gsettings-desktop-schemas dconf-editor ]; };
+in
+{
+  home = {
+    packages = with pkgs; [
+      gsettings-desktop-schemas
+      dconf-editor
+    ];
+  };
 
   gtk = {
     enable = true;
 
-    font = { name = "JetBrains Nerd Font"; };
+    font = {
+      name = "JetBrains Nerd Font";
+    };
 
-    gtk3 = { extraConfig = { gtk-application-prefer-dark-theme = true; }; };
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+    };
 
     catppuccin = {
       inherit flavor;
@@ -25,7 +37,10 @@ in {
       };
 
       size = "compact";
-      tweaks = [ "rimless" "black" ];
+      tweaks = [
+        "rimless"
+        "black"
+      ];
     };
   };
 

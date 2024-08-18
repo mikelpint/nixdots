@@ -1,5 +1,9 @@
-{ pkgs, lib, ... }: {
-  imports = [ ./modules ./patches ];
+{ pkgs, lib, ... }:
+{
+  imports = [
+    ./modules
+    ./patches
+  ];
 
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;

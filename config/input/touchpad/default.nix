@@ -1,9 +1,12 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   services = {
     libinput = {
       enable = true;
 
-      touchpad = { accelProfile = lib.mkDefault "flat"; };
+      touchpad = {
+        accelProfile = lib.mkDefault "flat";
+      };
     };
   };
 }

@@ -1,11 +1,35 @@
 {
   boot = {
-    kernelParams = [ "video=DP-1:2560x1440@59.95" "video=DP-2:1920x1080@165" ];
+    kernelParams = [
+      "video=DP-1:2560x1440@59.95"
+      "video=DP-2:1920x1080@165"
+    ];
 
-    loader = { grub = { gfxmodeEfi = "2560x1440x32"; }; };
+    loader = {
+      grub = {
+        gfxmodeEfi = "2560x1440x32";
+      };
+    };
+  };
+
+  hardware = {
+    display = {
+      outputs = {
+        "DP-2" = {
+          edid = "VG24VQE.bin";
+        };
+      };
+    };
   };
 
   services = {
+    xserver = {
+      deviceSection = ''
+        Option "TearFree" "False"
+        Option "VariableRefresh" "True"
+      '';
+    };
+
     autorandr = {
       enable = true;
 
