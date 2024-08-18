@@ -1,4 +1,4 @@
-_: 
+_:
 let
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
@@ -8,7 +8,7 @@ in
     ./nvidia
   ];
 
-    system = {
+  system = {
     userActivationScripts = {
       hyprgpu = {
         text = ''
