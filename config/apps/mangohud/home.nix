@@ -20,8 +20,6 @@ in
       enableSessionWide = true;
 
       settings = {
-        pci_dev = "0000:06:00.0"; # AMD RX 6700 XT
-
         legacy_layout = false;
         full = false;
         no_display = false;

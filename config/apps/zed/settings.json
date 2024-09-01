@@ -67,7 +67,14 @@
         "selections_menu": true
     },
     "enable_language_server": true,
-    "lsp": {},
+    "lsp": {
+    "clangd": {
+      "binary": {
+        "path": "/usr/bin/clangd",
+        "arguments": ["--background-index", "--compile-commands-dir=build"]
+    }
+  }
+    },
     "languages": {
         "JSON": {}
     },
@@ -167,5 +174,5 @@
         "use_smartcase_find": true,
         "use_system_clipboard": "always"
     },
-    "vim_mode": false,
+    "vim_mode": false
 }

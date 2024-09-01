@@ -282,6 +282,7 @@ in
             "signon.privateBrowsingCapture.enabled" = false;
 
             "extensions.autoDisableScopes" = 0;
+            "extensions.enabledScopes" = 15;
             "extensions.postDownloadThirdPartyPrompt" = false;
             "extensions.getAddons.showPane.false" = false;
             "extensions.htmlaboutaddons.recommendations.enabled" = false;

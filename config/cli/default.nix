@@ -3,5 +3,6 @@
     ./archive
     ./fd
     ./tree
+    ./zsh
   ];
 }

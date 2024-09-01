@@ -47,7 +47,12 @@ in
     kernelParams = [
       "amd_iommu=on"
       "iommu=pt"
-      ("vfio-pci.ids=" + lib.concatStringsSep "," (builtins.elemAt ids 1))
+      (
+        "vfio-pci.ids="
+        + lib.concatStringsSep "," (
+          builtins.elemAt ids (if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then 1 else 0)
+        )
+      )
     ];
   };
 

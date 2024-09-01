@@ -5,6 +5,7 @@ in
   imports = [
     ./firefox
     ./spotify
+    ./steam
     ./wezterm
     ./wofi
   ];

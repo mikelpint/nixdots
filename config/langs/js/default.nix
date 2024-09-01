@@ -5,9 +5,11 @@
     packages = with pkgs; [
       deno
       nodejs
-      typescript
-      tailwindcss
       nodePackages.npm
+      pnpm
+      tailwindcss
+      turbo-unwrapped
+      typescript
     ];
   };
 }

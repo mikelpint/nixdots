@@ -19,5 +19,7 @@
     ../../presets/rice
     ../../presets/social
     ../../presets/video
+
+    ../../config/virtualization/libvirtd/vm/win11
   ];
 }

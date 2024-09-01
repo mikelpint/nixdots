@@ -46,6 +46,8 @@
         "catppuccin"
         "--update-input"
         "wezterm"
+        "--update-input"
+        "nix-gaming"
 
         "--commit-lock-file"
       ];

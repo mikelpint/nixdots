@@ -37,10 +37,20 @@ in
   };
 
   environment = ifamdgpu {
-    systemPackages = with pkgs; [ lact ];
+    systemPackages = with pkgs; [
+      lact
+      radeontop
+      amdgpu_top
+    ];
+
     sessionVariables = {
       VDPAU_DRIVER = "radeonsi";
       LIBVA_DRIVER_NAME = lib.mkForce "amdgpu";
+
+      AMD_VULKAN_ICD = "RADV";
+      VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
+
+      DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS = 1;
     };
   };
 

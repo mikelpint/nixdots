@@ -5,7 +5,7 @@
     };
 
     firewall = {
-      enable = true;
+      enable = false;
       trustedInterfaces = [ ];
 
       logRefusedPackets = false;

@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 {
   imports = [ ./memtest86 ];
 
@@ -13,6 +13,7 @@
         configurationLimit = 5;
 
         efiSupport = true;
+        efiInstallAsRemovable = !(config.boot.loader.efi.canTouchEfiVariables or false);
         gfxmodeEfi = lib.mkDefault "auto";
         gfxpayloadEfi = "keep";
 

@@ -1,32 +1,61 @@
 {
   lib,
   config,
+  osConfig,
   pkgs,
   ...
 }:
 
 let
-  monitors = [
-    {
-      px = [
-        2560
-        1440
-      ];
-      hz = 59.95;
-      scale = 1.25;
+  isnvidia = builtins.elem "nvidia" osConfig.services.xserver.videoDrivers;
 
-      ws = 1;
-    }
+  monitors =
+    if isnvidia then
+      [
+        {
+          name = "DVI-D-1";
+          px = [
+            2560
+            1440
+          ];
+          hz = 59.91;
+          scale = 1.25;
 
-    {
-      px = [
-        1920
-        1080
+          ws = 1;
+        }
+
+        {
+          name = "DP-1";
+          px = [
+            1920
+            1080
+          ];
+          hz = 59.96;
+          scale = 1.25;
+        }
+      ]
+    else
+      [
+        {
+          px = [
+            2560
+            1440
+          ];
+          hz = 59.95;
+          scale = 1.25;
+
+          ws = 1;
+        }
+
+        {
+          px = [
+            1920
+            1080
+          ];
+          hz = 165;
+          scale = 1.25;
+        }
       ];
-      hz = 165;
-      scale = 1.25;
-    }
-  ];
 in
 {
   home = {
@@ -63,7 +92,9 @@ in
           );
 
           workspace = lib.mkForce (
-            lib.lists.imap1 (idx: mon: "DP-${toString idx}, ${toString (mon.ws or 10)}") monitors
+            lib.lists.imap1 (
+              idx: mon: "${mon.name or "DP-${toString idx}"}, ${toString (mon.ws or 10)}"
+            ) monitors
           );
 
           render = {
@@ -72,7 +103,7 @@ in
 
           misc = {
             vfr = lib.mkForce false;
-            vrr = lib.mkForce 1;
+            vrr = lib.mkForce (if isnvidia then 0 else 1);
           };
 
           decoration = {

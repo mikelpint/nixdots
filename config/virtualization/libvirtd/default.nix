@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  imports = [ ./vm ];
+
   virtualisation = {
     libvirtd = {
       enable = true;

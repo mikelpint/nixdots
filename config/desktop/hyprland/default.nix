@@ -82,6 +82,8 @@ in
               )
           );
 
+          envd = [ "TERM,wezterm" ];
+
           misc = {
             disable_autoreload = lib.mkDefault false;
 

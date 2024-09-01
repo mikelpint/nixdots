@@ -16,7 +16,7 @@
             "GDK_BACKEND,wayland,x11"
             "QT_QPA_PLATFORM,wayland;xcb"
             "CLUTTER_BACKEND,wayland"
-            "SDL_VIDEODRIVER,wayland"
+            "SDL_VIDEODRIVER,wayland,x11,windows"
 
             "_JAVA_AWT_WM_NONREPARENTING,1"
 

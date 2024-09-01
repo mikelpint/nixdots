@@ -28,9 +28,15 @@ in
         libvdpau
         libvdpau-va-gl
         libva-vdpau-driver
+
         egl-wayland
+
         libGL
         libGLU
+
+        vulkan-loader
+        #vulkan-validation-layers
+        vulkan-extension-layer
       ];
 
       extraPackages32 =
@@ -47,14 +53,30 @@ in
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = lib.mkForce ''$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
-        pkgs.lib.makeLibraryPath [
-          pkgs.libGL
-          pkgs.libGLU
-          pkgs.egl-wayland
+        pkgs.lib.makeLibraryPath (
+          with pkgs;
+          with xorg;
+          [
+            pcsclite
 
-          pkgs.pipewire
-        ]
-      }'';
+            libGL
+            libGLU
+
+            wayland
+            egl-wayland
+
+            pipewire
+
+            vulkan-loader
+            #vulkan-validation-layers
+
+            libX11
+            libXcursor
+            libXi
+            libXrandr
+          ]
+        )
+      }:/run/opengl-driver/lib'';
     };
   };
 }

@@ -1,0 +1,1 @@
+{ imports = [ ./direnv/home.nix ]; }

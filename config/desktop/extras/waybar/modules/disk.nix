@@ -1,6 +1,6 @@
 {
   "disk" = {
-    interval = "60";
+    interval = 60;
 
     path = "/";
 

@@ -1,6 +1,7 @@
 {
   imports = [
     ./keyboard
+    ./media
     ./mouse
   ];
 

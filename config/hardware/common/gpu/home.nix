@@ -1,1 +1,6 @@
-_: { imports = [ ./nvidia/home.nix ]; }
+_: {
+  imports = [
+    ./amd/home.nix
+    ./nvidia/home.nix
+  ];
+}

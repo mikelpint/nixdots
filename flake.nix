@@ -17,6 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs = {
@@ -111,6 +115,15 @@
       };
     };
 
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
+
     nix-ld-rs = {
       url = "github:nix-community/nix-ld-rs";
     };
@@ -122,13 +135,19 @@
     wezterm = {
       url = "github:wez/wezterm?dir=nix";
     };
+
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+    };
   };
 
   outputs =
     {
       self,
+      flake-utils,
       helix,
       agenix,
+      agenix-rekey,
       nixpkgs,
       lix-module,
       nixpkgs-stable,
@@ -138,6 +157,7 @@
       spicetify-nix,
       nix-ld-rs,
       catppuccin,
+      nix-gaming,
       ...
     }@inputs:
     let
@@ -146,14 +166,7 @@
       hosts = [
         "desktop"
         "laptop"
-        "vm"
       ];
-
-      supportedSystems = [ "x86_64-linux" ];
-
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in
     {
       nixosConfigurations = nixpkgs.lib.genAttrs hosts (
@@ -162,7 +175,7 @@
           system = "x86_64-linux";
 
           specialArgs = {
-            inherit inputs hyprland;
+            inherit inputs self hyprland;
           };
 
           modules = [
@@ -173,6 +186,7 @@
             catppuccin.nixosModules.catppuccin
 
             agenix.nixosModules.default
+            agenix-rekey.nixosModules.default
 
             nur.nixosModules.nur
             nur.hmModules.nur
@@ -201,10 +215,18 @@
         }
       );
 
-      devShells = forAllSystems (
+      agenix-rekey = agenix-rekey.configure {
+        userFlake = self;
+        nodes = self.nixosConfigurations;
+      };
+
+      devShells = flake-utils.lib.eachDefaultSystem (
         system:
         let
-          pkgs = nixpkgsFor.${system};
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ agenix-rekey.overlays.default ];
+          };
         in
         {
           default = pkgs.mkShell {
@@ -212,6 +234,7 @@
               git
               statix
               nixfmt-rfc-style
+              agenix-rekey
             ];
           };
         }

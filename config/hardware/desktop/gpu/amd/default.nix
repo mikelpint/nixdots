@@ -1,6 +1,32 @@
-{ pkgs, lib, ... }:
 {
-  boot = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  ifamd = lib.mkIf (builtins.elem "amd" config.services.xserver.videoDrivers);
+in
+{
+  environment = ifamd {
+    sessionVariables = {
+      ROC_ENABLE_PRE_VEGA = "1";
+    };
+  };
+
+  system = ifamd {
+    userActivationScripts = {
+      hyprgpu = {
+        text = ''
+          if [[ ! -h "/home/mikel/.config/hypr/card" ]]; then
+              ln -s "/dev/dri/by-path/pci-0000:07:00.0-card" "/home/mikel/.config/hypr/card"
+          fi
+        '';
+      };
+    };
+  };
+
+  boot = ifamd {
     initrd = {
       kernelModules = [ "amdgpu kvm-amd" ];
     };
@@ -14,11 +40,5 @@
       options amdgpu si_support=0
       options amdgpu cik_support=0
     '';
-  };
-
-  services = {
-    xserver = {
-      videoDrivers = lib.mkForce [ "amdgpu" ];
-    };
   };
 }

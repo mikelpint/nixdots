@@ -6,6 +6,11 @@
       userName = "Mikel Pintado";
       userEmail = "mikelpint@protonmail.com";
 
+      signing = {
+        key = "0x14C01046AE976275";
+        signByDefault = true;
+      };
+
       extraConfig = {
         hub = {
           username = "mikelpint";

@@ -6,10 +6,23 @@
 }:
 
 let
-  package = config.boot.kernelPackages.nvidiaPackages.stable;
+  package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+  ifnvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers);
 in
 {
-  hardware = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+  system = ifnvidia {
+    userActivationScripts = {
+      hyprgpu = {
+        text = ''
+          if [[ ! -h "/home/mikel/.config/hypr/card" ]]; then
+              ln -s "/dev/dri/by-path/pci-0000:0d:00.0-card" "/home/mikel/.config/hypr/card"
+          fi
+        '';
+      };
+    };
+  };
+
+  hardware = ifnvidia {
     nvidia = {
       inherit package;
 
@@ -27,13 +40,14 @@ in
       nvidiaSettings = true;
     };
 
-    graphics = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+    graphics = ifnvidia {
       extraPackages = with pkgs; [
         nvidia-vaapi-driver
         libvdpau-va-gl
         vaapiVdpau
         mesa
         nv-codec-headers-12
+        egl-wayland
       ];
 
       extraPackages32 = with pkgs.pkgsi686Linux; [
@@ -45,13 +59,7 @@ in
     };
   };
 
-  services = {
-    xserver = {
-      videoDrivers = [ "nvidia" ];
-    };
-  };
-
-  boot = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+  boot = ifnvidia {
     extraModulePackages = [ package ];
 
     initrd = {
@@ -69,7 +77,7 @@ in
     '';
   };
 
-  environment = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers) {
+  environment = ifnvidia {
     systemPackages = with pkgs; with config.boot.kernelPackages; [ nvidia_x11 ];
   };
 }

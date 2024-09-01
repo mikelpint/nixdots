@@ -29,10 +29,12 @@
 
   imports = [
     ./cli/home.nix
-    ./env
-    ./fonts
+    ./env/home.nix
+    ./fonts/home.nix
     ./graphics/home.nix
-    ./tools
+    ./security/home.nix
+    ./services/home.nix
+    ./tools/home.nix
     ./virtualization/home.nix
   ];
 }

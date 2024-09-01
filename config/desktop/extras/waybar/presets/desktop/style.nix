@@ -44,6 +44,7 @@ _: ''
 
   #clock,
   #cpu,
+  #custom-gpu,
   #custom-launcher,
   #disk,
   #keyboard-state label.locked,
@@ -51,12 +52,15 @@ _: ''
   #memory,
   #network,
   #pulseaudio,
+  #temperature.cpu,
+  #temperature.gpu1,
+  #temperature.gpu2,
   #tray,
   #window,
   #workspaces {
     background-color: @base;
     
-    margin-bottom: 0px;
+    margin-bottom: 3px;
     margin-top: 2px;
     
     padding: 3px;
@@ -89,6 +93,16 @@ _: ''
 
     border-bottom: 2px solid @pink;
     border-left: 2px solid @pink;
+    border-top: 2px solid @pink;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  #custom-gpu {
+    color: @text;
+    
+    border-bottom: 2px solid @pink;
     border-top: 2px solid @pink;
 
     padding-left: 7px;
@@ -137,6 +151,8 @@ _: ''
 
     padding-left: 7px;
     padding-right: 7px;
+
+    margin-right: 3px;
   }
 
   #keyboard-state, #keyboard-state label {
@@ -213,6 +229,43 @@ _: ''
     
     margin-left: 3px;
   }
+
+  #temperature.cpu {
+    color: @text;
+
+    border-radius: 10px 0px 0px 10px;
+
+    border-bottom: 2px solid @pink;
+    border-left: 2px solid @pink;
+    border-top: 2px solid @pink;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  #temperature.gpu1 {
+    color: @text;
+    
+    border-bottom: 2px solid @pink;
+    border-top: 2px solid @pink;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  #temperature.gpu2 {    
+    color: @text;
+
+    border-radius: 0px 10px 10px 0px;
+
+    border-bottom: 2px solid @pink;
+    border-right: 2px solid @pink;
+    border-top: 2px solid @pink;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
 
   #tray {
     color: @text;

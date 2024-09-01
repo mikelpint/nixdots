@@ -3,6 +3,8 @@ _: {
     ./cpu
     ./display
     ./gpu
+    ./input
+    ./output
     ./storage
     ./usb
   ];

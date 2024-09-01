@@ -10,6 +10,10 @@ in
       gsettings-desktop-schemas
       dconf-editor
     ];
+
+    sessionVariables = {
+      GTK_THEME = "catppuccin-${flavor}-${accent}";
+    };
   };
 
   gtk = {
@@ -20,6 +24,12 @@ in
     };
 
     gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+    };
+
+    gtk4 = {
       extraConfig = {
         gtk-application-prefer-dark-theme = true;
       };

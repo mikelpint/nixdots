@@ -17,6 +17,11 @@
 
             drop_shadow = lib.mkForce false;
           };
+
+          bindle = [
+            ", XF86MonBrightnessUp, exec, light -A 5"
+            ", XF86MonBrightnessDown, exec, light -U 5"
+          ];
         };
       };
     };

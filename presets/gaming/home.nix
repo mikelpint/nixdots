@@ -3,6 +3,6 @@ _: {
     ../../config/apps/mangohud/home.nix
     ../../config/apps/steam/home.nix
 
-    #../../config/tools/wine-discord-ipc-bridge
+    ../../config/tools/wine-discord-ipc-bridge/home.nix
   ];
 }

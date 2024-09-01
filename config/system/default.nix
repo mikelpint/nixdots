@@ -2,7 +2,6 @@
   imports = [
     ./dconf
     ./git
-    ./gnupg
     ./http
     ./hwutils
     ./nix-ld

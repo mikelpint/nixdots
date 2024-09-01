@@ -1,8 +1,10 @@
 {
   imports = [
-    #./clamav
+    ./age
+    ./clamav
     ./doas
     ./firejail
+    ./gnupg
     ./kernel
     ./pam
     ./polkit

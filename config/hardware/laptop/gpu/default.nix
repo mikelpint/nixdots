@@ -1,8 +1,4 @@
-_:
-let
-  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
-{
+_: {
   imports = [
     ./amd
     ./nvidia

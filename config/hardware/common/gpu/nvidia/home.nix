@@ -1,10 +1,17 @@
-{ osConfig, lib, ... }:
 {
-  wayland = lib.mkIf (builtins.elem "nvidia" osConfig.services.xserver.videoDrivers) {
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  ifnvidia = lib.mkIf (builtins.elem "nvidia" osConfig.services.xserver.videoDrivers);
+in
+{
+  wayland = ifnvidia {
     windowManager = {
       hyprland = {
-        nvidiaPatches = true;
-
         settings = {
           envd = [
             "LIBVA_DRIVER_NAME,nvidia"
@@ -28,5 +35,16 @@
         };
       };
     };
+  };
+
+  home = ifnvidia {
+    packages = with pkgs; [
+      (writeShellScriptBin "waybar_gpu_json" ''
+        text=''$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
+        tooltip=''$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits)
+
+        printf '{\"text\": "%s", \"tooltip\": "%s"}' "''${text}" "''${tooltip}"
+      '')
+    ];
   };
 }
