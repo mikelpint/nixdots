@@ -1,0 +1,3 @@
+{
+  imports = [ ./forti/home.nix ];
+}

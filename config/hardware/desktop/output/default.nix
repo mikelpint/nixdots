@@ -1,3 +1,6 @@
 _: {
-  imports = [ ./printer ];
+  imports = [
+    ./audio
+    ./printer
+  ];
 }

@@ -1,0 +1,3 @@
+{
+  imports = [ ./audio/home.nix ];
+}

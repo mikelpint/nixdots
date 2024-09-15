@@ -20,7 +20,9 @@
     ../../presets/video
   ];
 
-  networking = {
-    hostName = "laptopmikel";
+  age = {
+    rekey = {
+      hostPubkey = builtins.readFile ./host.pub;
+    };
   };
 }

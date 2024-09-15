@@ -22,4 +22,15 @@
 
     ../../config/virtualization/libvirtd/vm/win11
   ];
+
+  age = {
+    identityPaths = [ "/home/mikel/.ssh/id_rsa" ];
+
+    rekey = {
+      hostPubkey = builtins.readFile ./host.pub;
+      masterIdentities = [
+        "/home/mikel/.ssh/id_rsa"
+      ];
+    };
+  };
 }

@@ -2,31 +2,12 @@
   config,
   lib,
   self,
+  pkgs,
   ...
 }:
 
 let
-  host = lib.strings.removeSuffix "mikel" config.networking.hostName;
-
-  hashes = {
-    desktop = {
-      wg-proton-fr-196 = "671d56d2f13b9c65d9bf584442297594";
-      wg-proton-es-88 = "1162eb8286cd9811d51c8721e814356b";
-      wg-proton-gr-1 = "116ca86651db1ce98c3d90c36e1af212";
-      wg-proton-uk-400 = "3c874ac72814da21c329efacf74a6900";
-      wg-proton-de-200 = "5bb6a5e1c2b83ca42c347e434ee49c6d";
-      wg-proton-us-ny-175 = "15fc9cce68951b9e1415f12c57510f5c";
-    };
-
-    laptop = {
-      wg-proton-fr-196 = "671d56d2f13b9c65d9bf584442297594";
-      wg-proton-es-88 = "1162eb8286cd9811d51c8721e814356b";
-      wg-proton-gr-1 = "116ca86651db1ce98c3d90c36e1af212";
-      wg-proton-uk-400 = "3c874ac72814da21c329efacf74a6900";
-      wg-proton-de-200 = "5bb6a5e1c2b83ca42c347e434ee49c6d";
-      wg-proton-us-ny-175 = "15fc9cce68951b9e1415f12c57510f5c";
-    };
-  };
+  listenPort = 51820;
 
   interfaces = {
     wg-proton-fr-196 = {
@@ -179,16 +160,64 @@ in
 {
   age = {
     secrets = builtins.mapAttrs (name: value: {
-      # rekeyFile = "${self}/secrets/rekeyed/${host}/${name}.age";
-      rekeyFile = "${self}/secrets/rekeyed/${host}/${hashes.${host}.${name}}-${name}.age";
-      # rekeyFile = "/etc/nixos/secrets/rekeyed/${host}/${hashes.${host}.${name}}-${name}.age";
-      # rekeyFile = "/etc/nixos/secrets/rekeyed/${host}/${name}.age";
+      rekeyFile = "${self}/secrets/${name}.age";
     }) interfaces;
   };
 
   networking = {
-    wg-quick = {
-      inherit interfaces;
+    enableIPv6 = lib.mkForce true;
+
+    firewall = {
+      allowedUDPPorts = [ listenPort ];
     };
+
+    wg-quick = {
+      interfaces = builtins.mapAttrs (
+        name: value:
+        value
+        // {
+          inherit listenPort;
+
+          postUp =
+            lib.lists.foldr
+              (a: b: ''
+                ${a}
+                ${b}
+              '')
+              ""
+              (
+                builtins.map (x: ''
+                  ${pkgs.iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
+                  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o eth0 -j MASQUERADE
+                '') value.address
+              );
+
+          preDown =
+            lib.lists.foldr
+              (a: b: ''
+                ${a}
+                ${b}
+              '')
+              ""
+              (
+                builtins.map (x: ''
+                  ${pkgs.iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
+                  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o eth0 -j MASQUERADE
+                '') value.address
+              );
+        }
+      ) interfaces;
+    };
+
+    /*
+      wireguard = {
+        interfaces = builtins.mapAttrs (name: value: {
+          inherit listenPort;
+          privateKeyFile = value.privateKeyFile;
+          ips = value.address;
+          peers = value.peers;
+        }) interfaces;
+      };
+    */
   };
 }

@@ -12,6 +12,10 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
+    nixpkgs-small = {
+      url = "github:NixOs/nixpkgs/nixos-unstable-small";
+    };
+
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -151,6 +155,7 @@
       nixpkgs,
       lix-module,
       nixpkgs-stable,
+      nixpkgs-small,
       nur,
       hyprland,
       home-manager,
@@ -165,7 +170,7 @@
 
       hosts = [
         "desktop"
-        "laptop"
+        # "laptop"
       ];
     in
     {

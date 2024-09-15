@@ -6,6 +6,7 @@ _: {
     ./gpu/home.nix
     ./input/home.nix
     ./memory/home.nix
+    ./output/home.nix
     ./storage/home.nix
   ];
 }

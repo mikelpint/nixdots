@@ -1,0 +1,14 @@
+{
+    "buffer_line_height": {
+        "custom": 1.5
+    },
+
+    "current_line_highlight": "gutter",
+
+    "preferred_line_length": 120,
+    "soft_wrap": "prefer_line",
+    "show_wrap_guides": true,
+    "wrap_guides": [
+        120
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "telemetry": {
+        "diagnostics": false,
+        "metrics": false
+    }
+}

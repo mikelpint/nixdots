@@ -32,6 +32,7 @@
     ./env/home.nix
     ./fonts/home.nix
     ./graphics/home.nix
+    ./net/home.nix
     ./security/home.nix
     ./services/home.nix
     ./tools/home.nix

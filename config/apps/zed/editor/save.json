@@ -1,0 +1,6 @@
+{
+    "autosave": "off",
+
+    "ensure_final_newline_on_save": true,
+    "remove_trailing_whitespace_on_save": true
+}

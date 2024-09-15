@@ -105,6 +105,8 @@
         "rw"
         "users"
         "nofail"
+        "rw"
+        "exec"
         "x-gvfs-show"
       ];
     };

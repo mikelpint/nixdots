@@ -1,5 +1,8 @@
 {
-  imports = [ ./if ];
+  imports = [
+    ./if
+    ./mac
+  ];
 
   networking = {
     hostName = "laptopmikel";

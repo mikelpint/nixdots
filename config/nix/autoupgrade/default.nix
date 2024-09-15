@@ -48,6 +48,10 @@
         "wezterm"
         "--update-input"
         "nix-gaming"
+        "--update-input"
+        "agenix-rekey"
+        "--update-input"
+        "nixpkgs-small"
 
         "--commit-lock-file"
       ];

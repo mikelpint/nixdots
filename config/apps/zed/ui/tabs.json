@@ -1,0 +1,11 @@
+{
+    "tab_bar": {
+        "show": false,
+        "show_nav_history_buttons": true
+    },
+    "tabs": {
+        "close_position": "right",
+        "file_icons": true,
+        "git_status": true
+    }
+}

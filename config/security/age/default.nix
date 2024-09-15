@@ -18,14 +18,14 @@
   };
 
   age = {
-    ageBin = "${pkgs.rage}/bin/rage";
-
     rekey = {
+      agePlugins = with pkgs; [
+        age-plugin-yubikey
+        age-plugin-fido2-hmac
+      ];
+
       masterIdentities = [
-        {
-          identity = "${self}/config/security/age/yubikey.pub";
-          pubkey = "age1yubikey1qgx4wem5rcv65tn0atrn52pqcp9xa2t07hzf440zfyjeputnj7xzzh6xq9x";
-        }
+        ./yubikey.pub
       ];
 
       storageMode = "local";

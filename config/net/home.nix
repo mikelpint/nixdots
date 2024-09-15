@@ -1,0 +1,3 @@
+{
+  imports = [ ./vpn/home.nix ];
+}

@@ -57,6 +57,10 @@ in
           with pkgs;
           with xorg;
           [
+            icu.dev
+            libdecor
+            glfw
+
             pcsclite
 
             libGL

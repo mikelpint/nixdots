@@ -13,8 +13,4 @@
     ./vpn
     ./wpa_supplicant
   ];
-
-  networking = {
-    hostName = lib.mkDefault "mikel";
-  };
 }

@@ -1,0 +1,10 @@
+{
+    "scrollbar": {
+        "show": "never",
+        "cursors": true,
+        "git_diff": true,
+        "search_results": true,
+        "selected_symbol": true,
+        "diagnostics": true
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "show_whitespaces": "all",
+
+    "indent_guides": {
+        "enabled": true,
+        "line_width": 1,
+        "active_line_width": 1,
+        "coloring": "fixed",
+        "background_coloring": "disabled"
+    },
+    "hard_tabs": false,
+    "tab_size": 4
+}

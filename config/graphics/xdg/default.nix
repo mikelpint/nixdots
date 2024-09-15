@@ -1,7 +1,9 @@
 { inputs, pkgs, ... }:
 {
   environment = {
-    systemPackages = [ pkgs.xdg-desktop-portal-hyprland ];
+    systemPackages = [
+      inputs.nixpkgs-small.legacyPackages."${pkgs.system}".xdg-desktop-portal-hyprland
+    ];
   };
 
   xdg = {
@@ -21,7 +23,6 @@
 
       extraPortals = with pkgs; [
         xdg-desktop-portal-gtk
-        #xdg-desktop-portal-hyprland
       ];
     };
   };

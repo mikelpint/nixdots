@@ -367,5 +367,12 @@ in
         "macvtap1@virbr0"
       ];
     };
+
+    networkmanager = {
+      unmanaged = [
+        "virbr0"
+        "macvtap1@virbr0"
+      ];
+    };
   };
 }

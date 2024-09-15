@@ -1,0 +1,35 @@
+{
+    "enable_language_server": true,
+
+    "lsp": {
+        "tailwindcss-language-server": {
+            "settings": {
+                "classAttributes": ["class", "className", "ngClass", "styles"]
+            }
+        },
+        "typescript-language-server": {
+            "preferences": {
+                "includeInlayParameterNameHints": "all",
+                "includeInlayParameterNameHintsWhenArgumentMatchesName": true,
+                "includeInlayFunctionParameterTypeHints": true,
+                "includeInlayVariableTypeHints": true,
+                "includeInlayVariableTypeHintsWhenTypeMatchesName": true,
+                "includeInlayPropertyDeclarationTypeHints": true,
+                "includeInlayFunctionLikeReturnTypeHints": true,
+                "includeInlayEnumMemberValueHints": true
+            }
+        }
+    },
+
+    "languages": {
+        "TypeScript": {
+            "language_servers": ["biome", "!eslint", "!prettier", "..."],
+            "inlay_hints": {
+                "enabled": true,
+                "show_parameter_hints": false,
+                "show_other_hints": true,
+                "show_type_hints": true
+            }
+        }
+    }
+}
