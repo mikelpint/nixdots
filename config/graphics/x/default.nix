@@ -20,12 +20,12 @@
 
       settings = {
         default_session = {
-          command = "hyprland";
+          command = "Hyprland";
           user = "mikel";
         };
 
         initial_session = {
-          command = "hyprland";
+          command = "Hyprland";
           user = "mikel";
         };
       };

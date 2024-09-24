@@ -10,6 +10,14 @@ in
   };
 
   programs = {
+    mangohud = {
+      settingsPerApplication = {
+        wezterm = {
+          no_display = true;
+        };
+      };
+    };
+
     wezterm = {
       enable = true;
       enableZshIntegration = true;
