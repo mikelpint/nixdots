@@ -1,3 +1,1 @@
-{
-  imports = [ ./forti/home.nix ];
-}
+{ imports = [ ./forti/home.nix ]; }

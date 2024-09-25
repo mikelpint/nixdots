@@ -1,10 +1,1 @@
-{
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-  };
-}
+_: { imports = [ ./flakes ]; }

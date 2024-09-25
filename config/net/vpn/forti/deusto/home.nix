@@ -56,7 +56,7 @@
           --pppd-use-peerdns=1 \
           & disown
       '')
-      (writeShellScriptBin ''dspace'' ''
+      (writeShellScriptBin "dspace" ''
         if [[ -z $1 ]]
         then
           echo "The OTP code is needed"

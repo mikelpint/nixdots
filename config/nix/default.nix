@@ -1,11 +1,12 @@
-{
+_: {
   imports = [
     ./autoupgrade
     ./cachix
     ./features
     ./gc
+    ./lang
     ./manix
-    ./nixfmt
     ./pkgs
+    ./store
   ];
 }

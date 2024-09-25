@@ -1,6 +1,7 @@
 _: {
   imports = [
-    ../../config/apps/insomnia/home.nix
+    ../../config/apps/bruno/home.nix
+    ../../config/apps/figma/home.nix
     ../../config/apps/intellij/home.nix
     ../../config/apps/mongodb-compass/home.nix
     ../../config/apps/vscode/home.nix

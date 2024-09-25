@@ -13,8 +13,6 @@
         copyKernels = true;
       };
     };
-
-    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
   };
 
   services = {

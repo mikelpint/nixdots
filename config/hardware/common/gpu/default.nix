@@ -52,7 +52,7 @@ in
 
   environment = {
     sessionVariables = {
-      LD_LIBRARY_PATH = lib.mkForce ''$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
+      LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
         pkgs.lib.makeLibraryPath (
           with pkgs;
           with xorg;
@@ -80,7 +80,7 @@ in
             libXrandr
           ]
         )
-      }:/run/opengl-driver/lib'';
+      }:/run/opengl-driver/lib";
     };
   };
 }

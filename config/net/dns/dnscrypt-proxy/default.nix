@@ -40,7 +40,9 @@
       };
     };
 
-    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable { enable = lib.mkForce false; };
+    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable {
+      enable = lib.mkForce false;
+    };
   };
 
   systemd = {

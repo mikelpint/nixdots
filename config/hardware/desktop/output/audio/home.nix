@@ -1,3 +1,1 @@
-{
-  imports = [ ./g533/home.nix ];
-}
+{ imports = [ ./g533/home.nix ]; }

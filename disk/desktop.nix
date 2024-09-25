@@ -3,6 +3,24 @@
 # Installed on a Samsung 990 Pro 2TB NVMe SSD
 # NO swap (80 GB RAM is more than enough)
 # Unencrypted
+# Layout:
+#  - Empty, 1 MB
+#  - ESP, 1 GB
+#  - ZFS, the rest
+#    - Datasets:
+#      - reserved, none, 200 GB
+#       - user, none
+#         - home, /home
+#           - mikel, /home/mikel
+#           - root, /home/root
+#       - system, none
+#         - root, /
+#         - nix, /nix
+#         - var, /var
+#      - tmp, /tmp
+#      - libvirt, /libvirt
+#    - Volumes:
+#      - libvirt/windows, 500 GB
 
 {
   device ? throw "No disk device.",
@@ -119,25 +137,17 @@ in
               };
             };
 
-            "system/nix" = {
-              type = "zfs_fs";
-              mountpoint = "/nix";
-              options = {
-                "com.sun:auto-snapshot" = "false";
-              };
-            };
-
-            tmp = {
-              type = "zfs_fs";
-              mountpoint = "/tmp";
-              options = {
-                "com.sun:auto-snapshot" = "false";
-              };
-            };
-
             "system/root" = {
               type = "zfs_fs";
               mountpoint = "/";
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
+            };
+
+            "system/nix" = {
+              type = "zfs_fs";
+              mountpoint = "/nix";
               options = {
                 "com.sun:auto-snapshot" = "false";
               };
@@ -148,6 +158,14 @@ in
               mountpoint = "/var";
               options = {
                 "com.sun:auto-snapshot" = "true";
+              };
+            };
+
+            tmp = {
+              type = "zfs_fs";
+              mountpoint = "/tmp";
+              options = {
+                "com.sun:auto-snapshot" = "false";
               };
             };
 

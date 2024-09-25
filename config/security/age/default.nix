@@ -24,9 +24,7 @@
         age-plugin-fido2-hmac
       ];
 
-      masterIdentities = [
-        ./yubikey.pub
-      ];
+      masterIdentities = [ ./yubikey.pub ];
 
       storageMode = "local";
       localStorageDir = "${self}/secrets/rekeyed/${lib.strings.removeSuffix "mikel" config.networking.hostName}";

@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
   environment = {
-    systemPackages = with pkgs; [
-      lsof
-    ];
+    systemPackages = with pkgs; [ lsof ];
   };
 }

@@ -28,9 +28,7 @@
 
     rekey = {
       hostPubkey = builtins.readFile ./host.pub;
-      masterIdentities = [
-        "/home/mikel/.ssh/id_rsa"
-      ];
+      masterIdentities = [ "/home/mikel/.ssh/id_rsa" ];
     };
   };
 }

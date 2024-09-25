@@ -5,7 +5,7 @@
     file = {
       "firefox-sync" = {
         target = "/home/mikel/.local/bin/firefox-sync.sh.source";
-        onChange = ''cat /home/mikel/.local/bin/firefox-sync.sh.source > /home/mikel/.local/bin/firefox-sync.sh && chmod +x /home/mikel/.local/bin/firefox-sync.sh'';
+        onChange = "cat /home/mikel/.local/bin/firefox-sync.sh.source > /home/mikel/.local/bin/firefox-sync.sh && chmod +x /home/mikel/.local/bin/firefox-sync.sh";
         text = ''
           #!/bin/sh
 

@@ -3,6 +3,7 @@ _: {
     ../../config/apps/bitwarden/home.nix
     ../../config/apps/easyeffects/home.nix
     ../../config/apps/firefox/home.nix
+    ../../config/apps/gedit/home.nix
     ../../config/apps/libreoffice/home.nix
     ../../config/apps/nautilus/home.nix
     ../../config/apps/qalculate/home.nix

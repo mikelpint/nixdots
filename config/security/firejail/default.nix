@@ -5,6 +5,16 @@
       enable = true;
 
       wrappedBinaries = {
+        armcord = {
+          executable = "${lib.getBin pkgs.armcord}/bin/armcord";
+          profile = "${pkgs.firejail}/etc/firejail/discord.profile";
+        };
+
+        bruno = {
+          executable = "${lib.getBin pkgs.bruno}/bin/bruno";
+          profile = "${pkgs.firejail}/etc/firejail/insomnia.profile";
+        };
+
         discord = {
           executable = "${lib.getBin pkgs.discord}/bin/discord";
           profile = "${pkgs.firejail}/etc/firejail/discord.profile";

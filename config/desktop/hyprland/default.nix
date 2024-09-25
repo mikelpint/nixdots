@@ -57,7 +57,9 @@ in
               (
                 a: b:
                 !(builtins.elem a
-                  ((import ./bar) { inherit pkgs; }).wayland.windowManager.hyprland.settings.exec-once
+                  ((import ./bar) {
+                    inherit pkgs;
+                  }).wayland.windowManager.hyprland.settings.exec-once
                 )
               )
               (
