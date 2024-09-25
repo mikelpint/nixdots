@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  lib,
-  ...
-}:
-{
+_: {
   imports = [
     ./hardware-configuration.nix
 
@@ -21,8 +14,11 @@
   ];
 
   age = {
+    identityPaths = [ "/home/mikel/.ssh/id_ed25519_sk" ];
+
     rekey = {
       hostPubkey = builtins.readFile ./host.pub;
+      masterIdentities = [ "/home/mikel/.ssh/id_ed25519_sk" ];
     };
   };
 }

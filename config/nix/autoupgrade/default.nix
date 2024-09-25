@@ -52,6 +52,8 @@
         "agenix-rekey"
         "--update-input"
         "nixpkgs-small"
+        "--update-input"
+        "lanzaboote"
 
         "--commit-lock-file"
       ];

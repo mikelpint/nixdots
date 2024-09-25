@@ -1,9 +1,12 @@
+{ lib, ... }:
 {
+  imports = [ ./memtest86 ];
+
   boot = {
     loader = {
       systemd-boot = {
-        enable = false;
-        editor = false;
+        enable = lib.mkDefault false;
+        editor = lib.mkDefault false;
       };
     };
   };

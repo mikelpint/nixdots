@@ -1,10 +1,12 @@
-{
-  imports = [ ./selinux ];
+_: {
+  imports = [
+    ./apparmor
+    # ./selinux
+  ];
 
   boot = {
     kernelParams = [
-      "lsm=landlock,lockdown,yama,integrity,bpf,tomoyo,selinux"
-      "security=selinux"
+      "lsm=landlock,lockdown,yama,integrity,safesetid,apparmor,bpf"
     ];
   };
 }

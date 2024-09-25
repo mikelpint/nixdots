@@ -18,11 +18,25 @@
 
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     flake-utils = {
       url = "github:numtide/flake-utils";
+    };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
 
     home-manager = {
@@ -163,6 +177,7 @@
       nix-ld-rs,
       catppuccin,
       nix-gaming,
+      lanzaboote,
       ...
     }@inputs:
     let
@@ -187,6 +202,8 @@
             lix-module.nixosModules.default
 
             ./hosts/${host}/configuration.nix
+
+            lanzaboote.nixosModules.lanzaboote
 
             catppuccin.nixosModules.catppuccin
 
