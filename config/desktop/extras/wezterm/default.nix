@@ -55,6 +55,7 @@ in
           term = "xterm-256color",
           use_fancy_tab_bar = false,
           warn_about_missing_glyphs = false,
+          window_close_confirmation = 'NeverPrompt',
           window_decorations = "RESIZE",
           window_background_opacity = 0.98,
           window_padding = {
