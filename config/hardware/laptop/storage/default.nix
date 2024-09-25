@@ -1,14 +1,11 @@
-{
-  self,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 
 {
   imports = [
     ./hdd
     ./ssd
 
+    ../../../boot/luks
     ../../../boot/fs/btrfs
   ];
 
@@ -21,7 +18,7 @@
   };
 
   boot = {
-    kernelParams = [ "resume_offset=533760" ];
+    kernelParams = [ "resume_offset=269568" ];
     resumeDevice = "/dev/disk/by-label/nixos";
 
     initrd = {

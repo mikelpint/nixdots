@@ -16,25 +16,56 @@
     "nvme"
     "xhci_pci"
     "usbhid"
-    "uas"
-    "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/0dfddc3e-604f-4455-8f46-c3d818c890cc";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=root" ];
   };
 
+  boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
+
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/8C75-B777";
+    device = "/dev/disk/by-uuid/41A4-CA82";
     fsType = "vfat";
     options = [
       "fmask=0022"
       "dmask=0022"
     ];
+  };
+
+  fileSystems."/home/mikel" = {
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=mikel" ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=nix" ];
+  };
+
+  fileSystems."/swap" = {
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=swap" ];
+  };
+
+  fileSystems."/tmp" = {
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=tmp" ];
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+    fsType = "btrfs";
+    options = [ "subvol=log" ];
   };
 
   swapDevices = [ ];

@@ -1,5 +1,7 @@
 # https://github.com/fufexan/nix-gaming/blob/master/modules/pipewireLowLatency.nix
 
+{ pkgs, ... }:
+
 let
   quantum = 32;
   rate = 96000;
@@ -98,43 +100,43 @@ in
           };
         };
       };
-    };
 
-    wireplumber = {
-      configPackages =
-        let
-          matches =
-            toLua
-              {
-                multiline = false;
-                indent = false;
-              }
-              [
+      wireplumber = {
+        configPackages =
+          let
+            matches =
+              builtins.toLua
+                {
+                  multiline = false;
+                  indent = false;
+                }
                 [
                   [
-                    "node.name"
-                    "matches"
-                    "alsa_output.*"
+                    [
+                      "node.name"
+                      "matches"
+                      "alsa_output.*"
+                    ]
                   ]
-                ]
-              ];
+                ];
 
-          apply_properties = toLua { } {
-            "audio.format" = "S32LE";
-            "audio.rate" = rate * 2;
-            "api.alsa.period-size" = 2;
-          };
-        in
-        [
-          (pkgs.writeTextDir "share/lowlatency.lua.d/99-alsa-lowlatency.lua" ''
-            alsa_monitor.rules = {
-              {
-                matches = ${matches};
-                apply_properties = ${apply_properties};
+            apply_properties = builtins.toLua { } {
+              "audio.format" = "S32LE";
+              "audio.rate" = rate * 2;
+              "api.alsa.period-size" = 2;
+            };
+          in
+          [
+            (pkgs.writeTextDir "share/lowlatency.lua.d/99-alsa-lowlatency.lua" ''
+              alsa_monitor.rules = {
+                {
+                  matches = ${matches};
+                  apply_properties = ${apply_properties};
+                }
               }
-            }
-          '')
-        ];
+            '')
+          ];
+      };
     };
   };
 }

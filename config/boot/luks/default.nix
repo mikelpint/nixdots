@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   boot = {
     initrd = {
@@ -13,7 +14,7 @@
       };
 
       luks = {
-        cryptopModules = [
+        cryptoModules = [
           "aes"
           "aes_generic"
           "blowfish"

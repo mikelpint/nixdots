@@ -12,6 +12,7 @@ _: {
     ./security
     ./services
     ./time
+    ./tools
     ./system
     ./users
     ./virtualization

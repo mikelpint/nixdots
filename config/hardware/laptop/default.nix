@@ -4,7 +4,7 @@ _: {
   imports = [
     ../common
 
-    ../../boot/secureboot
+    #../../boot/secureboot
 
     ./audio
     ./bluetooth

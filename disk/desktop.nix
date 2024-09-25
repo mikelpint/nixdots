@@ -1,4 +1,4 @@
-# sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/desktop.nix --arg device '"/dev/nvme0n1"'
+# nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/desktop.nix --arg device /dev/nvme0n1
 
 # Installed on a Samsung 990 Pro 2TB NVMe SSD
 # NO swap (80 GB RAM is more than enough)

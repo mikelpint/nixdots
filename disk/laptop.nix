@@ -1,4 +1,4 @@
-# sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/laptop.nix --arg device '"/dev/nvme0n1"'
+# nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./disk/laptop.nix --arg device /dev/nvme0n1 --arg passwd ./luks.key
 
 # - Empty, 1 MB
 # - Partition 2: 1 GB, ESP

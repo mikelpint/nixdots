@@ -2,7 +2,7 @@ _:
 
 let
   "custom/launcher" = (import ../../modules/custom/launcher.nix)."custom/launcher";
-  "custom/powermenu" = (import ../../modules/custom/powermenu.nix)."custom/powermenu";
+  #"custom/powermenu" = (import ../../modules/custom/powermenu.nix)."custom/powermenu";
 
   "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
 
@@ -43,7 +43,7 @@ in
     ];
 
     inherit "custom/launcher";
-    inherit "custom/powermenu";
+    #inherit "custom/powermenu";
 
     inherit "hyprland/workspaces";
 

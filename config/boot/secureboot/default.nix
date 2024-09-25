@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
-  enviroment = {
+  environment = {
     systemPackages = with pkgs; [ sbctl ];
   };
 
