@@ -19,6 +19,12 @@
     home-manager = {
       enable = true;
     };
+
+    nix-index = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
   };
 
   nixpkgs = {

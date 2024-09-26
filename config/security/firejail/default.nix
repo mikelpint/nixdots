@@ -2,7 +2,7 @@
 {
   programs = {
     firejail = {
-      enable = true;
+      enable = false;
 
       wrappedBinaries = {
         armcord = {

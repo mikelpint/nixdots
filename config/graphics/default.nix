@@ -1,6 +1,6 @@
-{
+_: {
   imports = [
-    #./hidpi
+    ./hidpi
     ./x
     ./xdg
   ];

@@ -1,4 +1,4 @@
-{
+_: {
   imports = [
     ./mosh
     ./ssh

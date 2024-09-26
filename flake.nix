@@ -184,7 +184,7 @@
       inherit (inputs) hyprland nixpkgs;
 
       hosts = [
-        #"desktop"
+        "desktop"
         "laptop"
       ];
     in
