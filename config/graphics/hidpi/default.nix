@@ -9,7 +9,7 @@
   services = {
     displayManager = {
       sddm = {
-        enableHidpi = lib.mkkDefault true;
+        enableHidpi = lib.mkDefault true;
       };
     };
   };

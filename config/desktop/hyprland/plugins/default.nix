@@ -1,7 +1,7 @@
 _: {
   imports = [
-    ./csgo-vulkan-fix
-    ./hyprexpo
-    ./hyprtrails
+    #./csgo-vulkan-fix
+    #./hyprexpo
+    #./hyprtrails
   ];
 }

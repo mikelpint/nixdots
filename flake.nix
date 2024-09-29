@@ -230,6 +230,7 @@
                   };
                 };
 
+                #backupFileExtension = ''backup-${nixpkgs.lib.readFile "${nixpkgs.runCommand "timestamp" { env.when = builtins.currentTime; } "echo -n `date -d @$when +%Y-%m-%d_%H-%M-%S` > $out"}"}'';
                 backupFileExtension = "backup";
               };
             }

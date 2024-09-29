@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
@@ -27,7 +26,7 @@
     options = [ "subvol=root" ];
   };
 
-  boot.initrd.luks.devices."root".device = "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
+  boot.initrd.luks.devices."crypt".device = "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/41A4-CA82";

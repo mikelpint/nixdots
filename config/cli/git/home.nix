@@ -7,7 +7,7 @@
       userEmail = "mikelpint@protonmail.com";
 
       signing = {
-        key = "0x14C01046AE976275";
+        key = "0x18AE4D99146E63FA";
         signByDefault = true;
       };
 
@@ -20,7 +20,7 @@
           defaultBranch = "main";
 
           core = {
-            editor = "helix";
+            editor = "hx";
           };
 
           pull = {

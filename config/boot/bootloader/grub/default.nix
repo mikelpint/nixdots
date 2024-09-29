@@ -5,17 +5,17 @@
   boot = {
     loader = {
       grub = {
-        enable = true;
-        device = "nodev";
+        enable = lib.mkDefault true;
+        device = lib.mkDefault "nodev";
 
-        useOSProber = true;
+        useOSProber = lib.mkDefault true;
 
-        configurationLimit = 5;
+        configurationLimit = lib.mkDefault 5;
 
         efiSupport = true;
-        efiInstallAsRemovable = !(config.boot.loader.efi.canTouchEfiVariables or false);
+        efiInstallAsRemovable = lib.mkDefault false;
         gfxmodeEfi = lib.mkDefault "auto";
-        gfxpayloadEfi = "keep";
+        gfxpayloadEfi = lib.mkDefault "keep";
 
         catppuccin = {
           enable = true;

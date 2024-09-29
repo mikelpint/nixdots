@@ -1,5 +1,19 @@
-{ self, lib, ... }:
+{ lib, ... }:
 
+let
+  device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
+  fsType = "btrfs";
+  options = (
+    subvol: [
+      "compress=zstd:3"
+      "noatime"
+      "ssd"
+      "space_cache=v2"
+      "commit=120"
+      "subvol=${subvol}"
+    ]
+  );
+in
 {
   imports = [
     ./hdd
@@ -9,23 +23,15 @@
     ../../../boot/fs/btrfs
   ];
 
-  age = {
-    secrets = {
-      luks-passwd = {
-        rekeyFile = "${self}/secrets/luks-passwd.age";
-      };
-    };
-  };
-
   boot = {
     kernelParams = [ "resume_offset=269568" ];
-    resumeDevice = "/dev/disk/by-label/nixos";
+    resumeDevice = device;
 
     initrd = {
       luks = {
         devices = {
           crypt = {
-            device = lib.mkForce "/dev/disk/by-label/nixos";
+            device = lib.mkForce "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
           };
         };
       };
@@ -39,7 +45,49 @@
   };
 
   fileSystems = {
+    "/boot" = {
+      device = "/dev/disk/by-uuid/41A4-CA82";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
+
+    "/" = {
+      inherit device;
+      inherit fsType;
+      options = options "root";
+    };
+
+    "/home/mikel" = {
+      inherit device;
+      inherit fsType;
+      options = options "mikel";
+    };
+
+    "/nix" = {
+      inherit device;
+      inherit fsType;
+      options = options "nix";
+    };
+
+    "/swap" = {
+      inherit device;
+      inherit fsType;
+      options = options "swap";
+    };
+
+    "/tmp" = {
+      inherit device;
+      inherit fsType;
+      options = options "tmp";
+    };
+
     "/var/log" = {
+      inherit device;
+      inherit fsType;
+      options = options "log";
       neededForBoot = true;
     };
 

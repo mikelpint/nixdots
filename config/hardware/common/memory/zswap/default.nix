@@ -1,4 +1,4 @@
-{
+_: {
   imports = [ ../../../../boot/kernel/patches/zstd ];
 
   boot = {

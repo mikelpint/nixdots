@@ -1,5 +1,18 @@
-{ config, ... }:
 {
+  self,
+  config,
+  lib,
+  ...
+}:
+{
+  #age = {
+  #  secrets = {
+  #    luks-passwd = {
+  #      rekeyFile = "${self}/secrets/luks-passwd.age";
+  #    };
+  #  };
+  #};
+
   boot = {
     initrd = {
       kernelModules = [
@@ -10,7 +23,7 @@
       ];
 
       systemd = {
-        enable = true;
+        enable = lib.mkForce true;
       };
 
       luks = {
@@ -30,18 +43,18 @@
           "algif_skcipher"
         ];
 
-        yubikeySupport = true;
+        #yubikeySupport = true;
 
         devices = {
           crypt = {
             allowDiscards = true;
-            keyFile = config.age.secrets.luks-passwd.path;
+            #keyFile = config.age.secrets.luks-passwd.path;
 
-            yubikey = {
-              slot = 2;
-              twoFactor = false;
-              gracePeriod = 500;
-            };
+            #yubikey = {
+            #  slot = 2;
+            #  twoFactor = false;
+            #  gracePeriod = 500;
+            #};
           };
         };
       };

@@ -5,7 +5,6 @@
 {
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_zen;
-    # kernelPackages = lib.mkForce config.boot.zfs.package.latestCompatibleLinuxPackages;
   };
 
   imports = [

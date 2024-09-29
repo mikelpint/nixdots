@@ -1,1 +1,5 @@
-{ imports = [ ./vpn/home.nix ]; }
+{
+  imports = [
+    # ./vpn/home.nix
+  ];
+}

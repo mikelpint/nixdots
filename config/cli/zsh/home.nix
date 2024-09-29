@@ -35,7 +35,6 @@ in
 
         strategy = [
           "history"
-          "completion"
         ];
       };
 
@@ -53,7 +52,7 @@ in
           "cursor"
           "regexp"
           "root"
-          "line"
+          #"line"
         ];
 
         patterns = {

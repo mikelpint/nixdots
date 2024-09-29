@@ -11,6 +11,7 @@ let
     ./apps
     ./bar
     ./binds
+    ./clipboard
     ./cursor
     ./debug
     ./decoration

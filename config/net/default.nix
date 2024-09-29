@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+_: {
   imports = [
     ./dhcp
     ./dns
