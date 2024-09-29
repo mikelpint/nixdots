@@ -1,12 +1,18 @@
 { pkgs, ... }:
 
 {
+  environment = {
+    systemPackages = with pkgs; [
+      pinentry-gnome3
+    ];
+  };
+
   programs = {
     gnupg = {
       agent = {
         enable = true;
         enableSSHSupport = true;
-        pinentryPackage = pkgs.pinentry-gnome3;
+        pinentryPackage = pkgs.pinentry-curses;
       };
     };
   };

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home = {
     packages = with pkgs; [
@@ -10,7 +10,46 @@
     windowManager = {
       hyprland = {
         settings = {
-          exec-once = [ "wl-paste --watch cliphist store" ];
+          exec-once = lib.lists.flatten (
+            lib.attrsets.mapAttrsToList
+              (
+                main: subs:
+                builtins.map (type: "wl-paste --type ${type} --watch cliphist store") (
+                  builtins.map (sub: "${main}/${sub}") (if builtins.isList subs then subs else [ subs ]) ++ [ main ]
+                )
+              )
+              {
+                "text" = [
+                  "plain"
+                  "plain;charset=utf-8"
+                  "html"
+                  "_moz_htmlcontext"
+                  "_moz_htmlinfo"
+                  "x-moz-url-priv"
+                  "ico"
+                ];
+
+                "image" = [
+                  "jpeg"
+                  "png"
+                  "tiff"
+                  "icon"
+                  "ico"
+                  "vnd.microsoft.icon"
+                  "x-win-bitmap"
+                  "x-ico"
+                  "x-icon"
+                  "x-MS-bmp"
+                  "x-bmp"
+                  "bmp"
+                  "gif"
+                ];
+
+                "application" = [
+                  "ico"
+                ];
+              }
+          );
 
           bind = [ "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy" ];
         };

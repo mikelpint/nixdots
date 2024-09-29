@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+  home = {
+    packages = with pkgs; [
+      pinentry-gnome3
+    ];
+  };
+
   programs = {
     gpg = {
       enable = true;
@@ -15,7 +21,7 @@
     gpg-agent = {
       enable = true;
       enableSshSupport = true;
-      pinentryPackage = pkgs.pinentry-gnome3;
+      pinentryPackage = pkgs.pinentry-curses;
     };
   };
 }
