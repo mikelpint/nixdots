@@ -47,8 +47,6 @@
         "--update-input"
         "wezterm"
         "--update-input"
-        "nix-gaming"
-        "--update-input"
         "agenix-rekey"
         "--update-input"
         "nixpkgs-small"

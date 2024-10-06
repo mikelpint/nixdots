@@ -4,8 +4,9 @@
       links = {
         "10-wifi" = {
           matchConfig = {
-            Name = "wlp3s0";
+            MACAddress = "ec:2e:98:d4:01:29";
           };
+
           linkConfig = {
             Name = "wifi";
           };

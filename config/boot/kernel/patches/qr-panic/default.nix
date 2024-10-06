@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   nixpkgs = {
     overlays = [
@@ -8,6 +13,8 @@
             structuredExtraConfig = with lib.kernel; {
               DRM_PANIC_SCREEN_QR_CODE = yes;
             };
+
+            ignoreErrors = true;
           }
         );
       })

@@ -1,6 +1,6 @@
 # https://github.com/fufexan/nix-gaming/blob/master/modules/pipewireLowLatency.nix
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   quantum = 32;
@@ -105,7 +105,7 @@ in
         configPackages =
           let
             matches =
-              builtins.toLua
+              lib.generators.toLua
                 {
                   multiline = false;
                   indent = false;
@@ -120,7 +120,7 @@ in
                   ]
                 ];
 
-            apply_properties = builtins.toLua { } {
+            apply_properties = lib.generators.toLua { } {
               "audio.format" = "S32LE";
               "audio.rate" = rate * 2;
               "api.alsa.period-size" = 2;

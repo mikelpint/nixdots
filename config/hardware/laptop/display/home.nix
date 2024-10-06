@@ -4,7 +4,7 @@
     windowManager = {
       hyprland = {
         settings = {
-          monitor = lib.mkForce [ "eDP-1,1920x1080@60,0x0,1.5" ];
+          monitor = lib.mkForce [ "eDP-1,1920x1080@60,0x0,1.25" ];
 
           misc = {
             vfr = lib.mkForce true;

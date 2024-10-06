@@ -6,7 +6,7 @@ _: {
 
     ../../boot/secureboot
 
-    #./audio
+    ./audio
     ./bluetooth
     ./cpu
     ./display

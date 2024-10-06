@@ -12,7 +12,6 @@
       XDG_VIDEOS_DIR = "$XDG_DESKTOP_DIR/Videos";
 
       LESSHISTFILE = "$XDG_CACHE_HOME/less.history";
-      WGETRC = "$XDG_CONFIG_HOME/wgetrc";
     };
   };
 }

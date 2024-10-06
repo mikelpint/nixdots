@@ -4,8 +4,9 @@
       links = {
         "10-eth" = {
           matchConfig = {
-            Name = "enp2s0";
+            MACAddress = "7c:10:c9:25:5d:f4";
           };
+
           linkConfig = {
             Name = "eth";
           };

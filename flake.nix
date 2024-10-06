@@ -153,10 +153,6 @@
     wezterm = {
       url = "github:wez/wezterm?dir=nix";
     };
-
-    nix-gaming = {
-      url = "github:fufexan/nix-gaming";
-    };
   };
 
   outputs =
@@ -176,12 +172,13 @@
       spicetify-nix,
       nix-ld-rs,
       catppuccin,
-      nix-gaming,
       lanzaboote,
       ...
     }@inputs:
     let
       inherit (inputs) hyprland nixpkgs;
+
+      system = "x86_64-linux";
 
       hosts = [
         "desktop"
@@ -192,7 +189,7 @@
       nixosConfigurations = nixpkgs.lib.genAttrs hosts (
         host:
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
 
           specialArgs = {
             inherit inputs self hyprland;
@@ -230,7 +227,16 @@
                   };
                 };
 
-                #backupFileExtension = ''backup-${nixpkgs.lib.readFile "${nixpkgs.runCommand "timestamp" { env.when = builtins.currentTime; } "echo -n `date -d @$when +%Y-%m-%d_%H-%M-%S` > $out"}"}'';
+                # backupFileExtension = ''backup-${nixpkgs.lib.readFile "${
+                #   nixpkgs.legacyPackages."${system}".runCommand
+                #   "timestamp"
+                #   {
+                #     env = {
+                #       when = builtins.currentTime;
+                #     };
+                #   }
+                #   "echo -n `date -d @$when +%Y-%m-%d_%H-%M-%S` > $out"
+                # }"}'';
                 backupFileExtension = "backup";
               };
             }

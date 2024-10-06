@@ -6,6 +6,7 @@
       libarchive
       p7zip
       unzip
+      unrar
     ];
   };
 }
