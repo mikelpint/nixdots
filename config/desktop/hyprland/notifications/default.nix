@@ -1,16 +1,5 @@
 { pkgs, ... }:
 {
-  home = {
-    packages = with pkgs; [
-      (writeShellScriptBin "hyprsetup_notifications" ''
-        hyprctl dismissnotify
-
-        pkill dunst
-        dunst &
-      '')
-    ];
-  };
-
   wayland = {
     windowManager = {
       hyprland = {

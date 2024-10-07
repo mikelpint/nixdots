@@ -58,6 +58,11 @@ let
       ];
 in
 {
+  imports = [
+    ../../../desktop/hyprland/plugins/csgo-vulkan-fix
+    ../../../desktop/hyprland/plugins/hyprtrails
+  ];
+
   home = {
     sessionVariables = {
       SDL_VIDEODRIVER = "wayland,x11,windows";

@@ -13,8 +13,8 @@ _: {
     ../../config/apps/yubikey/home.nix
     ../../config/apps/zathura/home.nix
 
-    ../../config/cli/clipboard
+    ../../config/cli/clipboard/home.nix
 
-    ../../config/desktop
+    ../../config/desktop/home.nix
   ];
 }

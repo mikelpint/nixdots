@@ -85,14 +85,14 @@
       };
     };
 
-    hycov = {
-      url = "github:DreamMaoMao/hycov";
-      inputs = {
-        hyprland = {
-          follows = "hyprland";
-        };
-      };
-    };
+    # hyprgrass = {
+    #   url = "github:horriblename/hyprgrass?ref=refs/tags/v0.8.1";
+    #   inputs = {
+    #     hyprland = {
+    #       follows = "hyprland";
+    #     };
+    #   };
+    # };
 
     waybar-hyprland = {
       url = "github:hyprwm/hyprland";

@@ -1,9 +1,4 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
+{ lib, ... }:
 
 {
   home = lib.mkForce {

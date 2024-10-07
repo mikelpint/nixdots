@@ -7,7 +7,7 @@
       userEmail = "mikelpint@protonmail.com";
 
       signing = {
-        key = "0xE9392D102A568F9A";
+        key = "0xD78A0EF85709BB96!";
         signByDefault = true;
       };
 

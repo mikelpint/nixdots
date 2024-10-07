@@ -8,7 +8,8 @@
     ../../presets/social/home.nix
     ../../presets/video/home.nix
 
-    ../../config/desktop/extras/waybar/presets/desktop
+    ../../config/desktop/extra/waybar/presets/desktop/home.nix
+    ../../config/desktop/hyprland/wallpaper/swww
 
     ../../config/hardware/desktop/home.nix
   ];

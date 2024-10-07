@@ -7,7 +7,8 @@
     ../../presets/social/home.nix
     ../../presets/video/home.nix
 
-    ../../config/desktop/extras/waybar/presets/laptop
+    ../../config/desktop/extra/waybar/presets/laptop/home.nix
+    # ../../config/desktop/hyprland/wallpaper/hyprpaper
 
     ../../config/hardware/laptop/home.nix
   ];

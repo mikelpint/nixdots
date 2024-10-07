@@ -23,8 +23,8 @@
                   "plain"
                   "plain;charset=utf-8"
                   "html"
-                  "_moz_htmlcontext"
-                  "_moz_htmlinfo"
+                  # "_moz_htmlcontext"
+                  # "_moz_htmlinfo"
                   "x-moz-url-priv"
                   "ico"
                 ];

@@ -1,7 +1,3 @@
 _: {
-  imports = [
-    ./extras
-    ./hyprland
-    ./theme
-  ];
+  imports = [ ./extra ];
 }

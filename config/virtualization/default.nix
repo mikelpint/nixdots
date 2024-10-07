@@ -4,6 +4,7 @@
     ./kvm
     ./libvirtd
     ./spice
+    ./vagrant
     ./vbox
   ];
 }

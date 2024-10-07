@@ -1,9 +1,4 @@
-{
-  self,
-  config,
-  lib,
-  ...
-}:
+{ lib, ... }:
 {
   #age = {
   #  secrets = {
