@@ -5,6 +5,10 @@
 
       forwardAgent = true;
       hashKnownHosts = true;
+
+      extraConfig = ''
+        Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
+      '';
     };
   };
 

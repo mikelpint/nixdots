@@ -17,6 +17,18 @@
     configFile = {
       "mako/config" = {
         text = ''
+          default-timeout=5000
+          ignore-timeout=1
+
+          sort=-time
+          layer=overlay
+
+          border-size=2
+          border-radius=15
+
+          font=JetBrainsMono Nerd Font 12
+          max-icon-size=64
+
           background-color=#24273a
           text-color=#cad3f5
           border-color=#f5bde6
@@ -24,6 +36,7 @@
 
           [urgency=high]
           border-color=#f5a97f
+          default-timeout=0
         '';
       };
     };

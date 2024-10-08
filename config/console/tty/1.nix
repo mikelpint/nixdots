@@ -1,10 +1,17 @@
+{ pkgs, config, ... }:
 {
   systemd = {
     services = {
       "getty@tty1" = {
+        overrideStrategy = "asDropin";
+
         serviceConfig = {
-          ExecStart = "-/usr/bin/agetty --skip-login --nonewline --noissue --autologin mikel --noclear %I $TERM";
           Type = "idle";
+
+          ExecStart = [
+            ""
+            "-${pkgs.util-linux}/sbin/agetty agetty --login-program ${config.services.getty.loginProgram}  --autologin mikel --nonewline --noissue --noclear --keep-baud 115200,38400,9600 %I $TERM"
+          ];
         };
       };
     };

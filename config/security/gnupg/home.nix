@@ -1,6 +1,6 @@
 # https://esev.com/blog/post/2015-01-pgp-ssh-key-on-yubikey-neo/
 
-{ pkgs, ... }:
+{ pkgs, osConfig, ... }:
 
 {
   home = {
@@ -9,9 +9,7 @@
     ];
 
     sessionVariables = {
-      GPG_AGENT_INFO = "/tmp/gpg-Z74lEJ/S.gpg-agent:25585:1";
-      SSH_AUTH_SOCK = "/tmp/gpg-KS5kJr/S.gpg-agent.ssh";
-      SSH_AGENT_PID = 25585;
+      SSH_AUTH_SOCK = "/run/user/${builtins.toString osConfig.users.users.mikel.uid}/gnupg/S.gpg-agent.ssh";
     };
   };
 

@@ -6,10 +6,27 @@ in
 {
   home = {
     packages = with pkgs; [
+      hyprpaper
+
       (writeShellScriptBin "hyprsetup_wallpaper" ''
-        hyprctl hyprpaper preload "${wallpaper}"
-        hyprctl hyprpaper wallpaper ",${wallpaper}"
+        hyprpaper &
       '')
     ];
+  };
+
+  services = {
+    hyprpaper = {
+      enable = true;
+
+      settings = {
+        ipc = "off";
+
+        splash = false;
+        splash_offset = 2.0;
+
+        preload = wallpaper;
+        wallpaper = ",${wallpaper}";
+      };
+    };
   };
 }
