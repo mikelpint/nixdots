@@ -1,6 +1,5 @@
 {
   lib,
-  config,
   osConfig,
   pkgs,
   ...
@@ -59,7 +58,7 @@ let
 in
 {
   imports = [
-    ../../../desktop/hyprland/plugins/csgo-vulkan-fix
+    #../../../desktop/hyprland/plugins/csgo-vulkan-fix
     ../../../desktop/hyprland/plugins/hyprtrails
   ];
 
@@ -116,7 +115,9 @@ in
               enabled = lib.mkForce true;
             };
 
-            drop_shadow = lib.mkForce true;
+            shadow = {
+              enabled = lib.mkForce true;
+            };
           };
         };
       };

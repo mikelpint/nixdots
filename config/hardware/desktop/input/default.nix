@@ -2,5 +2,6 @@
   imports = [
     ./keyboard
     ./mouse
+    ./tablet
   ];
 }

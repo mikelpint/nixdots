@@ -1,9 +1,11 @@
 {
   imports = [
     ./dconf
+    ./flatpak
     ./git
     ./http
     ./hwutils
+    ./lib
     ./lsof
     ./nix-ld
     ./nmap

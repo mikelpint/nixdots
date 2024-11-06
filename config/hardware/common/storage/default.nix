@@ -13,11 +13,15 @@
         "ahci"
       ];
     };
+
+    kernelModules = [ "sg" ];
   };
 
   environment = {
     systemPackages = with pkgs; [
       gparted
+      #k3b
+      dvdplusrwtools
       (writeShellScriptBin "gparted-xhost" ''
         ${xorg.xhost}/bin/xhost +SI:localuser:root
         ${gparted}/bin/gparted

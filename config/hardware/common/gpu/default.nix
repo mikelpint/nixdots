@@ -52,7 +52,7 @@ in
 
   environment = {
     sessionVariables = {
-      LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
+      LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:${
         pkgs.lib.makeLibraryPath (
           with pkgs;
           with xorg;
@@ -60,8 +60,6 @@ in
             icu.dev
             libdecor
             glfw
-
-            pcsclite
 
             libGL
             libGLU
@@ -73,11 +71,15 @@ in
 
             vulkan-loader
             #vulkan-validation-layers
+            vulkan-extension-layer
 
             libX11
             libXcursor
             libXi
             libXrandr
+
+            pcscliteWithPolkit
+            stdenv.cc.cc.lib
           ]
         )
       }:/run/opengl-driver/lib";

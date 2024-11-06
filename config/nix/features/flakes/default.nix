@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.latest;
 
     settings = {
       experimental-features = [

@@ -1,8 +1,40 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   services = {
     pipewire = {
       enable = true;
+
+      extraConfig = {
+        pipewire = {
+          "10-easyeffects-sink" = {
+            "context.objects" = [
+              {
+                factory = "adapter";
+                args = {
+                  "factory.name" = "support.null-audio-sink";
+                  "node.name" = "easyeffects_sink";
+                  "media.class" = "Audio/Sink";
+                  "audio.position" = [
+                    "FL"
+                    "FR"
+                    "FC"
+                    "LFE"
+                    "RL"
+                    "RR"
+                  ];
+                  "monitor.channel-volumes" = true;
+                  "monitor.passthrough" = true;
+                  "adapter.auto-port-config" = {
+                    mode = "dsp";
+                    monitor = true;
+                    position = "preserve";
+                  };
+                };
+              }
+            ];
+          };
+        };
+      };
 
       wireplumber = {
         enable = true;
@@ -11,6 +43,7 @@
           profiles = {
             main = {
               "monitor.libcamera" = "disabled";
+              "monitor.channel-volumes" = true;
             };
           };
 

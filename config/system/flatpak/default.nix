@@ -1,0 +1,7 @@
+{
+  services = {
+    flatpak = {
+      enable = true;
+    };
+  };
+}

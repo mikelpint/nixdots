@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   imports = [
     ./hidpi
     ./x
@@ -9,5 +10,12 @@ _: {
     enable = true;
     flavor = "macchiato";
     accent = "pink";
+  };
+
+  environment = {
+    systemPackages = with pkgs; [
+      ffmpeg
+      SDL2
+    ];
   };
 }

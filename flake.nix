@@ -153,6 +153,10 @@
     wezterm = {
       url = "github:wez/wezterm?dir=nix";
     };
+
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+    };
   };
 
   outputs =

@@ -12,6 +12,7 @@ _: {
     ../../config/apps/transmission/home.nix
     ../../config/apps/yubikey/home.nix
     ../../config/apps/zathura/home.nix
+    ../../config/apps/zettlr/home.nix
 
     ../../config/cli/clipboard/home.nix
 

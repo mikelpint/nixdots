@@ -8,6 +8,7 @@
     ./kernel
     ./pam
     ./polkit
+    ./ssl
     ./tpm
     ./yubikey
   ];

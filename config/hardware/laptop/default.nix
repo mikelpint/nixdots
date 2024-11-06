@@ -6,7 +6,6 @@ _: {
 
     ../../boot/secureboot
 
-    ./audio
     ./bluetooth
     ./cpu
     ./display
@@ -14,6 +13,7 @@ _: {
     ./input
     ./memory
     ./net
+    ./output
     ./power
     ./storage
   ];

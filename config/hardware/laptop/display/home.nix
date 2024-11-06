@@ -15,7 +15,9 @@
               enabled = lib.mkForce false;
             };
 
-            drop_shadow = lib.mkForce false;
+            shadow = {
+              enabled = lib.mkForce false;
+            };
           };
 
           bindle = [
