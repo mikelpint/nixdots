@@ -1,4 +1,23 @@
 { pkgs, ... }:
+
+let
+  extraGroups = [
+    "docker"
+    "i2c"
+    "input"
+    "kvm"
+    "libvirtd"
+    "networkmanager"
+    "openrazer"
+    "plugdev"
+    "sev"
+    "storage"
+    "vboxsf"
+    "vboxusers"
+    "video"
+    "wheel"
+  ];
+in
 {
   users = {
     users = {
@@ -9,21 +28,7 @@
         isNormalUser = true;
         home = "/home/mikel";
 
-        extraGroups = [
-          "docker"
-          "i2c"
-          "input"
-          "kvm"
-          "libvirtd"
-          "networkmanager"
-          "openrazer"
-          "sev"
-          "storage"
-          "vboxsf"
-          "vboxusers"
-          "video"
-          "wheel"
-        ];
+        inherit extraGroups;
 
         hashedPassword = "";
 
@@ -32,11 +37,18 @@
       };
     };
 
-    groups = {
-      mikel = {
-        gid = 1000;
-      };
-    };
+    groups =
+      {
+        mikel = {
+          gid = 1000;
+        };
+      }
+      // (builtins.listToAttrs (
+        builtins.map (name: {
+          inherit name;
+          value = { };
+        }) extraGroups
+      ));
   };
 
   security = {

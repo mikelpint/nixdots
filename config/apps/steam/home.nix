@@ -1,5 +1,15 @@
 { pkgs, inputs, ... }:
 {
+  programs = {
+    mangohud = {
+      settingsPerApplication = {
+        wezterm = {
+          no_display = true;
+        };
+      };
+    };
+  };
+
   home = {
     packages =
       with pkgs;

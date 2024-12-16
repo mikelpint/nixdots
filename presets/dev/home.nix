@@ -13,5 +13,7 @@ _: {
     ../../config/cli/onefetch/home.nix
 
     ../../config/langs
+
+    ../../config/services/mongodb/home.nix
   ];
 }

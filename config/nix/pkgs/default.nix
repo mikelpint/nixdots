@@ -1,7 +1,5 @@
-{ pkgs, inputs, ... }:
+{ inputs, ... }:
 {
-  imports = [ inputs.nur.hmModules.nur ];
-
   nixpkgs = {
     config = {
       allowUnfree = true;

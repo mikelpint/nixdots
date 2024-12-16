@@ -1,1 +1,1 @@
-{ imports = [ ./deusto ]; }
+_: { imports = [ ./deusto ]; }

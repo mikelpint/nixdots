@@ -3,9 +3,10 @@
   hardware = {
     openrazer = {
       enable = true;
+      syncEffectsEnabled = true;
 
       verboseLogging = false;
-      syncEffectsEnabled = true;
+      keyStatistics = false;
 
       devicesOffOnScreensaver = true;
       batteryNotifier = {
@@ -16,11 +17,22 @@
     };
   };
 
+  boot = {
+    kernelModules = [ "openrazer" ];
+    extraModulePackages = with config.boot.kernelPackages; [ openrazer ];
+  };
+
   environment = {
     systemPackages = with pkgs; [
       config.boot.kernelPackages.openrazer
       openrazer-daemon
       polychromatic
     ];
+  };
+
+  services = {
+    udev = {
+      packages = with pkgs; [ openrazer-daemon ];
+    };
   };
 }

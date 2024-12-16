@@ -5,6 +5,8 @@
         initialPassword = "";
       };
     };
+
+    mutableUsers = false;
   };
 
   imports = [ ./mikel ];

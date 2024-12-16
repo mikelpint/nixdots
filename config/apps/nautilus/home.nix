@@ -25,7 +25,7 @@
   nixpkgs = {
     overlays = [
       (self: super: {
-        gnome = super.gnome.overrideScope' (
+        gnome = super.gnome.overrideScope (
           gself: gsuper: {
             nautilus = gsuper.nautilus.overrideAttrs (nsuper: {
               buildInputs =

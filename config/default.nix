@@ -4,6 +4,7 @@ _: {
     ./boot
     ./console
     ./cli
+    ./fonts
     ./graphics
     ./input
     ./locale

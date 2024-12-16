@@ -1,4 +1,4 @@
-_:
+{ lib, pkgs, ... }:
 let
   flavor = "macchiato";
   accent = "pink";
@@ -6,6 +6,8 @@ in
 {
   home = {
     pointerCursor = {
+      package = lib.mkDefault pkgs.vanilla-dmz;
+
       gtk = {
         enable = true;
       };

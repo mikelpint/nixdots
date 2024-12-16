@@ -1,5 +1,5 @@
-{
+_: {
   imports = [
-    # ./vpn/home.nix
+    ./vpn/home.nix
   ];
 }

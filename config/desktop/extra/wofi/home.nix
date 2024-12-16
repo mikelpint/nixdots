@@ -9,6 +9,7 @@
       "wofi/config" = {
         text = ''
           show=drun
+          exec-search=true
           width=600
           height=400
           orientation=vertical

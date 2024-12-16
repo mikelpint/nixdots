@@ -9,4 +9,13 @@ _: {
     ./pkgs
     ./store
   ];
+
+  nix = {
+    settings = {
+      allowed-users = [
+        "@wheel"
+        "root"
+      ];
+    };
+  };
 }

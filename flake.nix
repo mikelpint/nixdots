@@ -5,7 +5,7 @@
 
   inputs = {
     nixpkgs-stable = {
-      url = "github:nixos/nixpkgs/nixos-24.05";
+      url = "github:nixos/nixpkgs/nixos-24.11";
     };
 
     nixpkgs = {
@@ -17,7 +17,7 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";
@@ -157,6 +157,10 @@
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
     };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+    };
   };
 
   outputs =
@@ -177,6 +181,7 @@
       nix-ld-rs,
       catppuccin,
       lanzaboote,
+      treefmt-nix,
       ...
     }@inputs:
     let
@@ -188,8 +193,15 @@
         "desktop"
         "laptop"
       ];
+
+      treefmtEval = treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt.nix;
     in
     {
+      formatter = [ treefmtEval.config.build.wrapper ];
+      checks = {
+        formatting = treefmtEval.config.build.check self;
+      };
+
       nixosConfigurations = nixpkgs.lib.genAttrs hosts (
         host:
         nixpkgs.lib.nixosSystem {
@@ -211,8 +223,8 @@
             agenix.nixosModules.default
             agenix-rekey.nixosModules.default
 
-            nur.nixosModules.nur
-            nur.hmModules.nur
+            nur.modules.nixos.default
+            # nur.modules.homeManager.default
 
             home-manager.nixosModules.home-manager
             {
@@ -231,16 +243,6 @@
                   };
                 };
 
-                # backupFileExtension = ''backup-${nixpkgs.lib.readFile "${
-                #   nixpkgs.legacyPackages."${system}".runCommand
-                #   "timestamp"
-                #   {
-                #     env = {
-                #       when = builtins.currentTime;
-                #     };
-                #   }
-                #   "echo -n `date -d @$when +%Y-%m-%d_%H-%M-%S` > $out"
-                # }"}'';
                 backupFileExtension = "backup";
               };
             }
@@ -251,6 +253,7 @@
       agenix-rekey = agenix-rekey.configure {
         userFlake = self;
         nodes = self.nixosConfigurations;
+        agePackage = p: p.age;
       };
 
       devShells = flake-utils.lib.eachDefaultSystem (
@@ -266,7 +269,7 @@
             buildInputs = with pkgs; [
               git
               statix
-              nixfmt-rfc-style
+              treefmt-nix
               agenix-rekey
             ];
           };

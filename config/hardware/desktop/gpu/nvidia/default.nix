@@ -46,6 +46,7 @@ in
         libvdpau-va-gl
         vaapiVdpau
         mesa
+        mesa.drivers
         nv-codec-headers-12
         egl-wayland
       ];
@@ -53,6 +54,7 @@ in
       extraPackages32 = with pkgs.pkgsi686Linux; [
         nvidia-vaapi-driver
         mesa
+        mesa.drivers
         libvdpau-va-gl
         vaapiVdpau
       ];

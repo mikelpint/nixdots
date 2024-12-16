@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 
 let
   group = "storage";
@@ -38,7 +38,7 @@ in
 
   users = {
     groups = {
-      "$group" = { };
+      "${group}" = { };
     };
   };
 }

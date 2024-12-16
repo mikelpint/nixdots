@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -26,6 +25,17 @@ in
     };
   };
 
+  programs = ifamd {
+    corectrl = {
+      enable = true;
+
+      gpuOverclock = {
+        enable = true;
+        ppfeaturemask = "0xfff7ffff";
+      };
+    };
+  };
+
   boot = ifamd {
     initrd = {
       kernelModules = [ "amdgpu kvm-amd" ];
@@ -39,6 +49,8 @@ in
 
       options amdgpu si_support=0
       options amdgpu cik_support=0
+
+      options amdgpu ppfeaturemask=0xFFF7FFFF
     '';
   };
 }

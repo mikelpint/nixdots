@@ -83,9 +83,9 @@ in
           monitor = lib.mkForce (
             lib.lists.imap0 (
               idx: mon:
-              "${mon.name or "DP-${toString (idx + 1)}"}, ${toString (builtins.elemAt mon.px 0)}x${
-                toString (builtins.elemAt mon.px 1)
-              }@${toString (mon.hz or 60)}, ${
+              "${
+                mon.name or "DP-${toString (idx + 1)}"
+              }, ${toString (builtins.elemAt mon.px 0)}x${toString (builtins.elemAt mon.px 1)}@${toString (mon.hz or 60)}, ${
                 toString (
                   lib.lists.foldr (mon: acc: acc + ((builtins.elemAt mon.px 0) / (mon.scale or 1))) 0 (
                     lib.lists.sublist 0 idx monitors

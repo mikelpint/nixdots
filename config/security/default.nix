@@ -1,6 +1,7 @@
 {
   imports = [
     ./age
+    ./audit
     ./clamav
     ./doas
     ./firejail

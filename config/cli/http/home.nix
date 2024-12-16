@@ -1,7 +1,8 @@
+{ config, ... }:
 {
   home = {
     sessionVariables = {
-      WGETRC = "$XDG_CONFIG_HOME/wgetrc";
+      WGETRC = "${config.home.sessionVariables.XDG_CONFIG_HOME}/wgetrc";
     };
   };
 }

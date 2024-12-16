@@ -23,6 +23,9 @@ in
       enable32Bit = true;
 
       extraPackages = with pkgs; [
+        mesa
+        mesa.drivers
+
         vaapiVdpau
         libva
         libvdpau
@@ -79,7 +82,7 @@ in
             libXrandr
 
             pcscliteWithPolkit
-            stdenv.cc.cc.lib
+            #stdenv.cc.cc.lib
           ]
         )
       }:/run/opengl-driver/lib";

@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home = {
-    packages = with pkgs; [ mongosh ];
+    packages = with pkgs; [
+      mongosh
+      mongodb-tools
+    ];
   };
 }

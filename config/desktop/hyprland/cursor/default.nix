@@ -3,6 +3,7 @@ let
   cursorTheme =
     (import ../../theme/cursor/home.nix {
       inherit pkgs;
+      inherit lib;
     }).home.pointerCursor;
   cursor = {
     name = cursorTheme.name;

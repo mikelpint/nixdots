@@ -10,10 +10,39 @@ let
 in
 {
   hardware = ifamdgpu {
+    amdgpu = {
+      initrd = {
+        enable = true;
+      };
+
+      amdvlk = {
+        enable = true;
+        package = pkgs.amdvlk;
+
+        support32Bit = {
+          enable = true;
+          package = pkgs.driversi686Linux.amdvlk;
+        };
+
+        supportExperimental = {
+          enable = true;
+        };
+
+        settings = {
+          AllowVkPipelineCachingToDisk = 1;
+          EnableVmAlwaysValid = 1;
+          IFH = 0;
+          IdleAfterSubmitGpuMask = 1;
+          ShaderCacheMode = 1;
+        };
+      };
+    };
+
     graphics = {
       extraPackages =
         (with pkgs; [
           amdvlk
+          amf
 
           #rocmPackages.hipcc
         ])
@@ -70,14 +99,12 @@ in
       ];
     };
 
+    packages = with pkgs; [ lact ];
+
     services = {
       lactd = {
         enable = true;
         description = "AMDGPU Control Daemon";
-
-        serviceConfig = {
-          ExecStart = "${pkgs.lact}/bin/lact daemon";
-        };
 
         wantedBy = [ "multi-user.target" ];
       };

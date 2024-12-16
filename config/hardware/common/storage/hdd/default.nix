@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   tracker-miner-services = [
     "fs-3"
@@ -14,13 +14,28 @@ let
   ];
 in
 {
+  environment = {
+    systemPackages = with pkgs; [ hdapsd ];
+  };
+
+  boot = {
+    kernelModules = [ "hdapsd" ];
+    extraModulePackages = with pkgs; [ hdapsd ];
+  };
+
   services = {
+    udev = {
+      packages = with pkgs; [ hdapsd ];
+    };
+
     hdapsd = {
       enable = true;
     };
   };
 
   systemd = {
+    packages = with pkgs; [ hdapsd ];
+
     user = {
       services =
         lib.genAttrs (builtins.map (service: "tracker-${service}") tracker-miner-services)

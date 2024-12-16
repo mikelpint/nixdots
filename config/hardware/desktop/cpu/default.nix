@@ -6,7 +6,10 @@
 }:
 
 {
-  imports = [ ../../common/cpu/vendor/amd ];
+  imports = [
+    ../../common/cpu/vendor/amd
+    ../../common/cpu/realtime
+  ];
 
   nixpkgs = {
     overlays = [

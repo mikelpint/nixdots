@@ -2,7 +2,6 @@
 # https://github.com/yokoffing/Betterfox
 
 {
-  config,
   lib,
   pkgs,
   inputs,
@@ -26,7 +25,11 @@ in
   programs = {
     firefox = {
       enable = true;
-      package = (pkgs.wrapFirefox (pkgs."${firefox}".override { pipewireSupport = true; }) { });
+      package = (
+        pkgs.wrapFirefox (pkgs."${firefox}".override {
+          # pipewireSupport = true;
+        }) { }
+      );
 
       profiles = {
         mikel = {
@@ -54,6 +57,7 @@ in
               link-cleaner
               linkhints
               protondb-for-steam
+              react-devtools
               reddit-enhancement-suite
               skip-redirect
               stylus
@@ -186,7 +190,8 @@ in
             "browser.bookmarks.restore_default_bookmarks" = false;
 
             "browser.cache.disk.enable" = lib.mkDefault false;
-            "browser.cache.disk.parent_directory" = lib.mkDefault "/run/user/${builtins.toString osConfig.users.users.mikel.uid}/firefox";
+            "browser.cache.disk.parent_directory" =
+              lib.mkDefault "/run/user/${builtins.toString osConfig.users.users.mikel.uid}/firefox";
             "browser.cache.memory.enable" = lib.mkDefault false;
             "browser.cache.memory.capacity" = lib.mkDefault (-1);
 

@@ -9,7 +9,7 @@ _: {
     ./nat
     ./networkmanager
     ./systemd-networkd
-    #./vpn
+    ./vpn
     ./wpa_supplicant
   ];
 }

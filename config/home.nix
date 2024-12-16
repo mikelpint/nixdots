@@ -7,7 +7,7 @@
 
     sessionPath = [ "$HOME/.local/bin" ];
 
-    stateVersion = "24.05";
+    stateVersion = "25.05";
   };
 
   programs = {
@@ -34,6 +34,7 @@
     ./fonts/home.nix
     ./graphics/home.nix
     ./net/home.nix
+    ./nix/home.nix
     ./security/home.nix
     ./services/home.nix
     ./tools/home.nix

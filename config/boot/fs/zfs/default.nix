@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+_: {
   boot = {
     initrd = {
       supportedFilesystems = [ "zfs" ];

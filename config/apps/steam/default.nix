@@ -1,33 +1,32 @@
-{ pkgs, lib, ... }:
-
+{ pkgs, ... }:
 {
-  environment = {
-    systemPackages = with pkgs; [ bubblewrap ];
+  imports = [ ./gamescope ];
+
+  nixpkgs = {
+    config = {
+      packageOverrides = pkgs: {
+        steam = pkgs.steam.override {
+          extraPkgs =
+            pkgs: with pkgs; [
+              xorg.libXcursor
+              xorg.libXi
+              xorg.libXinerama
+              xorg.libXScrnSaver
+              libpng
+              libpulseaudio
+              libvorbis
+              stdenv.cc.cc.lib
+              libkrb5
+              keyutils
+            ];
+        };
+      };
+    };
   };
 
-  #security = {
-  #  wrappers = {
-  #    bwrap = {
-  #      owner = "mikel";
-  #      group = "mikel";
-  #      source = builtins.toPath "${pkgs.bubblewrap}/bin/bwrap";
-  #      setuid = lib.mkForce true;
-  #      #capabilities = "all+eip";
-  #    };
-  #  };
-  #};
-
   programs = {
-    gamescope = {
-      enable = true;
-      capSysNice = true;
-    };
-
     steam = {
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
-      gamescopeSession = {
-        enable = true;
-      };
 
       extest = {
         enable = true;
