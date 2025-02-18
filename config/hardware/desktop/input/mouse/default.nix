@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   hardware = {
     openrazer = {
       enable = true;
@@ -30,9 +29,5 @@
     ];
   };
 
-  services = {
-    udev = {
-      packages = with pkgs; [ openrazer-daemon ];
-    };
-  };
+  services = { udev = { packages = with pkgs; [ openrazer-daemon ]; }; };
 }

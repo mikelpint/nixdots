@@ -1,5 +1,1 @@
-_: {
-  imports = [
-    ./forti/home.nix
-  ];
-}
+_: { imports = [ ./forti/home.nix ]; }

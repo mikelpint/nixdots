@@ -1,6 +1,1 @@
-_: {
-  imports = [
-    ../../config/apps/mangohud
-    ../../config/apps/steam
-  ];
-}
+_: { imports = [ ../../config/apps/mangohud ../../config/apps/steam ]; }

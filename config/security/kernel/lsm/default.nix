@@ -5,6 +5,7 @@ _: {
   ];
 
   boot = {
-    kernelParams = [ "lsm=landlock,lockdown,yama,integrity,safesetid,apparmor,bpf" ];
+    kernelParams =
+      [ "lsm=landlock,lockdown,yama,integrity,safesetid,apparmor,bpf" ];
   };
 }

@@ -1,12 +1,9 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   services = {
     libinput = {
       enable = true;
 
-      mouse = {
-        accelProfile = lib.mkDefault "flat";
-      };
+      mouse = { accelProfile = lib.mkDefault "flat"; };
     };
   };
 }

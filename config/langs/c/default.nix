@@ -4,7 +4,7 @@
   home = {
     packages = with pkgs; [
       (lib.hiPrio gcc)
-      tinycc
+      # tinycc
 
       cmake
       gnumake

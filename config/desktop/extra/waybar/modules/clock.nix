@@ -12,7 +12,7 @@
       mode = "year";
 
       mode-mon-col = 3;
-      wweeks-pos = "right";
+      # weeks-pos = "right";
 
       on-scroll = 1;
 

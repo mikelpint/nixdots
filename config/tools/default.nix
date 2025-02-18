@@ -1,3 +1,1 @@
-_: {
-  imports = [ ./sqlite ];
-}
+_: { imports = [ ./sqlite ]; }

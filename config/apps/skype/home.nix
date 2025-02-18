@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [ skypeforlinux ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ skypeforlinux ]; }; }

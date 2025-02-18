@@ -1,4 +1,6 @@
 _: {
+  users = { users = { mikel = { }; }; };
+
   imports = [
     ./audio
     ./boot

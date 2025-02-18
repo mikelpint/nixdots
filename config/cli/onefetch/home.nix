@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
 {
-  home = {
-    packages = with pkgs; [ onefetch ];
-  };
+  home = { packages = with pkgs; [ onefetch ]; };
 }

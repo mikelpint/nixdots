@@ -1,4 +1,1 @@
-{ inputs, ... }:
-{
-  imports = [ inputs.nur.modules.homeManager.default ];
-}
+{ inputs, ... }: { imports = [ inputs.nur.modules.homeManager.default ]; }

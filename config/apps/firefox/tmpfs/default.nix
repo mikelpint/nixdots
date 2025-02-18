@@ -1,4 +1,4 @@
-{
+{ user, ... }: {
   systemd = {
     user = {
       services = {
@@ -8,18 +8,15 @@
           description = "Sync Firefox profile to disk";
 
           after = [ "final.target" ];
-          wantedBy = [
-            "graphical-session.target"
-            "final.target"
-          ];
+          wantedBy = [ "graphical-session.target" "final.target" ];
 
           serviceConfig = {
             Type = "oneshot";
 
             StandardOutput = "journal";
 
-            ExecStart = "%h/.local/bin/firefox-sync.sh mikel";
-            ExecStop = "%h/.local/bin/firefox-sync.sh mikel";
+            ExecStart = "%h/.local/bin/firefox-sync.sh ${user}";
+            ExecStop = "%h/.local/bin/firefox-sync.sh ${user}";
 
             RemainAfterExit = true;
           };

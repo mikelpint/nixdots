@@ -44,7 +44,8 @@ _: ''
 
   #clock,
   #cpu,
-  #custom-gpu,
+  #custom-gpu1,
+  #custom-gpu2,
   #custom-launcher,
   #disk,
   #keyboard-state label.locked,
@@ -99,7 +100,17 @@ _: ''
     padding-right: 7px;
   }
 
-  #custom-gpu {
+  #custom-gpu1 {
+    color: @text;
+
+    border-bottom: 2px solid @pink;
+    border-top: 2px solid @pink;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  #custom-gpu2 {
     color: @text;
 
     border-bottom: 2px solid @pink;

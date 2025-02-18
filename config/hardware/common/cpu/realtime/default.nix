@@ -1,14 +1,8 @@
-_: {
+{ user, ... }: {
   users = {
-    users = {
-      mikel = {
-        extraGroups = [ "realtime" ];
-      };
-    };
+    users = { ${user} = { extraGroups = [ "realtime" ]; }; };
 
-    groups = {
-      realtime = { };
-    };
+    groups = { realtime = { }; };
   };
 
   services = {

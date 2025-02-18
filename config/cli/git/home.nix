@@ -9,23 +9,18 @@
       signing = {
         key = "0xD78A0EF85709BB96!";
         signByDefault = true;
+        format = "openpgp";
       };
 
       extraConfig = {
-        hub = {
-          username = "mikelpint";
-        };
+        hub = { username = "mikelpint"; };
 
         init = {
           defaultBranch = "main";
 
-          core = {
-            editor = "hx";
-          };
+          core = { editor = "hx"; };
 
-          pull = {
-            rebase = false;
-          };
+          pull = { rebase = false; };
         };
       };
     };

@@ -1,8 +1,8 @@
 {
-    "git": {
-        "git_gutter": "tracked_files",
-        "inline_blame": {
-            "enabled": true
-        }
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": {
+      "enabled": true
     }
+  }
 }

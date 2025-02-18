@@ -1,15 +1,9 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
-{
+{ lib, config, pkgs, ... }: {
   nixpkgs = {
     overlays = [
-      (self: super: {
-        selinux = pkgs.linuxPackagesFor (
-          config.boot.kernelPackages.kernel.override {
+      (_self: _super: {
+        selinux = pkgs.linuxPackagesFor
+          (config.boot.kernelPackages.kernel.override {
             structuredExtraConfig = with lib.kernel; {
               SECURITY_SELINUX = yes;
               SECURITY_SELINUX_BOOTPARAM = no;
@@ -21,8 +15,7 @@
             };
 
             ignoreConfigErrors = true;
-          }
-        );
+          });
       })
     ];
   };

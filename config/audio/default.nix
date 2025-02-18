@@ -1,8 +1,1 @@
-{
-  imports = [
-    ./mpris-proxy
-    ./noisetorch
-    ./pipewire
-    ./rtkit
-  ];
-}
+{ imports = [ ./noisetorch ./pipewire ./rtkit ]; }

@@ -1,9 +1,7 @@
 {
   services = {
     clamav = {
-      daemon = {
-        enable = false;
-      };
+      daemon = { enable = false; };
 
       scanner = {
         enable = true;

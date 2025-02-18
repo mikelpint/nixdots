@@ -1,6 +1,3 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ lm_sensors ];
-  };
+{ pkgs, ... }: {
+  environment = { systemPackages = with pkgs; [ lm_sensors ]; };
 }

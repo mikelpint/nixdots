@@ -1,3 +1,1 @@
-{
-  imports = [ ../../common/bluetooth/home.nix ];
-}
+{ imports = [ ../../common/bluetooth/home.nix ]; }

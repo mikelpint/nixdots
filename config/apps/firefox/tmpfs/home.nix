@@ -1,11 +1,13 @@
 # https://wiki.archlinux.org/title/Firefox/Profile_on_RAM
 
-{
+{ user, ... }: {
   home = {
     file = {
       "firefox-sync" = {
-        target = "/home/mikel/.local/bin/firefox-sync.sh.source";
-        onChange = "cat /home/mikel/.local/bin/firefox-sync.sh.source > /home/mikel/.local/bin/firefox-sync.sh && chmod +x /home/mikel/.local/bin/firefox-sync.sh";
+        target = "/home/${user}/.local/bin/firefox-sync.sh.source";
+        onChange =
+          "cat /home/${user}/.local/bin/firefox-sync.sh.source > /home/${user}/.local/bin/firefox-sync.sh && "
+          + "chmod +x /home/${user}/.local/bin/firefox-sync.sh";
         text = ''
           #!/bin/sh
 
@@ -49,17 +51,15 @@
             After = [ "final.target" ];
           };
 
-          Install = {
-            WantedBy = [ "final.target" ];
-          };
+          Install = { WantedBy = [ "final.target" ]; };
 
           Service = {
             Type = "oneshot";
 
             StandardOutput = "journal";
 
-            ExecStart = "%h/.local/bin/firefox-sync.sh mikel";
-            ExecStop = "%h/.local/bin/firefox-sync.sh mikel";
+            ExecStart = "%h/.local/bin/firefox-sync.sh ${user}";
+            ExecStop = "%h/.local/bin/firefox-sync.sh ${user}";
 
             RemainAfterExit = true;
           };
@@ -68,13 +68,9 @@
 
       timers = {
         firefox-profile = {
-          Unit = {
-            Description = "Run %i every 30 minutes";
-          };
+          Unit = { Description = "Run %i every 30 minutes"; };
 
-          Install = {
-            WantedBy = [ "timers.target" ];
-          };
+          Install = { WantedBy = [ "timers.target" ]; };
 
           Timer = {
             OnStartupSec = "30min";

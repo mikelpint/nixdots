@@ -1,15 +1,12 @@
 {
-    "enable_language_server": true,
+  "enable_language_server": true,
 
-    "lsp": {
-        "clangd": {
-            "binary": {
-                "path": "clangd",
-                "arguments": [
-                    "--background-index",
-                    "--compile-commands-dir=build"
-                ]
-            }
-        }
+  "lsp": {
+    "clangd": {
+      "binary": {
+        "path": "clangd",
+        "arguments": ["--background-index", "--compile-commands-dir=build"]
+      }
     }
+  }
 }

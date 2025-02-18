@@ -1,10 +1,5 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ borgbackup ];
-  };
+{ pkgs, ... }: {
+  environment = { systemPackages = with pkgs; [ borgbackup ]; };
 
-  services = {
-    borgbackup = { };
-  };
+  services = { borgbackup = { }; };
 }

@@ -1,18 +1,18 @@
 {
-    "projects_online_by_default": false,
+  "projects_online_by_default": false,
 
-    "project_panel": {
-        "button": true,
-        "dock": "left",
-        "git_status": true,
-        "default_width": 240,
-        "auto_reveal_entries": true,
-        "auto_fold_dirs": false,
-        "file_icons": true,
-        "folder_icons": true,
-        "indent_size": 20,
-        "scrollbar": {
-            "show": "always"
-        }
+  "project_panel": {
+    "button": true,
+    "dock": "left",
+    "git_status": true,
+    "default_width": 240,
+    "auto_reveal_entries": true,
+    "auto_fold_dirs": false,
+    "file_icons": true,
+    "folder_icons": true,
+    "indent_size": 20,
+    "scrollbar": {
+      "show": "always"
     }
+  }
 }

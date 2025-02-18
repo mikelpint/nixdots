@@ -1,9 +1,7 @@
 { osConfig, ... }:
 
-let
-  isamd = builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers;
-in
-{
+let isamd = builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers;
+in {
   home = {
     sessionVariables = {
       MOZ_DRM_DEVICE = if isamd then "/dev/dri/card1" else "/dev/dri/card0";

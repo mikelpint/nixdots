@@ -1,14 +1,7 @@
-let
-  opacity = "0.95";
-in
-{
-  imports = [
-    ./firefox
-    ./spotify
-    ./steam
-    ./wezterm
-    ./wofi
-  ];
+_:
+let opacity = "0.95";
+in {
+  imports = [ ./firefox ./spotify ./steam ./wezterm ./wofi ];
 
   wayland = {
     windowManager = {

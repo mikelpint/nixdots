@@ -1,9 +1,5 @@
 {
-  imports = [
-    ./keyboard
-    ./media
-    ./mouse
-  ];
+  imports = [ ./keyboard ./media ./mouse ];
 
   wayland = {
     windowManager = {

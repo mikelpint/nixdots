@@ -1,20 +1,13 @@
-{ pkgs, inputs, ... }:
-{
+{ pkgs, inputs, ... }: {
   programs = {
     mangohud = {
-      settingsPerApplication = {
-        wezterm = {
-          no_display = true;
-        };
-      };
+      settingsPerApplication = { wezterm = { no_display = true; }; };
     };
   };
 
   home = {
-    packages =
-      with pkgs;
-      with inputs.nix-gaming.packages.${pkgs.system};
-      [
+    packages = with pkgs;
+      with inputs.nix-gaming.packages.${pkgs.system}; [
         (steam.override {
           extraEnv = {
             MANGOHUD = true;
@@ -22,7 +15,7 @@
             RADV_TEX_ANISO = 16;
           };
 
-          extraPkgs = pkgs: [
+          extraPkgs = _pkgs: [
             xorg.libXcursor
             xorg.libXi
             xorg.libXinerama
@@ -39,11 +32,12 @@
         protonup
 
         wine-discord-ipc-bridge
-        wine-ge
+        # wine-ge
       ];
 
     sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+        "\${HOME}/.steam/root/compatibilitytools.d";
     };
   };
 }

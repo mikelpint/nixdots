@@ -1,16 +1,4 @@
-{ pkgs, ... }:
-let
-  catppuccin-tmux = pkgs.tmuxPlugins.mkTmuxPlugin {
-    pluginName = "catppuccin";
-    src = pkgs.fetchFromGitHub {
-      owner = "catppuccin";
-      repo = "tmux";
-      rev = "e2d345648cb7e56302ee82fec6cafbbd8db23129";
-      sha256 = "sha256-I8rAg3ecLxW4emtY1VpKpUMIaXfSks416LLkHtLZSsI=";
-    };
-  };
-in
-{
+{ pkgs, ... }: {
   programs = {
     tmux = {
       enable = true;
@@ -70,7 +58,7 @@ in
       ];
       extraConfig = ''
         if-shell 'test "$(uname)" = "Darwin"' 'set-option -g default-command "reattach-to-user-namespace -l zsh"'
-        set -g default-shell '/bin/zsh'
+        set -g default-shell '${pkgs.zsh}/bin/zsh'
 
         set -g default-terminal "screen-256color"
 

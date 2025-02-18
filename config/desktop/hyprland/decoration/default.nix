@@ -1,8 +1,1 @@
-{
-  imports = [
-    ./animations
-    ./blur
-    ./border
-    ./shadows
-  ];
-}
+{ imports = [ ./animations ./blur ./border ./shadows ]; }

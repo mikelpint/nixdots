@@ -1,17 +1,11 @@
-{ inputs, pkgs, ... }:
-{
+{ inputs, pkgs, ... }: {
   wayland = {
     windowManager = {
       hyprland = {
-        plugins = [ inputs.hyprland-plugins.packages.${pkgs.system}.hyprtrails ];
+        plugins =
+          [ inputs.hyprland-plugins.packages.${pkgs.system}.hyprtrails ];
 
-        settings = {
-          plugin = {
-            hyprtrails = {
-              color = "rgb(f5bde6)";
-            };
-          };
-        };
+        settings = { plugin = { hyprtrails = { color = "rgb(f5bde6)"; }; }; };
       };
     };
   };

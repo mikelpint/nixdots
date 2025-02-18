@@ -1,11 +1,7 @@
 {
   wayland = {
     windowManager = {
-      hyprland = {
-        settings = {
-          exec-once = [ "hypridle" ];
-        };
-      };
+      hyprland = { settings = { exec-once = [ "hypridle" ]; }; };
     };
   };
 }

@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./keyboard/home.nix
-    ./mouse/home.nix
-  ];
-}
+{ imports = [ ./keyboard/home.nix ./mouse/home.nix ]; }

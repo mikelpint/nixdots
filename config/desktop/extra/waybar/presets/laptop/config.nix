@@ -1,19 +1,19 @@
 _:
 
 let
-  "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
+  "hyprland/workspaces" =
+    (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
 
-  backlight = (import ../../modules/backlight.nix).backlight;
-  battery = (import ../../modules/battery.nix).battery;
-  clock = (import ../../modules/clock.nix).clock;
-  cpu = (import ../../modules/cpu.nix).cpu;
-  disk = (import ../../modules/disk.nix).disk;
-  memory = (import ../../modules/memory.nix).memory;
-  network = (import ../../modules/network.nix).network;
-  pulseaudio = (import ../../modules/pulseaudio.nix).pulseaudio;
-  tray = (import ../../modules/tray.nix).tray;
-in
-{
+  inherit ((import ../../modules/backlight.nix)) backlight;
+  inherit ((import ../../modules/battery.nix)) battery;
+  inherit ((import ../../modules/clock.nix)) clock;
+  inherit ((import ../../modules/cpu.nix)) cpu;
+  inherit ((import ../../modules/disk.nix)) disk;
+  inherit ((import ../../modules/memory.nix)) memory;
+  inherit ((import ../../modules/network.nix)) network;
+  inherit ((import ../../modules/pulseaudio.nix)) pulseaudio;
+  inherit ((import ../../modules/tray.nix)) tray;
+in {
   mainBar = {
     layer = "top";
     position = "top";
@@ -36,8 +36,6 @@ in
       "network"
       "clock"
     ];
-
-    inherit "hyprland/workspaces";
 
     inherit backlight;
     inherit battery;

@@ -1,13 +1,9 @@
-{
+{ user, ... }: {
   users = {
-    users = {
-      root = {
-        initialPassword = "";
-      };
-    };
+    users = { root = { initialPassword = ""; }; };
 
     mutableUsers = false;
   };
 
-  imports = [ ./mikel ];
+  imports = [ ./${user} ];
 }

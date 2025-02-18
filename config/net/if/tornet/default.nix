@@ -1,24 +1,20 @@
 # https://www.void.gr/kargig/blog/2016/12/12/firejail-with-tor-howto/
 
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
+{ lib, pkgs, ... }:
 
 let
   address = "10.100.100.1";
   prefixLength = 24;
-in
-{
-  systemd = {
+
+  enable = false;
+in {
+  systemd = lib.mkIf enable {
     network = {
       enable = true;
 
       netdevs = {
         tornet = {
-          enable = lib.mkDefault false;
+          enable = true;
 
           netdevConfig = {
             Kind = "bridge";
@@ -27,11 +23,9 @@ in
         };
       };
 
-      networks = lib.mkIf config.systemd.network.netdevs.tornet.enable {
+      networks = lib.mkIf enable {
         tornet = {
-          matchConfig = {
-            Name = "tornet";
-          };
+          matchConfig = { Name = "tornet"; };
 
           DHCP = "no";
 
@@ -40,15 +34,13 @@ in
             Address = "${address}/${builtins.toString prefixLength}";
           };
 
-          linkConfig = {
-            ActivationPolicy = "always-up";
-          };
+          linkConfig = { ActivationPolicy = "always-up"; };
         };
       };
     };
   };
 
-  boot = lib.mkIf config.systemd.network.netdevs.tornet.enable {
+  boot = lib.mkIf enable {
     kernel = {
       sysctl = {
         "net.ipv4.ip_forward" = 1;
@@ -57,16 +49,14 @@ in
     };
   };
 
-  networking = {
+  networking = lib.mkIf enable {
     nat = {
       internalInterfaces = [ "tornet" ];
-      forwardPorts = [
-        {
-          destination = "127.0.0.1:5353";
-          proto = "udp";
-          sourcePort = 53;
-        }
-      ];
+      forwardPorts = [{
+        destination = "127.0.0.1:5353";
+        proto = "udp";
+        sourcePort = 53;
+      }];
     };
 
     firewall = {
@@ -120,8 +110,12 @@ in
             chain postrouting {
                 type nat hook postrouting priority 100; policy accept;
 
-                ip saddr ${address}/${builtins.toString prefixLength} oifname "eth" masquerade
-                ip saddr ${address}/${builtins.toString prefixLength} oifname "wifi" masquerade
+                ip saddr ${address}/${
+                  builtins.toString prefixLength
+                } oifname "eth" masquerade
+                ip saddr ${address}/${
+                  builtins.toString prefixLength
+                } oifname "wifi" masquerade
             }
           '';
         };
@@ -129,7 +123,7 @@ in
     };
   };
 
-  services = lib.mkIf config.systemd.network.netdevs.tornet.enable {
+  services = lib.mkIf enable {
     tor = {
       enable = true;
 
@@ -147,10 +141,7 @@ in
 
       rules = {
         "restart-tor" = {
-          onState = [
-            "routable"
-            "off"
-          ];
+          onState = [ "routable" "off" ];
           script = ''
             #!${pkgs.runtimeShell}
             if [[ $IFACE == "eth" && $AdministrativeState == "configured" ]] || [[ $IFACE == "wifi" && $AdministrativeState == "configured" ]]; then

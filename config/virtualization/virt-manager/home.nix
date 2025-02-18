@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [ virt-manager ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ virt-manager ]; }; }

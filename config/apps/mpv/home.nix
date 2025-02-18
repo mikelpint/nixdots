@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  home = {
-    packages = with pkgs; [ mpv ];
-  };
+  home = { packages = with pkgs; [ mpv ]; };
 
   xdg = {
     configFile = {
@@ -27,15 +25,9 @@
     };
 
     mimeApps = {
-      associations = {
-        added = {
-          "video/mp4" = [ "mpv.desktop" ];
-        };
-      };
+      associations = { added = { "video/mp4" = [ "mpv.desktop" ]; }; };
 
-      defaultApplications = {
-        "video/mp4" = [ "mpv.desktop" ];
-      };
+      defaultApplications = { "video/mp4" = [ "mpv.desktop" ]; };
     };
   };
 }

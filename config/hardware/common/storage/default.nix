@@ -1,18 +1,8 @@
-{ lib, pkgs, ... }:
-{
-  services = {
-    hdapsd = {
-      enable = lib.mkDefault false;
-    };
-  };
+{ lib, pkgs, ... }: {
+  services = { hdapsd = { enable = lib.mkDefault false; }; };
 
   boot = {
-    initrd = {
-      availableKernelModules = [
-        "sd_mod"
-        "ahci"
-      ];
-    };
+    initrd = { availableKernelModules = [ "sd_mod" "ahci" ]; };
 
     kernelModules = [ "sg" ];
   };
@@ -29,8 +19,6 @@
       '')
     ];
 
-    shellAliases = {
-      gparted = "gparted-xhost";
-    };
+    shellAliases = { gparted = "gparted-xhost"; };
   };
 }

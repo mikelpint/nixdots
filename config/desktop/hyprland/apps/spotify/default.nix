@@ -1,11 +1,7 @@
 {
   wayland = {
     windowManager = {
-      hyprland = {
-        settings = {
-          windowrule = [ "tile,^(Spotify)$" ];
-        };
-      };
+      hyprland = { settings = { windowrule = [ "tile,^(Spotify)$" ]; }; };
     };
   };
 }

@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [ httpie ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ httpie ]; }; }

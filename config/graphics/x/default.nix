@@ -1,15 +1,8 @@
-{ config, lib, ... }:
-{
-  environment = {
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
-  };
+{ lib, user, ... }: {
+  environment = { sessionVariables = { NIXOS_OZONE_WL = "1"; }; };
 
   services = {
-    xserver = {
-      enable = true;
-    };
+    xserver = { enable = true; };
 
     greetd = {
       enable = true;
@@ -20,12 +13,12 @@
       settings = {
         default_session = {
           command = "Hyprland";
-          user = "mikel";
+          inherit user;
         };
 
         initial_session = {
           command = "Hyprland";
-          user = "mikel";
+          inherit user;
         };
       };
     };
@@ -36,18 +29,14 @@
       sddm = {
         enable = false;
 
-        wayland = {
-          enable = true;
-        };
+        wayland = { enable = true; };
 
-        autoLogin = {
-          relogin = true;
-        };
+        autoLogin = { relogin = true; };
       };
 
       autoLogin = {
         enable = true;
-        user = "mikel";
+        inherit user;
       };
     };
   };

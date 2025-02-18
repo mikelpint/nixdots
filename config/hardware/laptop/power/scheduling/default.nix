@@ -1,11 +1,5 @@
 {
   services = {
-    system76-scheduler = {
-      settings = {
-        cfsProfiles = {
-          enable = true;
-        };
-      };
-    };
+    system76-scheduler = { settings = { cfsProfiles = { enable = true; }; }; };
   };
 }

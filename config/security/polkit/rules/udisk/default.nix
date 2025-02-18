@@ -1,9 +1,7 @@
-{ ... }:
+_:
 
-let
-  group = "storage";
-in
-{
+let group = "storage";
+in {
   security = {
     polkit = {
       extraConfig = ''
@@ -36,9 +34,5 @@ in
     };
   };
 
-  users = {
-    groups = {
-      "${group}" = { };
-    };
-  };
+  users = { groups = { "${group}" = { }; }; };
 }

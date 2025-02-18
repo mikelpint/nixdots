@@ -1,5 +1,4 @@
-{ inputs, config, ... }:
-{
+{ inputs, config, ... }: {
   imports = [
     inputs.nix-colors.homeManagerModule
     ./cursor/home.nix
@@ -11,7 +10,7 @@
   catppuccin = {
     enable = true;
 
-    flavor = config.catppuccin.pointerCursor.flavor;
-    accent = config.catppuccin.pointerCursor.accent;
+    inherit (config.catppuccin.cursors) flavor;
+    inherit (config.catppuccin.cursors) accent;
   };
 }

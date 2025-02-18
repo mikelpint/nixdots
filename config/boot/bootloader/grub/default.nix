@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ lib, ... }: {
   imports = [ ./memtest86 ];
 
   boot = {
@@ -16,12 +15,14 @@
         efiInstallAsRemovable = lib.mkDefault false;
         gfxmodeEfi = lib.mkDefault "auto";
         gfxpayloadEfi = lib.mkDefault "keep";
-
-        catppuccin = {
-          enable = true;
-          flavor = "macchiato";
-        };
       };
+    };
+  };
+
+  catppuccin = {
+    grub = {
+      enable = true;
+      flavor = "macchiato";
     };
   };
 }

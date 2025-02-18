@@ -1,10 +1,9 @@
-{ pkgs, inputs, ... }:
-{
+{ osConfig, ... }: {
   wayland = {
     windowManager = {
       hyprland = {
         systemd = {
-          enable = true;
+          enable = !osConfig.programs.hyprland.withUWSM;
           variables = [ "--all" ];
         };
       };

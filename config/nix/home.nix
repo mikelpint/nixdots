@@ -1,3 +1,1 @@
-_: {
-  imports = [ ./pkgs/home.nix ];
-}
+_: { imports = [ ./pkgs/home.nix ]; }

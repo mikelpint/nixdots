@@ -1,7 +1,5 @@
 {
   imports = [ ./tornet ];
 
-  networking = {
-    usePredictableInterfaceNames = true;
-  };
+  networking = { usePredictableInterfaceNames = true; };
 }

@@ -1,19 +1,20 @@
-{ self, ... }:
-{
+{ self, user, ... }:
+let owner = user;
+in {
   age = {
     secrets = {
       deustopasswd = {
-        owner = "mikel";
+        inherit owner;
         rekeyFile = "${self}/secrets/deustopasswd.age";
       };
 
       "dspace.pem" = {
-        owner = "mikel";
+        inherit owner;
         rekeyFile = "${self}/secrets/dspace.pem.age";
       };
 
       "dspace.host" = {
-        owner = "mikel";
+        inherit owner;
         rekeyFile = "${self}/secrets/dspace.host.age";
       };
     };

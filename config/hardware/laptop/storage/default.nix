@@ -1,20 +1,17 @@
-{ lib, ... }:
+{ lib, user, ... }:
 
 let
   device = "/dev/disk/by-uuid/2701f7fd-4969-40f3-a930-f7b0e52fef48";
   fsType = "btrfs";
-  options = (
-    subvol: [
-      "compress=zstd:3"
-      "noatime"
-      "ssd"
-      "space_cache=v2"
-      "commit=120"
-      "subvol=${subvol}"
-    ]
-  );
-in
-{
+  options = subvol: [
+    "compress=zstd:3"
+    "noatime"
+    "ssd"
+    "space_cache=v2"
+    "commit=120"
+    "subvol=${subvol}"
+  ];
+in {
   imports = [
     ./hdd
     ./ssd
@@ -31,27 +28,21 @@ in
       luks = {
         devices = {
           crypt = {
-            device = lib.mkForce "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
+            device = lib.mkForce
+              "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
           };
         };
       };
     };
   };
 
-  services = {
-    gvfs = {
-      enable = true;
-    };
-  };
+  services = { gvfs = { enable = true; }; };
 
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-uuid/41A4-CA82";
       fsType = "vfat";
-      options = [
-        "fmask=0022"
-        "dmask=0022"
-      ];
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
     "/" = {
@@ -60,10 +51,10 @@ in
       options = options "root";
     };
 
-    "/home/mikel" = {
+    "/home/${user}" = {
       inherit device;
       inherit fsType;
-      options = options "mikel";
+      options = options user;
     };
 
     "/nix" = {
@@ -94,14 +85,7 @@ in
     "/mnt/WD_Black" = {
       device = "/dev/disk/by-uuid/1611231c-401a-4e80-8cac-1d09ab54454b";
       fsType = "ext4";
-      options = [
-        "rw"
-        "users"
-        "nofail"
-        "rw"
-        "exec"
-        "x-gvfs-show"
-      ];
+      options = [ "rw" "users" "nofail" "rw" "exec" "x-gvfs-show" ];
     };
   };
 }

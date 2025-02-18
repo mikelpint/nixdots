@@ -1,23 +1,15 @@
 # https://raw.githubusercontent.com/TLATER/dotfiles/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
 # https://github.com/yokoffing/Betterfox
 
-{
-  lib,
-  pkgs,
-  inputs,
-  osConfig,
-  ...
-}:
+{ lib, pkgs, inputs, osConfig, user, ... }:
 
-let
-  firefox = "firefox-unwrapped";
-in
-{
+let firefox = "firefox-unwrapped";
+in {
   home = {
     activation = {
       "chrome" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        rm -rf /home/mikel/.mozilla/firefox/mikel/chrome
-        cp -r /etc/nixos/config/apps/firefox/chrome /home/mikel/.mozilla/firefox/mikel
+        rm -rf /home/${user}/.mozilla/firefox/${user}/chrome
+        cp -r /etc/nixos/config/apps/firefox/chrome /home/${user}/.mozilla/firefox/${user}
       '';
     };
   };
@@ -25,14 +17,12 @@ in
   programs = {
     firefox = {
       enable = true;
-      package = (
-        pkgs.wrapFirefox (pkgs."${firefox}".override {
-          # pipewireSupport = true;
-        }) { }
-      );
+      package = pkgs.wrapFirefox (pkgs."${firefox}".override {
+        # pipewireSupport = true;
+      }) { };
 
       profiles = {
-        mikel = {
+        ${user} = {
           isDefault = true;
 
           search = {
@@ -40,8 +30,8 @@ in
             force = true;
           };
 
-          extensions =
-            with (import inputs.nur {
+          extensions = {
+            packages = with (import inputs.nur {
               inherit pkgs;
               nurpkgs = pkgs;
             }).repos.rycee.firefox-addons; [
@@ -65,6 +55,7 @@ in
               ublock-origin
               user-agent-string-switcher
             ];
+          };
 
           userChrome = ''
             @import 'includes/cascade-config.css';
@@ -190,8 +181,9 @@ in
             "browser.bookmarks.restore_default_bookmarks" = false;
 
             "browser.cache.disk.enable" = lib.mkDefault false;
-            "browser.cache.disk.parent_directory" =
-              lib.mkDefault "/run/user/${builtins.toString osConfig.users.users.mikel.uid}/firefox";
+            "browser.cache.disk.parent_directory" = lib.mkDefault "/run/user/${
+                builtins.toString osConfig.users.users.${user}.uid
+              }/firefox";
             "browser.cache.memory.enable" = lib.mkDefault false;
             "browser.cache.memory.capacity" = lib.mkDefault (-1);
 
@@ -218,16 +210,23 @@ in
             "browser.menu.showViewImageInfo" = true;
 
             "browser.newtabpage.activity-stream.telemetry" = false;
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" =
+              false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" =
+              false;
             "browser.newtabpage.activity-stream.feeds.telemetry" = false;
             "browser.newtabpage.activity-stream.feeds.snippets" = false;
             "browser.newtabpage.activity-stream.feeds.topstories" = false;
-            "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-            "browser.newtabpage.activity-stream.feeds.system.topstories" = false;
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" = "";
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.searchEngines" = "";
-            "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+            "browser.newtabpage.activity-stream.feeds.section.topstories" =
+              false;
+            "browser.newtabpage.activity-stream.feeds.system.topstories" =
+              false;
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" =
+              "";
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.searchEngines" =
+              "";
+            "browser.newtabpage.activity-stream.section.highlights.includePocket" =
+              false;
             "browser.newtabpage.activity-stream.showSponsored" = false;
             "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
             "browser.newtabpage.pinned" = false;
@@ -295,8 +294,10 @@ in
 
             "identity.fxaccounts.enabled" = false;
 
-            "urlclassifier.trackingSkipURLs" = "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
-            "urlclassifier.features.socialtracking.skipURLs" = "*.instagram.com, *.twitter.com, *.twimg.com";
+            "urlclassifier.trackingSkipURLs" =
+              "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
+            "urlclassifier.features.socialtracking.skipURLs" =
+              "*.instagram.com, *.twitter.com, *.twimg.com";
           };
         };
       };

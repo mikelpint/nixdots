@@ -1,9 +1,3 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [
-      whatsapp-for-linux
-      whatsapp-emoji-font
-    ];
-  };
+{ pkgs, ... }: {
+  home = { packages = with pkgs; [ whatsapp-for-linux whatsapp-emoji-font ]; };
 }

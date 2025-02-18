@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./eth
-    ./wifi
-  ];
-}
+{ imports = [ ./eth ./wifi ]; }

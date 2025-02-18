@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [ goldwarden ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ goldwarden ]; }; }

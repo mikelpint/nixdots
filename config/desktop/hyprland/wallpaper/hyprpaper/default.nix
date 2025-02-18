@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
-let
-  wallpaper = "/etc/nixos/assets/wallpapers/waves/cat-waves.png";
-in
-{
+let wallpaper = "/etc/nixos/assets/wallpapers/waves/cat-waves.png";
+in {
   home = {
     packages = with pkgs; [
       hyprpaper

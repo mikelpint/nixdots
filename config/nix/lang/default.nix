@@ -1,7 +1,1 @@
-_: {
-  imports = [
-    ./nil
-    ./nixd
-    ./nixfmt
-  ];
-}
+_: { imports = [ ./nil ./nixd ./treefmt ]; }

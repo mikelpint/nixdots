@@ -1,13 +1,28 @@
 { pkgs, ... }:
 
 {
+  nixpkgs = {
+    overlays = [
+      (_self: super: {
+        obs-studio = super.obs-studio.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ])
+            ++ [ pkgs.makeWrapper ];
+
+          postInstall = (old.postInstall or "") + ''
+            wrapProgram $out/bin/obs --unset LIBVA_DRIVER_NAME --unset LIBVA_DRIVER
+          '';
+        });
+      })
+    ];
+  };
+
   programs = {
     obs-studio = {
       enable = true;
 
       plugins = with pkgs.obs-studio-plugins; [
-        advanced-scene-switcher
-        droidcam-obs
+        # advanced-scene-switcher
+        # droidcam-obs
         input-overlay
         obs-backgroundremoval
         obs-command-source
@@ -20,7 +35,7 @@
         obs-pipewire-audio-capture
         obs-source-clone
         obs-source-switcher
-        obs-tuna
+        # obs-tuna
         obs-vaapi
         wlrobs
       ];

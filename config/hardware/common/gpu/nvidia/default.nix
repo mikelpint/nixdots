@@ -1,20 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 let
-  ifnvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers);
-in
-{
-  nixpkgs = ifnvidia {
-    config = {
-      nvidia = {
-        acceptLicense = true;
-      };
-    };
-  };
+  ifnvidia =
+    lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers);
+in {
+  nixpkgs = ifnvidia { config = { nvidia = { acceptLicense = true; }; }; };
 
   environment = ifnvidia {
     sessionVariables = {

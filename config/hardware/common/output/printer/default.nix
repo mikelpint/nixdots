@@ -1,8 +1,6 @@
 {
   services = {
-    printing = {
-      enable = true;
-    };
+    printing = { enable = true; };
 
     avahi = {
       enable = true;

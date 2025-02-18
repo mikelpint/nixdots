@@ -1,8 +1,5 @@
-{ lib, ... }:
-{
-  console = {
-    keyMap = lib.mkForce "es";
-  };
+{ lib, ... }: {
+  console = { keyMap = lib.mkForce "es"; };
 
   services = {
     xserver = {

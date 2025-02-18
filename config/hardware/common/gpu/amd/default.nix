@@ -1,19 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
-  ifamdgpu = lib.mkIf (builtins.elem "amdgpu" config.services.xserver.videoDrivers);
-in
-{
+  ifamdgpu =
+    lib.mkIf (builtins.elem "amdgpu" config.services.xserver.videoDrivers);
+in {
   hardware = ifamdgpu {
     amdgpu = {
-      initrd = {
-        enable = true;
-      };
+      initrd = { enable = true; };
 
       amdvlk = {
         enable = true;
@@ -24,9 +17,7 @@ in
           package = pkgs.driversi686Linux.amdvlk;
         };
 
-        supportExperimental = {
-          enable = true;
-        };
+        supportExperimental = { enable = true; };
 
         settings = {
           AllowVkPipelineCachingToDisk = 1;
@@ -39,45 +30,30 @@ in
     };
 
     graphics = {
-      extraPackages =
-        (with pkgs; [
-          amdvlk
-          amf
-
-          #rocmPackages.hipcc
-        ])
-        ++ (
-          if pkgs ? rocmPackages.clr then
-            with pkgs.rocmPackages;
-            [
-              clr
-              clr.icd
-            ]
-          else
-            with pkgs;
-            [
-              rocm-opencl-icd
-              rocm-opencl-runtime
-            ]
-        );
+      extraPackages = with pkgs; [
+        amdvlk
+        amf
+      ]
+      # ++ (if pkgs ? rocmPackages.clr then
+      #   with pkgs.rocmPackages; [ clr clr.icd ]
+      # else
+      #   with pkgs; [ rocm-opencl-icd rocm-opencl-runtime ])
+      ;
 
       extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
     };
   };
 
   environment = ifamdgpu {
-    systemPackages = with pkgs; [
-      lact
-      radeontop
-      amdgpu_top
-    ];
+    systemPackages = with pkgs; [ lact radeontop amdgpu_top ];
 
     sessionVariables = {
       VDPAU_DRIVER = "radeonsi";
       LIBVA_DRIVER_NAME = lib.mkForce "amdgpu";
 
       AMD_VULKAN_ICD = "RADV";
-      VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
+      VK_ICD_FILENAMES =
+        "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
 
       DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS = 1;
     };
@@ -85,18 +61,14 @@ in
 
   systemd = ifamdgpu {
     tmpfiles = {
-      rules = [
-        "L+    /opt/rocm/hip   -    -    -     -    ${
-          pkgs.symlinkJoin {
-            name = "rocm-combined";
-            paths = with pkgs.rocmPackages; [
-              rocblas
-              hipblas
-              clr
-            ];
-          }
-        }"
-      ];
+      # rules = [
+      #   "L+    /opt/rocm/hip   -    -    -     -    ${
+      #     pkgs.symlinkJoin {
+      #       name = "rocm-combined";
+      #       paths = with pkgs.rocmPackages; [ rocblas hipblas clr ];
+      #     }
+      #   }"
+      # ];
     };
 
     packages = with pkgs; [ lact ];
@@ -113,17 +85,16 @@ in
 
   nixpkgs = ifamdgpu {
     overlays = [
-      (self: super: {
-        amdgpu_drm = pkgs.linuxPackagesFor (
-          config.boot.kernelPackages.kernel.override {
+      (_self: _super: {
+        amdgpu_drm = pkgs.linuxPackagesFor
+          (config.boot.kernelPackages.kernel.override {
             structuredExtraConfig = with lib.kernel; {
               CONFIG_DRM_AMDGPU = yes;
               CONFIG_DRM_AMDGPU_USERPTR = yes;
             };
 
             ignoreConfigErrors = true;
-          }
-        );
+          });
       })
     ];
   };

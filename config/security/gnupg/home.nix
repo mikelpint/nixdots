@@ -1,15 +1,13 @@
 # https://esev.com/blog/post/2015-01-pgp-ssh-key-on-yubikey-neo/
 
-{ pkgs, osConfig, ... }:
-
-{
+{ pkgs, osConfig, user, ... }: {
   home = {
-    packages = with pkgs; [
-      pinentry-gnome3
-    ];
+    packages = with pkgs; [ pinentry-gnome3 ];
 
     sessionVariables = {
-      SSH_AUTH_SOCK = "/run/user/${builtins.toString osConfig.users.users.mikel.uid}/gnupg/S.gpg-agent.ssh";
+      SSH_AUTH_SOCK = "/run/user/${
+          builtins.toString osConfig.users.users.${user}.uid
+        }/gnupg/S.gpg-agent.ssh";
     };
   };
 
@@ -17,15 +15,9 @@
     gpg = {
       enable = true;
 
-      scdaemonSettings = {
-        disable-ccid = true;
-      };
+      scdaemonSettings = { disable-ccid = true; };
 
-      publicKeys = [
-        {
-          source = ./0xE9392D102A568F9A.asc;
-        }
-      ];
+      publicKeys = [{ source = ./0xE9392D102A568F9A.asc; }];
     };
   };
 

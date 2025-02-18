@@ -1,9 +1,5 @@
-{ config, ... }:
-{
+{ config, ... }: {
   environment = {
-    systemPackages = with config.boot.kernelPackages; [
-      xpadneo
-      xone
-    ];
+    systemPackages = with config.boot.kernelPackages; [ xpadneo xone ];
   };
 }

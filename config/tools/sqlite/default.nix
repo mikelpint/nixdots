@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ sqlite ];
-  };
-}
+{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ sqlite ]; }; }

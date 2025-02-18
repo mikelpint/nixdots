@@ -1,7 +1,1 @@
-{
-  imports = [
-    ./keyboard
-    ./mouse
-    ./tablet
-  ];
-}
+_: { imports = [ ./keyboard ./mouse ./tablet ./video ]; }

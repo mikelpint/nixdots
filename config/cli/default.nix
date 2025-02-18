@@ -1,9 +1,1 @@
-{
-  imports = [
-    ./archive
-    ./fd
-    ./http
-    ./tree
-    ./zsh
-  ];
-}
+{ imports = [ ./archive ./fd ./http ./tree ./zsh ]; }

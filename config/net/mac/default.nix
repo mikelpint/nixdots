@@ -1,7 +1,6 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/mac-randomize.nix
 
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   systemd = {
     services = {
       macchanger = {

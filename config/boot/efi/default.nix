@@ -1,9 +1,7 @@
 {
   boot = {
     loader = {
-      grub = {
-        efiSupport = true;
-      };
+      grub = { efiSupport = true; };
 
       efi = {
         canTouchEfiVariables = true;

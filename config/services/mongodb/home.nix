@@ -1,9 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [
-      mongosh
-      mongodb-tools
-    ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ mongosh mongodb-tools ]; }; }

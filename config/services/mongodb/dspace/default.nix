@@ -1,7 +1,1 @@
-{
-  services = {
-    mongodb = {
-      replSetName = "rs0";
-    };
-  };
-}
+{ services = { mongodb = { replSetName = "rs0"; }; }; }

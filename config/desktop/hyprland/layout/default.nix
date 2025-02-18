@@ -5,9 +5,7 @@
     windowManager = {
       hyprland = {
         settings = {
-          general = {
-            layout = "dwindle";
-          };
+          general = { layout = "dwindle"; };
 
           master = {
             mfact = 0.5;

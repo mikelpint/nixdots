@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ libargon2 ];
-  };
-}
+{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ libargon2 ]; }; }

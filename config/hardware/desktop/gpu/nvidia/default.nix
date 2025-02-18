@@ -1,21 +1,16 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, lib, user, ... }:
 
 let
   package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  ifnvidia = lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers);
-in
-{
+  ifnvidia =
+    lib.mkIf (builtins.elem "nvidia" config.services.xserver.videoDrivers);
+in {
   system = ifnvidia {
     userActivationScripts = {
       hyprgpu = {
         text = ''
-          if [[ ! -h "/home/mikel/.config/hypr/card" ]]; then
-              ln -s "/dev/dri/by-path/pci-0000:0d:00.0-card" "/home/mikel/.config/hypr/card"
+          if [[ ! -h "/home/${user}/.config/hypr/card" ]]; then
+              ln -s "/dev/dri/by-path/pci-0000:0d:00.0-card" "/home/${user}/.config/hypr/card"
           fi
         '';
       };
@@ -26,9 +21,7 @@ in
     nvidia = {
       inherit package;
 
-      modesetting = {
-        enable = true;
-      };
+      modesetting = { enable = true; };
 
       powerManagement = {
         enable = false;
@@ -65,12 +58,7 @@ in
     extraModulePackages = [ package ];
 
     initrd = {
-      kernelModules = [
-        "nvidia"
-        "nvidia_modeset"
-        "nvidia_uvm"
-        "nvidia_drm"
-      ];
+      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     };
 
     extraModprobeConfig = ''

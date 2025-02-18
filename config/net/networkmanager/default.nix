@@ -3,17 +3,11 @@
     networkmanager = {
       enable = true;
 
-      wifi = {
-        backend = "iwd";
-      };
+      wifi = { backend = "iwd"; };
     };
   };
 
   systemd = {
-    services = {
-      NetworkManager-wait-online = {
-        enable = false;
-      };
-    };
+    services = { NetworkManager-wait-online = { enable = false; }; };
   };
 }

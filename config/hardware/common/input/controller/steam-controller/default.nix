@@ -1,6 +1,3 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ steamcontroller ];
-  };
+{ pkgs, ... }: {
+  environment = { systemPackages = with pkgs; [ steamcontroller ]; };
 }

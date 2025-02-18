@@ -1,32 +1,23 @@
-{
-  lib,
-  config,
-  pkgs,
-  ...
-}:
-let
-  interfaceName = "tailscale0";
-in
-{
+{ lib, config, pkgs, self, user, ... }:
+let interfaceName = "tailscale0";
+in {
   services = {
     tailscale = lib.mkDefault {
       enable = true;
       package = pkgs.tailscale;
 
-      port = lib.mkDefault 0;
+      port = 0;
       inherit interfaceName;
 
       openFirewall = false;
       useRoutingFeatures = "none";
 
-      authKeyFile = "/run/secrets/tailscale_key";
-      permitCertUid = "mikel";
+      authKeyFile = "${self}/secrets/tailscale.age";
+      permitCertUid = user;
     };
   };
 
   networking = lib.mkIf config.services.tailscale.enable {
-    firewall = {
-      trustedInterfaces = [ interfaceName ];
-    };
+    firewall = { trustedInterfaces = [ interfaceName ]; };
   };
 }

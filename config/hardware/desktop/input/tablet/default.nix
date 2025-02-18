@@ -1,5 +1,1 @@
-{
-  imports = [
-    ../../../common/input/tablet
-  ];
-}
+{ imports = [ ../../../common/input/tablet ]; }

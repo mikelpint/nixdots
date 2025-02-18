@@ -1,21 +1,18 @@
 { pkgs, ... }:
-let
-  package = "mongodb-ce";
-in
-{
+let package = "mongodb-ce";
+in {
   imports = [ ./dspace ];
 
   nixpkgs = {
     overlays = [
-      (self: super: {
+      (_self: super: {
         "${package}" = super.${package}.overrideAttrs (old: {
-          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ])
+            ++ [ pkgs.makeWrapper ];
 
-          postInstall =
-            (old.postInstall or "")
-            + ''
-              wrapProgram $out/bin/mongod --set GLIBC_TUNABLES="glibc.pthread.rseq=0"
-            '';
+          postInstall = (old.postInstall or "") + ''
+            wrapProgram $out/bin/mongod --set GLIBC_TUNABLES="glibc.pthread.rseq=0"
+          '';
         });
       })
     ];
@@ -26,7 +23,7 @@ in
       enable = true;
       package = pkgs.${package};
 
-      dbpath = "/var/db/mongodb";
+      dbpath = "/var/db/mongo";
 
       user = "mongodb";
 
@@ -34,9 +31,7 @@ in
     };
   };
 
-  boot = {
-    kernelParams = [ "transparent_hugepage=always" ];
-  };
+  boot = { kernelParams = [ "transparent_hugepage=always" ]; };
 
   systemd = {
     services = {
@@ -46,15 +41,10 @@ in
 
         description = "Enable Transparent Hugepages (THP)";
 
-        unitConfig = {
-          defaultDependencies = "no";
-        };
+        unitConfig = { defaultDependencies = "no"; };
 
         before = [ "mongodb.service" ];
-        after = [
-          "sysinit.target"
-          "local-fs.target"
-        ];
+        after = [ "sysinit.target" "local-fs.target" ];
 
         serviceConfig = {
           Type = "oneshot";

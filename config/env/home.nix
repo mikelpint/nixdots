@@ -1,5 +1,1 @@
-{
-  imports = [
-    ./xdg/home.nix
-  ];
-}
+{ imports = [ ./xdg/home.nix ]; }

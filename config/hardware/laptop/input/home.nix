@@ -1,6 +1,1 @@
-_: {
-  imports = [
-    ./keyboard/home.nix
-    ./touchpad/home.nix
-  ];
-}
+_: { imports = [ ./keyboard/home.nix ./touchpad/home.nix ]; }

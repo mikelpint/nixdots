@@ -1,12 +1,7 @@
-{ pkgs, ... }:
-{
+_: {
   wayland = {
     windowManager = {
-      hyprland = {
-        settings = {
-          exec-once = [ "hyprsetup_wallpaper" ];
-        };
-      };
+      hyprland = { settings = { exec-once = [ "hyprsetup_wallpaper" ]; }; };
     };
   };
 }

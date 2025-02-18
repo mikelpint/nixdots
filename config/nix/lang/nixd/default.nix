@@ -1,6 +1,1 @@
-{ pkgs, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ nixd ];
-  };
-}
+{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ nixd ]; }; }

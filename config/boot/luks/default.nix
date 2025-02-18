@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ lib, ... }: {
   #age = {
   #  secrets = {
   #    luks-passwd = {
@@ -10,16 +9,9 @@
 
   boot = {
     initrd = {
-      kernelModules = [
-        "vfat"
-        "nls_cp437"
-        "nls_iso8859-1"
-        "usbhid"
-      ];
+      kernelModules = [ "vfat" "nls_cp437" "nls_iso8859-1" "usbhid" ];
 
-      systemd = {
-        enable = lib.mkForce true;
-      };
+      systemd = { enable = lib.mkForce true; };
 
       luks = {
         cryptoModules = [

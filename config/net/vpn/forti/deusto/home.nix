@@ -1,8 +1,4 @@
-{
-  pkgs,
-  osConfig,
-  ...
-}:
+{ pkgs, osConfig, ... }:
 
 {
   home = {

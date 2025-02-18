@@ -1,10 +1,4 @@
-{
-  lib,
-  inputs,
-  pkgs,
-  config,
-  ...
-}:
+{ lib, inputs, pkgs, config, osConfig, ... }:
 
 let
   imports = [
@@ -36,8 +30,7 @@ let
     ./wallpaper
     ./xwayland
   ];
-in
-{
+in {
   inherit imports;
 
   wayland = {
@@ -45,46 +38,35 @@ in
       hyprland = {
         enable = true;
 
-        package = (
-          inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-            withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
-            legacyRenderer = false;
-            enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
-          }
-        );
+        package = inputs.hyprland.packages."${pkgs.system}".hyprland.override {
+          withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
+
+          legacyRenderer = false;
+
+          enableXWayland =
+            config.wayland.windowManager.hyprland.xwayland.enable;
+        };
 
         settings = {
-          exec-once = lib.mkForce (
-            lib.lists.sort
-              (
-                a: b:
-                !(builtins.elem a
-                  ((import ./bar) {
-                    inherit pkgs;
-                  }).wayland.windowManager.hyprland.settings.exec-once
-                )
-              )
-              (
-                lib.lists.flatten (
-                  builtins.map (x: x.wayland.windowManager.hyprland.settings.exec-once or [ "a" ]) (
-                    builtins.filter (x: x ? wayland.windowManager.hyprland.settings.exec-once) (
-                      builtins.map (
-                        x:
-                        if builtins.isFunction x then
-                          x {
-                            inherit pkgs;
-                            inherit config;
-                            inherit lib;
-                            inherit inputs;
-                          }
-                        else
-                          x
-                      ) (builtins.map (x: import x) imports)
-                    )
-                  )
-                )
-              )
-          );
+          exec-once = lib.mkForce (lib.lists.sort (a: _b:
+            !(builtins.elem a ((import ./bar) {
+              inherit pkgs;
+            }).wayland.windowManager.hyprland.settings.exec-once))
+            (lib.lists.flatten (builtins.map (x:
+              x.wayland.windowManager.hyprland.settings.exec-once or [ "a" ])
+              (builtins.filter
+                (x: x ? wayland.windowManager.hyprland.settings.exec-once)
+                (builtins.map (x:
+                  if builtins.isFunction x then
+                    x {
+                      inherit config;
+                      inherit inputs;
+                      inherit lib;
+                      inherit osConfig;
+                      inherit pkgs;
+                    }
+                  else
+                    x) (builtins.map import imports))))));
 
           envd = [ "TERM,wezterm" ];
 

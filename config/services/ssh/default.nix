@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{ user, lib, ... }: {
   services = {
     openssh = {
       enable = true;
@@ -32,7 +31,7 @@
 
   users = {
     users = {
-      mikel = {
+      "${user}" = {
         openssh = {
           authorizedKeys = {
             keyFiles = [

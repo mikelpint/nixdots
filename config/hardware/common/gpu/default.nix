@@ -1,18 +1,9 @@
-{
-  pkgs,
-  inputs,
-  lib,
-  ...
-}:
+{ pkgs, inputs, lib, ... }:
 
 let
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.system};
-in
-{
-  imports = [
-    ./amd
-    ./nvidia
-  ];
+in {
+  imports = [ ./amd ./nvidia ];
 
   hardware = {
     graphics = {
@@ -42,10 +33,8 @@ in
         vulkan-extension-layer
       ];
 
-      extraPackages32 =
-        with pkgs.pkgsi686Linux;
-        with driversi686Linux;
-        [
+      extraPackages32 = with pkgs.pkgsi686Linux;
+        with driversi686Linux; [
           libva
           libvdpau
           libva-vdpau-driver
@@ -56,36 +45,33 @@ in
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:${
-        pkgs.lib.makeLibraryPath (
-          with pkgs;
-          with xorg;
-          [
-            icu.dev
-            libdecor
-            glfw
+          pkgs.lib.makeLibraryPath (with pkgs;
+            with xorg; [
+              icu.dev
+              libdecor
+              glfw
 
-            libGL
-            libGLU
+              libGL
+              libGLU
 
-            wayland
-            egl-wayland
+              wayland
+              egl-wayland
 
-            pipewire
+              pipewire
 
-            vulkan-loader
-            #vulkan-validation-layers
-            vulkan-extension-layer
+              vulkan-loader
+              #vulkan-validation-layers
+              vulkan-extension-layer
 
-            libX11
-            libXcursor
-            libXi
-            libXrandr
+              libX11
+              libXcursor
+              libXi
+              libXrandr
 
-            pcscliteWithPolkit
-            #stdenv.cc.cc.lib
-          ]
-        )
-      }:/run/opengl-driver/lib";
+              pcscliteWithPolkit
+              #stdenv.cc.cc.lib
+            ])
+        }:/run/opengl-driver/lib";
     };
   };
 }

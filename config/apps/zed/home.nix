@@ -39,30 +39,23 @@ let
     ./theme.json
     ./update.json
   ];
-in
-{
+in {
   home = {
     packages = with pkgs; [ zed-editor ];
 
     activation = {
       zedSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run echo -e "${
-          (builtins.replaceStrings [ ''"'' ] [ ''\"'' ]) (
-            (lib.lists.foldr (a: b: "${a}${b}") "") (builtins.map builtins.readFile json)
-          )
+          (builtins.replaceStrings [ ''"'' ] [ ''\"'' ])
+          ((lib.lists.foldr (a: b: "${a}${b}") "")
+            (builtins.map builtins.readFile json))
         }" | ${pkgs.jq}/bin/jq -s add > $HOME/.config/zed/settings.json
       '';
     };
   };
 
   programs = {
-    mangohud = {
-      settingsPerApplication = {
-        zed = {
-          no_display = true;
-        };
-      };
-    };
+    mangohud = { settingsPerApplication = { zed = { no_display = true; }; }; };
   };
 
   xdg = {

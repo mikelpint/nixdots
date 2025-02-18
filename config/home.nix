@@ -1,9 +1,7 @@
-{ lib, ... }:
-
-{
+{ user, lib, ... }: {
   home = lib.mkForce {
-    username = "mikel";
-    homeDirectory = "/home/mikel";
+    username = user;
+    homeDirectory = "/home/${user}";
 
     sessionPath = [ "$HOME/.local/bin" ];
 
@@ -11,9 +9,7 @@
   };
 
   programs = {
-    home-manager = {
-      enable = true;
-    };
+    home-manager = { enable = true; };
 
     nix-index = {
       enable = true;
@@ -22,13 +18,10 @@
     };
   };
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-  };
+  nixpkgs = { config = { allowUnfree = true; }; };
 
   imports = [
+    ./audio/home.nix
     ./cli/home.nix
     ./env/home.nix
     ./fonts/home.nix

@@ -1,5 +1,1 @@
-_: {
-  imports = [
-    ../../config/desktop
-  ];
-}
+_: { imports = [ ../../config/desktop ]; }

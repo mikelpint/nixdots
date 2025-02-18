@@ -3,10 +3,7 @@
     windowManager = {
       hyprland = {
         settings = {
-          envd = [
-            "NIXOS_OZONE_WL,1"
-            "ELECTRON_OZONE_PLATFORM_HINT,auto"
-          ];
+          envd = [ "NIXOS_OZONE_WL,1" "ELECTRON_OZONE_PLATFORM_HINT,auto" ];
         };
       };
     };

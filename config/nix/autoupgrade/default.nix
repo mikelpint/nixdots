@@ -7,11 +7,7 @@
       operation = "switch";
 
       flake = "/etc/nixos";
-      flags = [
-        "flake"
-        "update"
-        "--commit-lock-file"
-      ];
+      flags = [ "flake" "update" "--commit-lock-file" ];
     };
   };
 }

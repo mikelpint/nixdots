@@ -1,12 +1,9 @@
-{ pkgs, ... }:
-{
+_: {
   services = {
     usbguard = {
       enable = true;
 
-      dbus = {
-        enable = true;
-      };
+      dbus = { enable = true; };
 
       implicitPolicyTarget = "block";
     };

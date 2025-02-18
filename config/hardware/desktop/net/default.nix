@@ -1,9 +1,5 @@
 {
-  imports = [
-    ./dhcp
-    ./if
-    ./kernel
-  ];
+  imports = [ ./dhcp ./if ./kernel ];
 
   networking = {
     hostId = "deadbeef";

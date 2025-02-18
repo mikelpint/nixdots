@@ -1,14 +1,11 @@
-{ pkgs, lib, ... }:
-{
-  environment = {
-    systemPackages = with pkgs; [ bubblewrap ];
-  };
+{ pkgs, lib, user, ... }: {
+  environment = { systemPackages = with pkgs; [ bubblewrap ]; };
 
   security = {
     wrappers = {
       bwrap = {
-        owner = "mikel";
-        group = "mikel";
+        owner = user;
+        group = user;
         source = builtins.toPath "${pkgs.bubblewrap}/bin/bwrap";
         setuid = lib.mkForce true;
         # capabilities = "all+eip";
@@ -39,10 +36,6 @@
       ];
     };
 
-    steam = {
-      gamescopeSession = {
-        enable = true;
-      };
-    };
+    steam = { gamescopeSession = { enable = true; }; };
   };
 }

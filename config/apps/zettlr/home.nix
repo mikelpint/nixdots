@@ -1,9 +1,1 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [
-      zettlr
-      pandoc
-    ];
-  };
-}
+{ pkgs, ... }: { home = { packages = with pkgs; [ zettlr pandoc ]; }; }

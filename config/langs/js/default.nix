@@ -7,7 +7,8 @@
       graphviz
       nodePackages_latest.nodejs
       nodePackages_latest.pnpm
-      tailwindcss
+      nodePackages_latest.prisma
+      nodePackages_latest.tailwindcss
       turbo-unwrapped
       typescript
     ];
@@ -19,15 +20,10 @@
 
     activation = {
       npm-prefix =
-        lib.hm.dag.entryAfter
-          [
-            "writeBoundary"
-            "installPackages"
-          ]
-          ''
-            run ${pkgs.nodePackages_latest.nodejs}/bin/npm set prefix $HOME/.npm-global
-            run ${pkgs.nodePackages_latest.pnpm}/bin/pnpm set prefix $HOME/.pnpm-global
-          '';
+        lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+          run ${pkgs.nodePackages_latest.nodejs}/bin/npm set prefix $HOME/.npm-global
+          run ${pkgs.nodePackages_latest.pnpm}/bin/pnpm set prefix $HOME/.pnpm-global
+        '';
     };
   };
 }

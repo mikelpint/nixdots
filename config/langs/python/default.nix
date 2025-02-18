@@ -1,9 +1,3 @@
-{ pkgs, ... }:
-{
-  home = {
-    packages = with pkgs; [
-      python3
-      python312Packages.tkinter
-    ];
-  };
+{ pkgs, ... }: {
+  home = { packages = with pkgs; [ python3 python312Packages.tkinter ]; };
 }
