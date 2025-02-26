@@ -6,7 +6,7 @@
           monitor = lib.mkDefault [ ",highrr,auto,auto" ];
 
           envd = [
-            "WLR_DRM_DEVICES,$HOME/.config/hypr/card"
+            "AQ_DRM_DEVICES,$HOME/.config/hypr/card:$HOME/.config/hypr/otherCard"
 
             "XDG_CURRENT_DESKTOP,Hyprland"
             "XDG_SESSION_TYPE,wayland"
