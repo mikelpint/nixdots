@@ -1,7 +1,13 @@
-{
-  imports = [ ./auto-cpufreq ./tlp ];
+{ lib, ... }:
+let services = [ "docker" "mongodb" "postgresql" "redis" ];
+in {
+  imports =
+    [ ./auto-cpufreq ./power-profiles-daemon ./powertop ./scheduling ./tlp ];
 
-  services = { power-profiles-daemon = { enable = false; }; };
-
-  powerManagement = { powertop = { enable = true; }; };
+  systemd = {
+    services = builtins.listToAttrs (builtins.map (name: {
+      inherit name;
+      value = { wantedBy = lib.mkForce [ ]; };
+    }) services);
+  };
 }
