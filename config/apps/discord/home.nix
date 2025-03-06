@@ -5,7 +5,7 @@
     packages = with pkgs; [
       legcord
 
-      xwaylandvideobridge
+      kdePackages.xwaylandvideobridge
     ];
   };
 }

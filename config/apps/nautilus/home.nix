@@ -42,5 +42,5 @@
     ];
   };
 
-  home = { packages = with pkgs; [ nautilus sushi ]; };
+  home = { packages = with pkgs; [ nautilus sushi file-roller ]; };
 }
