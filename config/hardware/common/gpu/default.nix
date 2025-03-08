@@ -14,8 +14,8 @@ in {
       enable32Bit = true;
 
       extraPackages = with pkgs; [
-        mesa
-        mesa.drivers
+        pkgs-unstable.mesa
+        pkgs-unstable.mesa.drivers
 
         vaapiVdpau
         libva
@@ -71,7 +71,7 @@ in {
               pcscliteWithPolkit
               #stdenv.cc.cc.lib
             ])
-        }:/run/opengl-driver/lib";
+        }:/run/opengl-driver/lib:/run/opengl-driver-32/lib";
     };
   };
 }
