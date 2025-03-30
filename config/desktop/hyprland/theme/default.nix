@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   xdg = {
     configFile = {
       "hypr/macchiato.conf" = {
@@ -81,6 +81,33 @@
           $crust = rgb(181926)
           $crustAlpha = 181926
         '';
+      };
+    };
+  };
+
+  home = {
+    packages = with pkgs; [
+      glib
+      dconf-editor
+      gsettings-desktop-schemas
+
+      (writeShellScriptBin "hyprsetup_theme" ''
+        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface color-schema 'prefer-dark'
+      '')
+    ];
+  };
+
+  wayland = {
+    windowManager = {
+      hyprland = {
+        settings = {
+          exec-once = [ "hyprsetup_theme" ];
+
+          envd = with pkgs;
+            [
+              "GSETTINGS_SCHEMA_DIR,${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}/glib-2.0/schemas"
+            ];
+        };
       };
     };
   };

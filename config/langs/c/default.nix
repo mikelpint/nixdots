@@ -4,7 +4,8 @@
   home = {
     packages = with pkgs; [
       (lib.hiPrio gcc)
-      # tinycc
+      gdb
+      tinycc
 
       cmake
       gnumake
@@ -12,6 +13,10 @@
 
       libclang
       (lib.hiPrio clang-tools)
+      llvm
+      lldb
+
+      valgrind
     ];
   };
 }

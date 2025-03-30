@@ -7,7 +7,10 @@ in {
   home = {
     packages = with pkgs; [ gsettings-desktop-schemas dconf-editor ];
 
-    sessionVariables = { GTK_THEME = "catppuccin-${flavor}-${accent}"; };
+    sessionVariables = {
+      GTK_THEME = "Adwaita-dark";
+      # GTK_THEME = "catppuccin-${flavor}-${accent}";
+    };
   };
 
   gtk = {
@@ -39,9 +42,10 @@ in {
 
   xdg = {
     systemDirs = {
-      data = [
-        "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
-        "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}"
+      data = with pkgs; [
+        "${gtk3}/share/gsettings-schemas/${gtk3.name}"
+        "${gtk4}/share/gsettings-schemas/${gtk4.name}"
+        "${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}"
       ];
     };
   };

@@ -7,15 +7,14 @@ in {
 
   hardware = {
     graphics = {
-      package = pkgs-unstable.mesa.drivers;
-      package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
+      package = pkgs-unstable.mesa;
+      package32 = pkgs-unstable.pkgsi686Linux.mesa;
 
       enable = true;
       enable32Bit = true;
 
       extraPackages = with pkgs; [
         pkgs-unstable.mesa
-        pkgs-unstable.mesa.drivers
 
         vaapiVdpau
         libva

@@ -1,15 +1,15 @@
-{ inputs, pkgs, lib, config, ... }:
+{ lib, inputs, pkgs, config, ... }:
 let
   inherit (inputs.nixpkgs-small.legacyPackages."${pkgs.system}")
     xdg-desktop-portal-hyprland;
   inherit (pkgs)
-    xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk;
+    xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr;
 
   extraPortals = [
     xdg-desktop-portal
     xdg-desktop-portal-wlr
     xdg-desktop-portal-gtk
-    xdg-desktop-portal-hyprland
+    #xdg-desktop-portal-hyprland
   ];
 in {
   environment = {

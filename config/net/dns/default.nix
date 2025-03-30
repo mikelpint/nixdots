@@ -8,4 +8,6 @@
 
     networkmanager = { dns = lib.mkOverride 75 "none"; };
   };
+
+  environment = { etc = { hosts = { mode = "0644"; }; }; };
 }

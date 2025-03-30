@@ -1,4 +1,11 @@
-{ lib, user, ... }: {
+{ lib, user, config, pkgs, ... }:
+let
+  command = if config.programs.hyprland.withUWSM then ''
+    [ $(uwsm check may-start) ] && \
+    ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
+  '' else
+    "dbus-run-session Hyprland";
+in {
   environment = { sessionVariables = { NIXOS_OZONE_WL = "1"; }; };
 
   services = {
@@ -12,12 +19,12 @@
 
       settings = {
         default_session = {
-          command = "Hyprland";
+          inherit command;
           inherit user;
         };
 
         initial_session = {
-          command = "Hyprland";
+          inherit command;
           inherit user;
         };
       };

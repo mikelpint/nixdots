@@ -8,7 +8,7 @@
 
       tables = {
         traceall = {
-          enable = true;
+          enable = false;
 
           name = "traceall";
           family = "ip";
@@ -32,9 +32,9 @@
       enable = true;
       trustedInterfaces = [ ];
 
-      logRefusedPackets = false;
+      logRefusedPackets = true;
       logRefusedConnections = true;
-      logReversePathDrops = false;
+      logReversePathDrops = true;
       logRefusedUnicastsOnly = true;
 
       allowPing = false;
@@ -46,6 +46,31 @@
       filterForward = true;
 
       rejectPackets = false;
+    };
+  };
+
+  services = {
+    ulogd = {
+      enable = false;
+      logLevel = 1;
+
+      settings = {
+        emu1 = {
+          file = "/var/log/ulogd_pkts.log";
+          sync = 1;
+        };
+        global = {
+          stack = [
+            "log1:NFLOG,base1:BASE,ifi1:IFINDEX,ip2str1:IP2STR,print1:PRINTPKT,emu1:LOGEMU"
+            "log1:NFLOG,base1:BASE,pcap1:PCAP"
+          ];
+        };
+        log1 = { group = 2; };
+        pcap1 = {
+          file = "/var/log/ulogd.pcap";
+          sync = 1;
+        };
+      };
     };
   };
 }

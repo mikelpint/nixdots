@@ -6,6 +6,7 @@ in {
   environment = {
     systemPackages = with pkgs;
       with pspkgs; [
+        timescaledb
         timescaledb-tune
         timescaledb-parallel-copy
         timescaledb_toolkit

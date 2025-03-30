@@ -6,8 +6,9 @@
       gsettings-desktop-schemas
 
       (writeShellScriptBin "hyprsetup_icons" ''
-        config="$HOME/.config/gtk-3.0/settings.ini"
-        if [ ! -f "$config" ]; then exit 1; fi
+          config="$HOME/.config/gtk-3.0/settings.ini"
+          if [ ! -f "$config" ]; then config="$HOME/.config/gtk-4.0/settings.ini"; fi
+          if [ ! -f "$config" ]; then exit 1; fi
 
         ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface icon-theme "$(grep 'gtk-icon-theme-name' "$config" | sed 's/.*\s*=\s*//')"
       '')

@@ -12,4 +12,12 @@ _: {
     ./vpn
     ./wpa_supplicant
   ];
+
+  networking = {
+    hosts = {
+      # "127.0.0.1" = [ "dspace.deustotech.eu" ];
+      # "10.0.0.50" = [ "dspace.deustotech.eu" ];
+      # "10.201.0.1" = [ "dspace.deustotech.eu" ];
+    };
+  };
 }

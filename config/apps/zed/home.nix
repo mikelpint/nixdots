@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 
 let
   json = [
@@ -41,7 +41,8 @@ let
   ];
 in {
   home = {
-    packages = with pkgs; [ zed-editor ];
+    packages = with inputs.nixpkgs-small.legacyPackages."${pkgs.system}";
+      [ zed-editor ];
 
     activation = {
       zedSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -55,7 +56,12 @@ in {
   };
 
   programs = {
-    mangohud = { settingsPerApplication = { zed = { no_display = true; }; }; };
+    mangohud = {
+      settingsPerApplication = {
+        zed = { no_display = true; };
+        zeditor = { no_display = true; };
+      };
+    };
   };
 
   xdg = {

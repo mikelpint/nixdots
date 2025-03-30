@@ -9,7 +9,7 @@
           "cat /home/${user}/.local/bin/firefox-sync.sh.source > /home/${user}/.local/bin/firefox-sync.sh && "
           + "chmod +x /home/${user}/.local/bin/firefox-sync.sh";
         text = ''
-          #!/bin/sh
+          #!/usr/bin/env sh
 
           static=static-$1
           link=$1

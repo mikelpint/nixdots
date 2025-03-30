@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  imports = [ ./1.nix ];
+  imports = [
+    # ./1.nix
+  ];
 
   services = {
     getty = {

@@ -1,5 +1,7 @@
 {
   imports = [
+    ../../config/apps/wireshark
+
     # ../../config/services/dragonflydb
     ../../config/services/mongodb
     ../../config/services/postgresql

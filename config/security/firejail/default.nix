@@ -90,7 +90,7 @@
         };
 
         zed = {
-          executable = "${lib.getBin pkgs.zed-editor}/bin/zed";
+          executable = "${lib.getBin pkgs.zed-editor}/bin/zeditor";
           profile = "${pkgs.firejail}/etc/firejail/zed.profile";
         };
       };
