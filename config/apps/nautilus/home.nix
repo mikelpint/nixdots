@@ -1,7 +1,8 @@
 { pkgs, lib, ... }:
 let
-inherit (pkgs) file-roller nautilus sushi;
-in {
+  inherit (pkgs) file-roller nautilus sushi;
+in
+{
   home = {
     sessionVariables = {
       GST_PLUGIN_SYSTEM_PATH_1_0 =

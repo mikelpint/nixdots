@@ -1,10 +1,12 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   programs = {
     firejail = {
-      code = {
-        executable = "${pkgs.vscode-fhs}/bin/code";
-        profile = "${config.programs.firejail.package}/etc/firejail/code.profile";
+      wrappedBinaries = {
+        code = {
+          executable = "${pkgs.vscode-fhs}/bin/code";
+          profile = "${pkgs.firejail}/etc/firejail/code.profile";
+        };
       };
     };
   };

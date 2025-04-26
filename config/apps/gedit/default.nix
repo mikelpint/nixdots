@@ -1,10 +1,12 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   programs = {
     firejail = {
-      gedit = {
-        executable = "${pkgs.gedit}/bin/gedit";
-        profile = "${config.programs.firejail.package}/etc/firejail/gedit.profile";
+      wrappedBinaries = {
+        gedit = {
+          executable = "${pkgs.gedit}/bin/gedit";
+          profile = "${pkgs.firejail}/etc/firejail/gedit.profile";
+        };
       };
     };
   };

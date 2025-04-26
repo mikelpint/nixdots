@@ -1,12 +1,15 @@
-{pkgs, config, ...}:
+{ pkgs, ... }:
 let
-inherit (pkgs) lutris;
-in {
+  inherit (pkgs) lutris;
+in
+{
   programs = {
     firejail = {
-      lutris = {
-        executable = "${lutris}/bin/lutris";
-        profile = "${config.programs.firejail.package}/etc/firejail/lutris.profile";
+      wrappedBinaries = {
+        lutris = {
+          executable = "${lutris}/bin/lutris";
+          profile = "${pkgs.firejail}/etc/firejail/lutris.profile";
+        };
       };
     };
   };

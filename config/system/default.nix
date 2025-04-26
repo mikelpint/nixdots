@@ -10,7 +10,7 @@
     ./lsof
     ./nix-ld
     ./nmap
-    ./wine
+    #./wine
   ];
 
   system = {

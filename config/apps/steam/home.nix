@@ -38,7 +38,7 @@
 
         protonup
 
-        wine-discord-ipc-bridge
+        # wine-discord-ipc-bridge
         # wine-ge
       ];
 

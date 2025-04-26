@@ -3,8 +3,8 @@
   programs = {
     firejail = {
       wrappedBinaries = {
-        imv = {
-          executable = "${pkgs.imv}/bin/imv";
+        k3b = {
+          executable = "${pkgs.kdePackages.k3b}/bin/imv";
           profile = "${pkgs.firejail}/etc/firejail/imv.profile";
         };
       };

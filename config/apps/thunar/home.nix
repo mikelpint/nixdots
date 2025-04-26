@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
   package = pkgs.xfce.thunar;
-in {
+in
+{
   programs = {
     thunar = {
       enable = true;

@@ -1,13 +1,15 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   package = pkgs.chromium;
 in
 {
   programs = {
     firejail = {
-      transmission-cli = {
-        executable = "${package}/bin/chromium";
-        profile = "${config.programs.firejail.package}/etc/firejail/chromium.profile";
+      wrappedBinaries = {
+        chromium = {
+          executable = "${package}/bin/chromium";
+          profile = "${pkgs.firejail}/etc/firejail/chromium.profile";
+        };
       };
     };
   };

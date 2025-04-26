@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
-inherit (pkgs) skypeforlinux;
-in {
+  inherit (pkgs) skypeforlinux;
+in
+{
   home = {
     packages = [ skypeforlinux ];
   };

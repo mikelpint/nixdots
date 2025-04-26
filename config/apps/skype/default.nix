@@ -1,12 +1,15 @@
-{pkgs, osConfig, ...}:
+{ pkgs, ... }:
 let
-inherit (pkgs) skypeforlinux;
-in {
+  inherit (pkgs) skypeforlinux;
+in
+{
   programs = {
     firejail = {
-      skypeforlinux = {
-        executable = "${skypeforlinux}/bin/skypeforlinux";
-        profile = "${osConfig.programs.firejail.package}/etc/firejail/skypeforlinux.profile";
+      wrappedBinaries = {
+        skypeforlinux = {
+          executable = "${skypeforlinux}/bin/skypeforlinux";
+          profile = "${pkgs.firejail}/etc/firejail/skypeforlinux.profile";
+        };
       };
     };
   };

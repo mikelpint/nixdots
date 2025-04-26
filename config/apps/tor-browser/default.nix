@@ -1,13 +1,15 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
-  tor-browser = pkgs.tor-tor-browser-bundle-bin;
+  tor-browser = pkgs.tor-browser-bundle-bin;
 in
 {
   programs = {
     firejail = {
-      tor-browser = {
-        executable = "${tor-browser}/bin/tor-browser";
-        profile = "${config.programs.firejail.package}/etc/firejail/tor-browser.profile";
+      wrappedBinaries = {
+        tor-browser = {
+          executable = "${tor-browser}/bin/tor-browser";
+          profile = "${pkgs.firejail}/etc/firejail/tor-browser.profile";
+        };
       };
     };
   };

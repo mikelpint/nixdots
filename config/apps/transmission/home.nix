@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
   transmission = pkgs.transmission_4-gtk;
-in {
+in
+{
   home = {
     packages = [ transmission ];
   };

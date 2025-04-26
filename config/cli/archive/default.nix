@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   environment = {
@@ -12,29 +12,31 @@
 
   programs = {
     firejail = {
-      "7z" = {
+      wrappedBinaries = {
+        "7z" = {
           executable = "${pkgs.p7zip}/bin/7z";
-          profile = "${config.programs.firejail.package}/etc/firejail/7z.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/7z.profile";
+        };
 
-      "7za" = {
+        "7za" = {
           executable = "${pkgs.p7zip}/bin/7za";
-          profile = "${config.programs.firejail.package}/etc/firejail/7za.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/7za.profile";
+        };
 
-      "7zr" = {
+        "7zr" = {
           executable = "${pkgs.p7zip}/bin/7zr";
-          profile = "${config.programs.firejail.package}/etc/firejail/7zr.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/7zr.profile";
+        };
 
-      unrar = {
+        unrar = {
           executable = "${pkgs.unrar}/bin/unrar";
-          profile = "${config.programs.firejail.package}/etc/firejail/unrar.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/unrar.profile";
+        };
 
-      unzip = {
+        unzip = {
           executable = "${pkgs.unzip}/bin/unzip";
-          profile = "${config.programs.firejail.package}/etc/firejail/unzip.profile";
+          profile = "${pkgs.firejail}/etc/firejail/unzip.profile";
+        };
       };
     };
   };

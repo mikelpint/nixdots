@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
-    inherit (pkgs) mpv;
-in {
+  inherit (pkgs) mpv;
+in
+{
   nixpkgs = {
     overlays = [
       (_self: super: {

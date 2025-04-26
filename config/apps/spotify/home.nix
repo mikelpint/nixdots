@@ -2,7 +2,6 @@
   pkgs,
   lib,
   inputs,
-  osConfig,
   ...
 }:
 
@@ -36,13 +35,6 @@ in
         seekSong
         adblock
       ];
-    };
-
-    firejail = {
-      spicetify = {
-        executable = "${theme}/bin/spotify";
-        profile = "${osConfig.programs.firejail.package}/etc/firejail/spotify.profile";
-      };
     };
   };
 }

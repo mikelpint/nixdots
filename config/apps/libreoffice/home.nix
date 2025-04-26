@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
   package = pkgs.libreoffice-fresh;
-in{
+in
+{
   home = {
     packages = with pkgs; [
       package

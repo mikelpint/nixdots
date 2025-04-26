@@ -1,10 +1,12 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   programs = {
     firejail = {
-      gimp = {
-        executable = "${pkgs.gimp3-with-plugins}/bin/gimp";
-        profile = "${config.programs.firejail.package}/etc/firejail/gimp.profile";
+      wrappedBinaries = {
+        gimp = {
+          executable = "${pkgs.gimp3-with-plugins}/bin/gimp";
+          profile = "${pkgs.firejail}/etc/firejail/gimp.profile";
+        };
       };
     };
   };

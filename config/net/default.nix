@@ -21,6 +21,9 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [ ethtool traceroute ];
+    systemPackages = with pkgs; [
+      ethtool
+      traceroute
+    ];
   };
 }

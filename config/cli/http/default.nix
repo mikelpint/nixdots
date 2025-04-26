@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   environment = {
@@ -12,19 +12,21 @@
 
   programs = {
     firejail = {
-      curl = {
+      wrappedBinaries = {
+        curl = {
           executable = "${pkgs.curl}/bin/curl";
-          profile = "${config.programs.firejail.package}/etc/firejail/curl.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/curl.profile";
+        };
 
-      wget = {
+        wget = {
           executable = "${pkgs.wget}/bin/wget";
-          profile = "${config.programs.firejail.package}/etc/firejail/wget.profile";
-      };
+          profile = "${pkgs.firejail}/etc/firejail/wget.profile";
+        };
 
-      wget2 = {
+        wget2 = {
           executable = "${pkgs.wget2}/bin/wget2";
-          profile = "${config.programs.firejail.package}/etc/firejail/wget2.profile";
+          profile = "${pkgs.firejail}/etc/firejail/wget2.profile";
+        };
       };
     };
   };

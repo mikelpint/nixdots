@@ -1,14 +1,18 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   package = pkgs.wrapFirefox (pkgs."firefox-unwrapped".override {
     # pipewireSupport = true;
   }) { };
 in
 {
-  firejail = {
-    firefox = {
-      executable = "${package}/bin/firefox";
-      profile = "${config.programs.firejail.package}/etc/firejail/firefox.profile";
+  programs = {
+    firejail = {
+      wrappedBinaries = {
+        firefox = {
+          executable = "${package}/bin/firefox";
+          profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
+        };
+      };
     };
   };
 }

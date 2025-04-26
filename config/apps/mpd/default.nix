@@ -1,12 +1,15 @@
-{pkgs, config, ...}:
+{ pkgs, ... }:
 let
-inherit (pkgs) mpd;
-in {
+  inherit (pkgs) mpd;
+in
+{
   programs = {
     firejail = {
-      mpd = {
-        executable = "${mpd}/bin/mpd";
-        profile = "${config.programs.firejail.package}/etc/firejail/mpd.profile";
+      wrappedBinaries = {
+        mpd = {
+          executable = "${mpd}/bin/mpd";
+          profile = "${pkgs.firejail}/etc/firejail/mpd.profile";
+        };
       };
     };
   };

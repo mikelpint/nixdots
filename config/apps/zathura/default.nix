@@ -1,9 +1,12 @@
-{config, pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs = {
     firejail = {
-      zathura = {
-        executable = "${pkgs.zathura}/bin/zathura";
-        profile = "${config.programs.firejail.package}/etc/firejail/gimp.profile";
+      wrappedBinaries = {
+        zathura = {
+          executable = "${pkgs.zathura}/bin/zathura";
+          profile = "${pkgs.firejail}/etc/firejail/gimp.profile";
+        };
       };
     };
   };

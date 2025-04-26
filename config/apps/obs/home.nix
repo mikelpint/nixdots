@@ -1,7 +1,8 @@
-{ pkgs, osConfig, ... }:
+{ pkgs, ... }:
 let
   package = pkgs.obs-studio;
-in {
+in
+{
   nixpkgs = {
     overlays = [
       (_self: super: {
@@ -42,13 +43,6 @@ in {
         obs-vaapi
         wlrobs
       ];
-    };
-
-    firejail = {
-      obs-studio = {
-        executable = "${package}/bin/obs";
-        profile = "${osConfig.programs.firejail.package}/etc/firejail/obs.profile";
-      };
     };
   };
 }

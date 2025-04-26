@@ -1,9 +1,12 @@
-{pkgs, config, ...}: {
+{ pkgs, ... }:
+{
   programs = {
     firejail = {
-      tmux = {
+      wrappedBinaries = {
+        tmux = {
           executable = "${pkgs.tmux}/bin/tmux";
-          profile = "${config.programs.firejail.package}/etc/firejail/tmux.profile";
+          profile = "${pkgs.firejail}/etc/firejail/tmux.profile";
+        };
       };
     };
   };

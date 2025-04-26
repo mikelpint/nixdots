@@ -1,7 +1,8 @@
 { pkgs, ... }:
 let
   inherit (pkgs) wireshark-qt;
-in {
+in
+{
   home = {
     packages = [ wireshark-qt ];
   };

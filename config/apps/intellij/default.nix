@@ -1,26 +1,21 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   idea = with pkgs; with jetbrains; (plugins.addPlugins idea-ultimate [ "mermaid" ]);
   inherit (pkgs.jetbrains) clion;
 in
 {
-  home = {
-    packages = [
-      idea
-      clion
-    ];
-  };
-
   programs = {
     firejail = {
-      clion = {
-        executable = "${clion}/bin/clion";
-        profile = "${config.programs.firejail.package}/etc/firejail/clion.profile";
-      };
+      wrappedBinaries = {
+        clion = {
+          executable = "${clion}/bin/clion";
+          profile = "${pkgs.firejail}/etc/firejail/clion.profile";
+        };
 
-      idea-ultimate = {
-        executable = "${idea}/bin/idea-ultimate";
-        profile = "${config.programs.firejail.package}/etc/firejail/idea.profile";
+        idea-ultimate = {
+          executable = "${idea}/bin/idea-ultimate";
+          profile = "${pkgs.firejail}/etc/firejail/idea.profile";
+        };
       };
     };
   };

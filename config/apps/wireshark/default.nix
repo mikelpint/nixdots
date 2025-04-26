@@ -1,7 +1,12 @@
-{ user, pkgs, osConfig, ... }:
+{
+  user,
+  pkgs,
+  ...
+}:
 let
   package = pkgs.wireshark-cli;
-in {
+in
+{
   programs = {
     wireshark = {
       enable = true;
@@ -30,14 +35,16 @@ in {
 
   programs = {
     firejail = {
-      wireshark-cli = {
-        executable = "${package}/bin/tshark";
-        profile = "${osConfig.programs.firejail.package}/etc/firejail/tshark.profile";
-      };
+      wrappedBinaries = {
+        wireshark-cli = {
+          executable = "${package}/bin/tshark";
+          profile = "${pkgs.firejail}/etc/firejail/tshark.profile";
+        };
 
-      wireshark-qt = {
-        executable = "${pkgs.wireshark-qt}/bin/wireshark-qt";
-        profile = "${osConfig.programs.firejail.package}/etc/firejail/wireshark-qt.profile";
+        wireshark-qt = {
+          executable = "${pkgs.wireshark-qt}/bin/wireshark-qt";
+          profile = "${pkgs.firejail}/etc/firejail/wireshark-qt.profile";
+        };
       };
     };
   };

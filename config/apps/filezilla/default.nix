@@ -1,10 +1,12 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   programs = {
     firejail = {
-      filezilla = {
-        executable = "${pkgs.filezilla}/bin/filezilla";
-        profile = "${config.programs.firejail.package}/etc/firejail/filezilla.profile";
+      wrappedBinaries = {
+        filezilla = {
+          executable = "${pkgs.filezilla}/bin/filezilla";
+          profile = "${pkgs.firejail}/etc/firejail/filezilla.profile";
+        };
       };
     };
   };
