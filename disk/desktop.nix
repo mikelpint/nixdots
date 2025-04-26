@@ -141,7 +141,7 @@ in
               type = "zfs_fs";
               mountpoint = "/";
               options = {
-                "com.sun:auto-snapshot" = "false";
+                "com.sun:auto-snapshot" = "true";
               };
             };
 
@@ -149,7 +149,7 @@ in
               type = "zfs_fs";
               mountpoint = "/nix";
               options = {
-                "com.sun:auto-snapshot" = "false";
+                "com.sun:auto-snapshot" = "true";
               };
             };
 
