@@ -13,5 +13,9 @@ _: {
     ../../presets/video
   ];
 
-  age = { rekey = { hostPubkey = builtins.readFile ./host.pub; }; };
+  age = {
+    rekey = {
+      hostPubkey = builtins.readFile ./host.pub;
+    };
+  };
 }

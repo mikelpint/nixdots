@@ -1,9 +1,23 @@
-{ lib, inputs, pkgs, config, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 let
-  inherit (inputs.nixpkgs-small.legacyPackages."${pkgs.system}")
-    xdg-desktop-portal-hyprland;
+  inherit (inputs.hyprland.packages."${pkgs.system}")
+    xdg-desktop-portal-hyprland
+    ;
+  inherit (inputs.hyprland.inputs.nixpkgs.legacyPackages."${pkgs.system}")
+    mesa
+    pkgsi686Linux
+    ;
   inherit (pkgs)
-    xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr;
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-wlr
+    ;
 
   extraPortals = [
     xdg-desktop-portal
@@ -11,7 +25,8 @@ let
     xdg-desktop-portal-gtk
     #xdg-desktop-portal-hyprland
   ];
-in {
+in
+{
   environment = {
     systemPackages = extraPortals;
 
@@ -22,19 +37,39 @@ in {
   };
 
   xdg = {
-    autostart = { enable = true; };
+    autostart = {
+      enable = true;
+    };
 
     portal = {
       enable = true;
       xdgOpenUsePortal = true;
 
-      wlr = { enable = true; };
+      wlr = {
+        enable = true;
+      };
 
-      config = { common = { default = "*"; }; };
+      config = {
+        common = {
+          default = "*";
+        };
+      };
 
       inherit extraPortals;
     };
   };
 
-  programs = { hyprland = { portalPackage = xdg-desktop-portal-hyprland; }; };
+  programs = {
+    hyprland = {
+      portalPackage = xdg-desktop-portal-hyprland;
+    };
+  };
+
+  hardware = {
+    graphics = {
+      package = mesa;
+
+      package32 = pkgsi686Linux.mesa;
+    };
+  };
 }

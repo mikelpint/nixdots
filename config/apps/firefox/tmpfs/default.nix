@@ -1,4 +1,5 @@
-{ user, ... }: {
+{ user, ... }:
+{
   systemd = {
     user = {
       services = {
@@ -8,7 +9,10 @@
           description = "Sync Firefox profile to disk";
 
           after = [ "final.target" ];
-          wantedBy = [ "graphical-session.target" "final.target" ];
+          wantedBy = [
+            "graphical-session.target"
+            "final.target"
+          ];
 
           serviceConfig = {
             Type = "oneshot";

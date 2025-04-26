@@ -1,11 +1,15 @@
 { pkgs, config, ... }:
-let pspkgs = config.services.postgresql.package.pkgs;
-in {
+let
+  pspkgs = config.services.postgresql.package.pkgs;
+in
+{
   imports = [ ../postgresql ];
 
   environment = {
-    systemPackages = with pkgs;
-      with pspkgs; [
+    systemPackages =
+      with pkgs;
+      with pspkgs;
+      [
         timescaledb
         timescaledb-tune
         timescaledb-parallel-copy
@@ -15,8 +19,14 @@ in {
 
   services = {
     postgresql = {
-      extensions = ps: with ps; [ timescaledb timescaledb_toolkit ];
-      settings = { shared_preload_libraries = [ "timescaledb" ]; };
+      extensions =
+        ps: with ps; [
+          timescaledb
+          timescaledb_toolkit
+        ];
+      settings = {
+        shared_preload_libraries = [ "timescaledb" ];
+      };
     };
   };
 }

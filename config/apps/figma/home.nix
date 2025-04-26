@@ -1,1 +1,6 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ figma-linux ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ figma-linux ];
+  };
+}

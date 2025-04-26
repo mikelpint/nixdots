@@ -1,8 +1,7 @@
 _:
 
 let
-  "hyprland/workspaces" =
-    (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
+  "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
 
   inherit ((import ../../modules/backlight.nix)) backlight;
   inherit ((import ../../modules/battery.nix)) battery;
@@ -13,7 +12,8 @@ let
   inherit ((import ../../modules/network.nix)) network;
   inherit ((import ../../modules/pulseaudio.nix)) pulseaudio;
   inherit ((import ../../modules/tray.nix)) tray;
-in {
+in
+{
   mainBar = {
     layer = "top";
     position = "top";

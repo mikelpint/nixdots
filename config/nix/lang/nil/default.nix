@@ -1,1 +1,6 @@
-{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ nil ]; }; }
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ nil ];
+  };
+}

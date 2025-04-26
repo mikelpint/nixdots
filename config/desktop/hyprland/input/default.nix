@@ -1,5 +1,10 @@
-{ lib, ... }: {
-  imports = [ ./keyboard ./mouse ./touchpad ];
+{ lib, ... }:
+{
+  imports = [
+    ./keyboard
+    ./mouse
+    ./touchpad
+  ];
 
   wayland = {
     windowManager = {

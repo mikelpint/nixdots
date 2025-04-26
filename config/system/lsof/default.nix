@@ -1,1 +1,6 @@
-{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ lsof ]; }; }
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ lsof ];
+  };
+}

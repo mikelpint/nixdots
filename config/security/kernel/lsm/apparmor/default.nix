@@ -1,13 +1,31 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   imports = [ ../../../../boot/kernel/patches/apparmor ];
 
   security = {
     apparmor = {
       enable = true;
+      enableCache = true;
 
-      packages = with pkgs; [ apparmor-utils apparmor-profiles ];
+      packages = with pkgs; [
+        apparmor-utils
+        apparmor-profiles
+        apparmor-pam
+      ];
+
+      killUnconfinedConfinables = lib.mkDefault true;
     };
   };
 
-  boot = { kernelParams = [ "lsm=apparmor" "security=apparmor" ]; };
+  boot = lib.mkIf config.security.apparmor.enable {
+    kernelParams = [
+      # "lsm=apparmor"
+      # "security=apparmor"
+    ];
+  };
 }

@@ -1,7 +1,12 @@
-{ lib, inputs, pkgs, ... }: {
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
+{
   home = {
-    packages = with inputs.nixpkgs-stable.legacyPackages.${pkgs.system};
-      [ easyeffects ];
+    packages = with inputs.nixpkgs-stable.legacyPackages.${pkgs.system}; [ easyeffects ];
   };
 
   wayland = {

@@ -1,4 +1,5 @@
-{ user, lib, ... }: {
+{ user, lib, ... }:
+{
   home = lib.mkForce {
     username = user;
     homeDirectory = "/home/${user}";
@@ -9,7 +10,9 @@
   };
 
   programs = {
-    home-manager = { enable = true; };
+    home-manager = {
+      enable = true;
+    };
 
     nix-index = {
       enable = true;
@@ -18,7 +21,11 @@
     };
   };
 
-  nixpkgs = { config = { allowUnfree = true; }; };
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   imports = [
     ./audio/home.nix

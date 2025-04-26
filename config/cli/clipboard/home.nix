@@ -1,5 +1,10 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; [ traceroute wl-clipboard xclip ]; };
+  home = {
+    packages = with pkgs; [
+      wl-clipboard
+      xclip
+    ];
+  };
 }

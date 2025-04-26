@@ -1,5 +1,13 @@
-{ pkgs, lib, user, ... }: {
-  environment = { systemPackages = with pkgs; [ bubblewrap ]; };
+{
+  pkgs,
+  lib,
+  user,
+  ...
+}:
+{
+  environment = {
+    systemPackages = with pkgs; [ bubblewrap ];
+  };
 
   security = {
     wrappers = {
@@ -36,6 +44,10 @@
       ];
     };
 
-    steam = { gamescopeSession = { enable = true; }; };
+    steam = {
+      gamescopeSession = {
+        enable = true;
+      };
+    };
   };
 }

@@ -1,1 +1,8 @@
-{ imports = [ ./lshw ./ncdu ./pciutils ./sensors ]; }
+{
+  imports = [
+    ./lshw
+    ./ncdu
+    ./pciutils
+    ./sensors
+  ];
+}

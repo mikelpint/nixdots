@@ -1,6 +1,7 @@
 # https://wiki.archlinux.org/title/Firefox/Profile_on_RAM
 
-{ user, ... }: {
+{ user, ... }:
+{
   home = {
     file = {
       "firefox-sync" = {
@@ -51,7 +52,9 @@
             After = [ "final.target" ];
           };
 
-          Install = { WantedBy = [ "final.target" ]; };
+          Install = {
+            WantedBy = [ "final.target" ];
+          };
 
           Service = {
             Type = "oneshot";
@@ -68,9 +71,13 @@
 
       timers = {
         firefox-profile = {
-          Unit = { Description = "Run %i every 30 minutes"; };
+          Unit = {
+            Description = "Run %i every 30 minutes";
+          };
 
-          Install = { WantedBy = [ "timers.target" ]; };
+          Install = {
+            WantedBy = [ "timers.target" ];
+          };
 
           Timer = {
             OnStartupSec = "30min";

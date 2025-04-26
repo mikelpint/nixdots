@@ -1,1 +1,6 @@
-{ imports = [ ./ipv4 ./ipv6 ]; }
+{
+  imports = [
+    ./ipv4
+    ./ipv6
+  ];
+}

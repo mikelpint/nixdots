@@ -107,7 +107,8 @@ let
     for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do echo "ondemand" > $file; done
     cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
   '';
-in {
+in
+{
   imports = [ ./vm ];
 
   virtualisation = {
@@ -118,18 +119,19 @@ in {
         package = pkgs.qemu_kvm;
         runAsRoot = true;
 
-        swtpm = { enable = true; };
+        swtpm = {
+          enable = true;
+        };
 
         ovmf = {
           enable = true;
 
-          packages = with pkgs;
-            [
-              (OVMF.override {
-                secureBoot = true;
-                tpmSupport = true;
-              }).fd
-            ];
+          packages = with pkgs; [
+            (OVMF.override {
+              secureBoot = true;
+              tpmSupport = true;
+            }).fd
+          ];
         };
       };
 

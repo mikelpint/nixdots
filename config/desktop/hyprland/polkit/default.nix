@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
     packages = with pkgs; [
       polkit_gnome
@@ -12,7 +13,11 @@
 
   wayland = {
     windowManager = {
-      hyprland = { settings = { exec-once = [ "hyprsetup_polkit" ]; }; };
+      hyprland = {
+        settings = {
+          exec-once = [ "hyprsetup_polkit" ];
+        };
+      };
     };
   };
 }

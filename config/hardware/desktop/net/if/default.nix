@@ -1,5 +1,10 @@
 {
-  imports = [ ./eth ./wifi ];
+  imports = [
+    ./eth
+    ./wifi
+  ];
 
-  networking = { usePredictableInterfaceNames = true; };
+  networking = {
+    usePredictableInterfaceNames = true;
+  };
 }

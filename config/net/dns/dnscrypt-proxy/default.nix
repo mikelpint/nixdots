@@ -1,11 +1,18 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/dns.nix
 
-{ lib, config, ... }: {
+{ lib, config, ... }:
+
+let
+  port = 51;
+in
+{
   services = {
     dnscrypt-proxy2 = {
       enable = true;
 
       settings = {
+        listen_addresses = [ "[::1]:${toString port}" ];
+
         ipv6_servers = true;
         require_dnssec = true;
 
@@ -33,14 +40,13 @@
             ];
 
             cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
-            minisign_key =
-              "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+            minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
           };
         };
       };
     };
 
-    resolved = lib.mkIf config.services.dnscrypt-proxy2.enable {
+    resolved = lib.mkIf (config.services.dnscrypt-proxy2.enable && port == 53) {
       enable = lib.mkForce false;
     };
   };
@@ -48,7 +54,9 @@
   systemd = {
     services = {
       dnscrypt-proxy2 = {
-        serviceConfig = { StateDirectory = "dnscrypt-proxy"; };
+        serviceConfig = {
+          StateDirectory = "dnscrypt-proxy";
+        };
       };
     };
   };
@@ -57,6 +65,31 @@
     firewall = {
       allowedTCPPorts = [ 53 ];
       allowedUDPPorts = [ 53 ];
+
+      extraCommands = lib.mkIf (!config.networking.nftables.enable && port != 53) ''
+        ip6tables --table nat --flush OUTPUT
+        ${lib.flip (lib.concatMapStringsSep "\n") [ "udp" "tcp" ] (proto: ''
+          ip6tables --table nat --append OUTPUT \
+            --protocol ${proto} --destination ::1 --destination-port 53 \
+            --jump REDIRECT --to-ports ${toString port}
+        '')}
+      '';
+    };
+
+    nftables = {
+      tables = {
+        nat = {
+          enable = !config.networking.nftables.enable && port != 53;
+          name = "nat";
+          family = "ip6";
+          content = ''
+            chain OUTPUT {
+              type nat hook prerouting priority -100; policy accept;
+              tcp dport 53 redirect to :${toString port}
+            }
+          '';
+        };
+      };
     };
   };
 }

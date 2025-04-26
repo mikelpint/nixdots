@@ -1,1 +1,6 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ qalculate-gtk ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ qalculate-gtk ];
+  };
+}

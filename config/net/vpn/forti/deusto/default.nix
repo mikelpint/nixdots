@@ -1,6 +1,8 @@
 { self, user, ... }:
-let owner = user;
-in {
+let
+  owner = user;
+in
+{
   age = {
     secrets = {
       deustopasswd = {

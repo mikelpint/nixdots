@@ -1,7 +1,16 @@
-{ pkgs, lib, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  osConfig,
+  ...
+}:
 
-let spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
-in {
+let
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+  theme = spicePkgs.themes.catppuccin;
+in
+{
   nixpkgs = {
     config = {
       allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "spotify" ];
@@ -14,7 +23,7 @@ in {
     spicetify = {
       enable = true;
 
-      theme = spicePkgs.themes.catppuccin;
+      inherit theme;
       colorScheme = "macchiato";
 
       enabledExtensions = with spicePkgs.extensions; [
@@ -27,6 +36,13 @@ in {
         seekSong
         adblock
       ];
+    };
+
+    firejail = {
+      spicetify = {
+        executable = "${theme}/bin/spotify";
+        profile = "${osConfig.programs.firejail.package}/etc/firejail/spotify.profile";
+      };
     };
   };
 }

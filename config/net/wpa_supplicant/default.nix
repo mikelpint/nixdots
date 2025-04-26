@@ -1,9 +1,20 @@
+{ lib, config, ... }:
 {
   networking = {
     wireless = {
       enable = false;
 
-      userControlled = { enable = true; };
+      userControlled = {
+        enable = true;
+      };
+    };
+
+    networkmanager = lib.mkIf config.networking.wireless.enable {
+      unmanaged = [
+        "*"
+        "except:type:wwan"
+        "except:type:gsm"
+      ];
     };
   };
 }

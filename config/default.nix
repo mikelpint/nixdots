@@ -1,5 +1,9 @@
 _: {
-  users = { users = { mikel = { }; }; };
+  users = {
+    users = {
+      mikel = { };
+    };
+  };
 
   imports = [
     ./audio

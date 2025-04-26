@@ -1,15 +1,20 @@
-{ osConfig, user, pkgs, ... }: {
+{
+  osConfig,
+  user,
+  pkgs,
+  ...
+}:
+{
   programs = {
-    jq = { enable = true; };
-    "${if osConfig.users.users.${user}.shell == pkgs.zsh then
-      "zsh"
-    else
-      "bash"}" = {
-        initExtra = ''
-          jqurl () {
-              curl $@ | jq
-          }
-        '';
-      };
+    jq = {
+      enable = true;
+    };
+    "${if osConfig.users.users.${user}.shell == pkgs.zsh then "zsh" else "bash"}" = {
+      initContent = ''
+        jqurl () {
+            curl $@ | jq
+        }
+      '';
+    };
   };
 }

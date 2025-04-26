@@ -1,9 +1,27 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  ifnotapparmor = lib.mkIf (!config.security.apparmor.enable);
+in
+{
   imports = [ ../../../../boot/kernel/patches/selinux ];
 
-  systemd = { package = pkgs.systemd.override { withSelinux = true; }; };
+  systemd = ifnotapparmor {
+    package = pkgs.systemd.override { withSelinux = true; };
+  };
 
-  environment = { systemPackages = with pkgs; [ policycoreutils ]; };
+  environment = ifnotapparmor {
+    systemPackages = with pkgs; [ policycoreutils ];
+  };
 
-  boot = { kernelParams = [ "lsm=selinux" "security=selinux" ]; };
+  boot = ifnotapparmor {
+    kernelParams = [
+      # "lsm=selinux"
+      # "security=selinux"
+    ];
+  };
 }

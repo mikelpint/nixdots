@@ -1,13 +1,18 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs = {
     helix = {
       languages = {
-        language = [{
-          name = "nix";
+        language = [
+          {
+            name = "nix";
 
-          auto-format = true;
-          formatter = { command = "${pkgs.treefmt}/bin/treefmt"; };
-        }];
+            auto-format = true;
+            formatter = {
+              command = "${pkgs.treefmt}/bin/treefmt";
+            };
+          }
+        ];
       };
     };
   };

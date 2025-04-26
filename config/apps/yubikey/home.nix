@@ -1,5 +1,10 @@
 { pkgs, ... }:
 
 {
-  home = { packages = with pkgs; [ yubioath-flutter zenity ]; };
+  home = {
+    packages = with pkgs; [
+      yubioath-flutter
+      zenity
+    ];
+  };
 }

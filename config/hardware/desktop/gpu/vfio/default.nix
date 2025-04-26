@@ -29,25 +29,45 @@ let
     # }
   ];
 
-  ids = builtins.map (group:
-    builtins.map (attr: "${group.vendor}:${group.${attr}}")
-    (builtins.filter (attr: attr != "vendor") (builtins.attrNames group)))
-    pci-groups;
-in { lib, config, ... }: {
+  ids = builtins.map (
+    group:
+    builtins.map (attr: "${group.vendor}:${group.${attr}}") (
+      builtins.filter (attr: attr != "vendor") (builtins.attrNames group)
+    )
+  ) pci-groups;
+in
+{ lib, config, ... }:
+{
   boot = {
-    initrd = { kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ]; };
+    initrd = {
+      kernelModules = [
+        "vfio_pci"
+        "vfio"
+        "vfio_iommu_type1"
+      ];
+    };
 
     kernelParams = lib.mkIf false [
       "amd_iommu=on"
       "iommu=pt"
-      ("vfio-pci.ids=" + lib.concatStringsSep "," (builtins.elemAt ids
-        (if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
-        #1
-          0
-        else
-          0)))
+      (
+        "vfio-pci.ids="
+        + lib.concatStringsSep "," (
+          builtins.elemAt ids (
+            if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
+              #1
+              0
+            else
+              0
+          )
+        )
+      )
     ];
   };
 
-  virtualisation = { spiceUSBRedirection = { enable = true; }; };
+  virtualisation = {
+    spiceUSBRedirection = {
+      enable = true;
+    };
+  };
 }

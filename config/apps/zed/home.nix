@@ -1,4 +1,9 @@
-{ pkgs, lib, inputs, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 let
   json = [
@@ -13,7 +18,34 @@ let
     ./editor/save.json
     ./editor/whitespace.json
 
+    ./extensions/biome.json
+    ./extensions/catppuccin-icons.json
+    ./extensions/csv.json
+    ./extensions/deno.json
+    ./extensions/docker-compose.json
+    ./extensions/dockerfile.json
+    ./extensions/git-firefly.json
+    ./extensions/html.json
+    ./extensions/http.json
+    ./extensions/ini.json
+    ./extensions/java.json
+    ./extensions/latex.json
+    ./extensions/log.json
+    ./extensions/make.json
+    ./extensions/mermaid.json
+    ./extensions/nginx.json
+    ./extensions/nix.json
+    ./extensions/prisma.json
+    ./extensions/python.json
+    ./extensions/rainbow-csv.json
+    ./extensions/ruby.json
+    ./extensions/sql.json
+    ./extensions/terraform.json
+    ./extensions/toml.json
+    ./extensions/xml.json
+
     ./languages/c.json
+    ./languages/nix.json
     ./languages/typescript.json
 
     ./mode/vim.json
@@ -39,27 +71,39 @@ let
     ./theme.json
     ./update.json
   ];
-in {
+in
+{
   home = {
-    packages = with inputs.nixpkgs-small.legacyPackages."${pkgs.system}";
-      [ zed-editor ];
-
     activation = {
       zedSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run echo -e "${
-          (builtins.replaceStrings [ ''"'' ] [ ''\"'' ])
-          ((lib.lists.foldr (a: b: "${a}${b}") "")
-            (builtins.map builtins.readFile json))
+          (builtins.replaceStrings [ ''"'' ] [ ''\"'' ]) (
+            (lib.lists.foldr (a: b: "${a}${b}") "") (builtins.map builtins.readFile json)
+          )
         }" | ${pkgs.jq}/bin/jq -s add > $HOME/.config/zed/settings.json
       '';
     };
   };
 
   programs = {
+    zed-editor = {
+      enable = true;
+      package = inputs.nixpkgs-small.legacyPackages."${pkgs.system}".zed-editor;
+
+      extraPackages = with pkgs; [
+        nixd
+        clang-tools
+      ];
+    };
+
     mangohud = {
       settingsPerApplication = {
-        zed = { no_display = true; };
-        zeditor = { no_display = true; };
+        zed = {
+          no_display = true;
+        };
+        zeditor = {
+          no_display = true;
+        };
       };
     };
   };

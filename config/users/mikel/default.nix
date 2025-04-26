@@ -17,7 +17,8 @@ let
     "video"
     "wheel"
   ];
-in {
+in
+{
   users = {
     users = {
       mikel = {
@@ -27,6 +28,7 @@ in {
         isNormalUser = true;
         home = "/home/mikel";
 
+        group = "mikel";
         inherit extraGroups;
 
         hashedPassword = "";
@@ -36,13 +38,23 @@ in {
       };
     };
 
-    groups = {
-      mikel = { gid = 1000; };
-    } // (builtins.listToAttrs (builtins.map (name: {
-      inherit name;
-      value = { };
-    }) extraGroups));
+    groups =
+      {
+        mikel = {
+          gid = 1000;
+        };
+      }
+      // (builtins.listToAttrs (
+        builtins.map (name: {
+          inherit name;
+          value = { };
+        }) extraGroups
+      ));
   };
 
-  security = { doas = { extraRules = [{ users = [ "mikel" ]; }]; }; };
+  security = {
+    doas = {
+      extraRules = [ { users = [ "mikel" ]; } ];
+    };
+  };
 }

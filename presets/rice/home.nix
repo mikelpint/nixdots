@@ -1,1 +1,1 @@
-_: { imports = [ ../../config/rice ]; }
+_: { imports = [ ../../config/rice/home.nix ]; }

@@ -1,1 +1,6 @@
-{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ udftools ]; }; }
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ udftools ];
+  };
+}

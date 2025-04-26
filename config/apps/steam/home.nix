@@ -1,13 +1,20 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+{
   programs = {
     mangohud = {
-      settingsPerApplication = { wezterm = { no_display = true; }; };
+      settingsPerApplication = {
+        wezterm = {
+          no_display = true;
+        };
+      };
     };
   };
 
   home = {
-    packages = with pkgs;
-      with inputs.nix-gaming.packages.${pkgs.system}; [
+    packages =
+      with pkgs;
+      with inputs.nix-gaming.packages.${pkgs.system};
+      [
         (steam.override {
           extraEnv = {
             MANGOHUD = true;
@@ -36,8 +43,7 @@
       ];
 
     sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-        "\${HOME}/.steam/root/compatibilitytools.d";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
     };
   };
 }

@@ -1,6 +1,6 @@
 {
   imports = [
     ./qr-panic
-    #./rust
+    ./rust
   ];
 }

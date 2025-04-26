@@ -12,5 +12,9 @@
     };
   };
 
-  home = { sessionVariables = { SSH_ASKPASS_REQUIRE = "never"; }; };
+  home = {
+    sessionVariables = {
+      SSH_ASKPASS_REQUIRE = "never";
+    };
+  };
 }

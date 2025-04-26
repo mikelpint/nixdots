@@ -1,1 +1,6 @@
-{ imports = [ ./vagrant/home.nix ./virt-manager/home.nix ]; }
+{
+  imports = [
+    ./vagrant/home.nix
+    ./virt-manager/home.nix
+  ];
+}

@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   systemd = {
     services = {
       btattach = {
@@ -6,8 +7,7 @@
         after = [ "dev-ttyAMA0.device" ];
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
-          ExecStart =
-            "${pkgs.bluez}/bin/btattach -B /dev/ttyAMA0 -P bcm -S 3000000";
+          ExecStart = "${pkgs.bluez}/bin/btattach -B /dev/ttyAMA0 -P bcm -S 3000000";
         };
       };
     };

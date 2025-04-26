@@ -1,4 +1,5 @@
-{ user, lib, ... }: {
+{ user, lib, ... }:
+{
   services = {
     openssh = {
       enable = true;

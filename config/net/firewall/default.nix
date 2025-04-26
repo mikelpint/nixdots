@@ -1,5 +1,11 @@
 {
-  boot = { kernel = { sysctl = { "net.netfilter.nf_log_all_netns" = 1; }; }; };
+  boot = {
+    kernel = {
+      sysctl = {
+        "net.netfilter.nf_log_all_netns" = 1;
+      };
+    };
+  };
 
   networking = {
     nftables = {
@@ -40,7 +46,11 @@
       allowPing = false;
       pingLimit = "2/minute burst 5 packets";
 
-      allowedTCPPorts = [ 80 443 53 ];
+      allowedTCPPorts = [
+        80
+        443
+        53
+      ];
       allowedUDPPorts = [ 53 ];
 
       filterForward = true;
@@ -65,7 +75,9 @@
             "log1:NFLOG,base1:BASE,pcap1:PCAP"
           ];
         };
-        log1 = { group = 2; };
+        log1 = {
+          group = 2;
+        };
         pcap1 = {
           file = "/var/log/ulogd.pcap";
           sync = 1;

@@ -1,1 +1,7 @@
-_: { imports = [ ./keyboard ./touchpad ./video ]; }
+_: {
+  imports = [
+    ./keyboard
+    ./touchpad
+    ./video
+  ];
+}

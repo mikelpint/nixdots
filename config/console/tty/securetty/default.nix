@@ -1,0 +1,11 @@
+{
+  environment = {
+    etc = {
+      securetty = {
+        text = ''
+
+        '';
+      };
+    };
+  };
+}

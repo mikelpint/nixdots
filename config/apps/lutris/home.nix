@@ -1,3 +1,12 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ lutris adwaita-icon-theme ]; };
+{ pkgs, ... }:
+let
+  inherit (pkgs) lutris;
+in
+{
+  home = {
+    packages = [
+      lutris
+      pkgs.adwaita-icon-theme
+    ];
+  };
 }

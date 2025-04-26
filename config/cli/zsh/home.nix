@@ -1,6 +1,12 @@
 # https://github.com/redyf/nixdots/blob/main/home/system/shell/default.nix
 
-{ lib, pkgs, osConfig, user, ... }:
+{
+  lib,
+  pkgs,
+  osConfig,
+  user,
+  ...
+}:
 let
   themepkg = pkgs.fetchFromGitHub {
     owner = "catppuccin";
@@ -8,7 +14,8 @@ let
     rev = "06d519c20798f0ebe275fc3a8101841faaeee8ea";
     sha256 = "sha256-Q7KmwUd9fblprL55W0Sf4g7lRcemnhjh4/v+TacJSfo=";
   };
-in {
+in
+{
   home = {
     sessionVariables = {
       MANPAGER = "sh -c 'col -bx | bat -l man -p'";
@@ -33,7 +40,9 @@ in {
       syntaxHighlighting = {
         enable = true;
 
-        styles = { alias = "fg=magenta,bold"; };
+        styles = {
+          alias = "fg=magenta,bold";
+        };
 
         highlighters = [
           "main"
@@ -45,31 +54,36 @@ in {
           #"line"
         ];
 
-        patterns = { "rm -rf *" = "fg=white,bold,bg=red"; };
+        patterns = {
+          "rm -rf *" = "fg=white,bold,bg=red";
+        };
       };
 
       oh-my-zsh = {
         enable = true;
 
-        plugins = [
-          "colored-man-pages"
-          "colorize"
-          "command-not-found"
-          "copypath"
-          "git"
-          "history-substring-search"
-          "safe-paste"
-          "sprunge"
-          "sudo"
-          "tmux"
-          "vagrant"
-          "vscode"
-          "wd"
-        ] ++ (if (lib.strings.removeSuffix user osConfig.networking.hostName)
-        == "laptop" then
-          [ "battery" ]
-        else
-          [ "" ]);
+        plugins =
+          [
+            "colored-man-pages"
+            "colorize"
+            "command-not-found"
+            "copypath"
+            "git"
+            "history-substring-search"
+            "safe-paste"
+            "sprunge"
+            "sudo"
+            "tmux"
+            "vagrant"
+            "vscode"
+            "wd"
+          ]
+          ++ (
+            if (lib.strings.removeSuffix user osConfig.networking.hostName) == "laptop" then
+              [ "battery" ]
+            else
+              [ "" ]
+          );
 
         theme = "ys";
       };
@@ -111,8 +125,7 @@ in {
         {
           name = "ctp-zsh-syntax-highlighting";
           src = themepkg;
-          file = themepkg
-            + "/themes/catppuccin_${osConfig.catppuccin.flavor}-zsh-syntax-highlighting.zsh";
+          file = themepkg + "/themes/catppuccin_${osConfig.catppuccin.flavor}-zsh-syntax-highlighting.zsh";
         }
       ];
     };

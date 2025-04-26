@@ -3,9 +3,13 @@
 let
   inherit (config.catppuccin) flavor;
   inherit (config.catppuccin) accent;
-in {
+in
+{
   home = {
-    packages = with pkgs; [ gsettings-desktop-schemas dconf-editor ];
+    packages = with pkgs; [
+      gsettings-desktop-schemas
+      dconf-editor
+    ];
 
     sessionVariables = {
       GTK_THEME = "Adwaita-dark";
@@ -16,11 +20,21 @@ in {
   gtk = {
     enable = true;
 
-    font = { name = "JetBrains Nerd Font"; };
+    font = {
+      name = "JetBrains Nerd Font";
+    };
 
-    gtk3 = { extraConfig = { gtk-application-prefer-dark-theme = true; }; };
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+    };
 
-    gtk4 = { extraConfig = { gtk-application-prefer-dark-theme = true; }; };
+    gtk4 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = true;
+      };
+    };
   };
 
   catppuccin = {
@@ -36,7 +50,10 @@ in {
       };
 
       size = "compact";
-      tweaks = [ "rimless" "black" ];
+      tweaks = [
+        "rimless"
+        "black"
+      ];
     };
   };
 

@@ -1,7 +1,18 @@
-{ lib, config, user, ... }:
-let ifamd = lib.mkIf (builtins.elem "amd" config.services.xserver.videoDrivers);
-in {
-  environment = ifamd { sessionVariables = { ROC_ENABLE_PRE_VEGA = "1"; }; };
+{
+  lib,
+  config,
+  user,
+  ...
+}:
+let
+  ifamd = lib.mkIf (builtins.elem "amd" config.services.xserver.videoDrivers);
+in
+{
+  environment = ifamd {
+    sessionVariables = {
+      ROC_ENABLE_PRE_VEGA = "1";
+    };
+  };
 
   system = ifamd {
     userActivationScripts = {
@@ -36,7 +47,9 @@ in {
   };
 
   boot = ifamd {
-    initrd = { kernelModules = [ "amdgpu kvm-amd" ]; };
+    initrd = {
+      kernelModules = [ "amdgpu kvm-amd" ];
+    };
 
     blacklistedKernelModules = [ "radeon" ];
 

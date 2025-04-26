@@ -1,5 +1,6 @@
 {
   imports = [
+    ./dbus
     ./dconf
     ./flatpak
     ./git
@@ -12,5 +13,7 @@
     ./wine
   ];
 
-  system = { stateVersion = "25.05"; };
+  system = {
+    stateVersion = "25.05";
+  };
 }

@@ -22,7 +22,10 @@
 #    - Volumes:
 #      - libvirt/windows, 500 GB
 
-{ device ? throw "No disk device.", ... }:
+{
+  device ? throw "No disk device.",
+  ...
+}:
 
 let
   rootFsOptions = {
@@ -37,7 +40,8 @@ let
     ashift = "13";
     autotrim = "on";
   };
-in {
+in
+{
   disko = {
     devices = {
       disk = {
@@ -97,60 +101,80 @@ in {
 
             "user" = {
               type = "zfs_fs";
-              options = { mountpoint = "none"; };
+              options = {
+                mountpoint = "none";
+              };
             };
 
             "user/home" = {
               type = "zfs_fs";
               mountpoint = "/home";
-              options = { "com.sun:auto-snapshot" = "false"; };
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
             };
 
             "user/home/mikel" = {
               type = "zfs_fs";
               mountpoint = "/home/mikel";
-              options = { "com.sun:auto-snapshot" = "true"; };
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
             };
 
             "user/home/root" = {
               type = "zfs_fs";
               mountpoint = "/root";
-              options = { "com.sun:auto-snapshot" = "true"; };
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
             };
 
             system = {
               type = "zfs_fs";
-              options = { mountpoint = "none"; };
+              options = {
+                mountpoint = "none";
+              };
             };
 
             "system/root" = {
               type = "zfs_fs";
               mountpoint = "/";
-              options = { "com.sun:auto-snapshot" = "false"; };
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
             };
 
             "system/nix" = {
               type = "zfs_fs";
               mountpoint = "/nix";
-              options = { "com.sun:auto-snapshot" = "false"; };
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
             };
 
             "system/var" = {
               type = "zfs_fs";
               mountpoint = "/var";
-              options = { "com.sun:auto-snapshot" = "true"; };
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
             };
 
             tmp = {
               type = "zfs_fs";
               mountpoint = "/tmp";
-              options = { "com.sun:auto-snapshot" = "false"; };
+              options = {
+                "com.sun:auto-snapshot" = "false";
+              };
             };
 
             "libvirt" = {
               type = "zfs_fs";
               mountpoint = "/libvirt";
-              options = { "com.sun:auto-snapshot" = "true"; };
+              options = {
+                "com.sun:auto-snapshot" = "true";
+              };
             };
 
             "libvirt/windows" = {

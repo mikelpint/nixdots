@@ -1,8 +1,13 @@
-{ id, lib, config, ... }:
+{
+  id,
+  lib,
+  config,
+  ...
+}:
 let
-  device =
-    if id == null then "@DEFAULT_AUDIO_SINK@" else (builtins.toString id);
-in {
+  device = if id == null then "@DEFAULT_AUDIO_SINK@" else (builtins.toString id);
+in
+{
   wayland = lib.mkIf config.wayland.windowManager.hyprland.enable {
     windowManager = {
       hyprland = {

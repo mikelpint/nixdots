@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment = {
-    systemPackages = with pkgs;
-      [
-        # nixd # Using Linux, not compatible
-      ];
+    systemPackages = with pkgs; [
+      nixd # Disable when using Lix, not compatible
+    ];
   };
 }

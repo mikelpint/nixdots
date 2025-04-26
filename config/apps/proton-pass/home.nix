@@ -1,1 +1,6 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ proton-pass ]; }; }
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ proton-pass ];
+  };
+}

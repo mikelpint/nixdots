@@ -1,5 +1,13 @@
 { pkgs, ... }:
-
-{
-  home = { packages = with pkgs; with jetbrains; [ idea-ultimate clion ]; };
+let
+  idea = with pkgs; with jetbrains; ( plugins.addPlugins idea-ultimate [ "mermaid" ]);
+  inherit (pkgs.jetbrains) clion;
+in {
+  home = {
+    packages =
+      [
+        idea
+        clion
+      ];
+  };
 }

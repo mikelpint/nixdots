@@ -1,10 +1,21 @@
 # https://raw.githubusercontent.com/TLATER/dotfiles/b39af91fbd13d338559a05d69f56c5a97f8c905d/home-config/config/graphical-applications/firefox.nix
 # https://github.com/yokoffing/Betterfox
 
-{ lib, pkgs, inputs, osConfig, user, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  osConfig,
+  user,
+  ...
+}:
 
-let firefox = "firefox-unwrapped";
-in {
+let
+  package = pkgs.wrapFirefox (pkgs."firefox-unwrapped".override {
+    # pipewireSupport = true;
+  }) { };
+in
+{
   home = {
     activation = {
       "chrome" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -17,9 +28,7 @@ in {
   programs = {
     firefox = {
       enable = true;
-      package = pkgs.wrapFirefox (pkgs."${firefox}".override {
-        # pipewireSupport = true;
-      }) { };
+      inherit package;
 
       profiles = {
         ${user} = {
@@ -31,30 +40,31 @@ in {
           };
 
           extensions = {
-            packages = with (import inputs.nur {
-              inherit pkgs;
-              nurpkgs = pkgs;
-            }).repos.rycee.firefox-addons; [
-              anchors-reveal
-              auto-tab-discard
-              clearurls
-              cookie-autodelete
-              darkreader
-              decentraleyes
-              duckduckgo-privacy-essentials
-              enhanced-github
-              libredirect
-              link-cleaner
-              linkhints
-              protondb-for-steam
-              react-devtools
-              reddit-enhancement-suite
-              skip-redirect
-              stylus
-              tampermonkey
-              ublock-origin
-              user-agent-string-switcher
-            ];
+            packages =
+              with (import inputs.nur {
+                inherit pkgs;
+                nurpkgs = pkgs;
+              }).repos.rycee.firefox-addons; [
+                anchors-reveal
+                auto-tab-discard
+                clearurls
+                cookie-autodelete
+                darkreader
+                decentraleyes
+                duckduckgo-privacy-essentials
+                enhanced-github
+                libredirect
+                link-cleaner
+                linkhints
+                protondb-for-steam
+                react-devtools
+                reddit-enhancement-suite
+                skip-redirect
+                stylus
+                tampermonkey
+                ublock-origin
+                user-agent-string-switcher
+              ];
           };
 
           userChrome = ''
@@ -182,8 +192,8 @@ in {
 
             "browser.cache.disk.enable" = lib.mkDefault false;
             "browser.cache.disk.parent_directory" = lib.mkDefault "/run/user/${
-                builtins.toString osConfig.users.users.${user}.uid
-              }/firefox";
+              builtins.toString osConfig.users.users.${user}.uid
+            }/firefox";
             "browser.cache.memory.enable" = lib.mkDefault false;
             "browser.cache.memory.capacity" = lib.mkDefault (-1);
 
@@ -210,23 +220,16 @@ in {
             "browser.menu.showViewImageInfo" = true;
 
             "browser.newtabpage.activity-stream.telemetry" = false;
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" =
-              false;
-            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" =
-              false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
+            "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
             "browser.newtabpage.activity-stream.feeds.telemetry" = false;
             "browser.newtabpage.activity-stream.feeds.snippets" = false;
             "browser.newtabpage.activity-stream.feeds.topstories" = false;
-            "browser.newtabpage.activity-stream.feeds.section.topstories" =
-              false;
-            "browser.newtabpage.activity-stream.feeds.system.topstories" =
-              false;
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" =
-              "";
-            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.searchEngines" =
-              "";
-            "browser.newtabpage.activity-stream.section.highlights.includePocket" =
-              false;
+            "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+            "browser.newtabpage.activity-stream.feeds.system.topstories" = false;
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.havePinned" = "";
+            "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts.searchEngines" = "";
+            "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
             "browser.newtabpage.activity-stream.showSponsored" = false;
             "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
             "browser.newtabpage.pinned" = false;
@@ -294,10 +297,8 @@ in {
 
             "identity.fxaccounts.enabled" = false;
 
-            "urlclassifier.trackingSkipURLs" =
-              "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
-            "urlclassifier.features.socialtracking.skipURLs" =
-              "*.instagram.com, *.twitter.com, *.twimg.com";
+            "urlclassifier.trackingSkipURLs" = "*.reddit.com, *.twitter.com, *.twimg.com, *.tiktok.com";
+            "urlclassifier.features.socialtracking.skipURLs" = "*.instagram.com, *.twitter.com, *.twimg.com";
           };
         };
       };
@@ -310,31 +311,31 @@ in {
 
       associations = {
         added = {
-          "application/pdf" = [ "${firefox}.desktop" ];
-          "x-scheme-handler/http" = [ "${firefox}.desktop" ];
-          "x-scheme-handler/https" = [ "${firefox}.desktop" ];
-          "text/html" = [ "${firefox}.desktop" ];
+          "application/pdf" = [ "firefox.desktop" ];
+          "x-scheme-handler/http" = [ "firefox.desktop" ];
+          "x-scheme-handler/https" = [ "firefox.desktop" ];
+          "text/html" = [ "firefox.desktop" ];
         };
       };
 
       defaultApplications = {
-        "application/pdf" = [ "${firefox}.desktop" ];
-        "application/x-extension-htm" = [ "${firefox}.desktop" ];
-        "application/x-extension-html" = [ "${firefox}.desktop" ];
-        "application/x-extension-shtml" = [ "${firefox}.desktop" ];
-        "application/x-extension-xht" = [ "${firefox}.desktop" ];
-        "application/x-extension-xhtml" = [ "${firefox}.desktop" ];
-        "application/x-www-browser" = [ "${firefox}.desktop" ];
-        "application/xhtml+xml" = [ "${firefox}.desktop" ];
-        "text/html" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/chrome" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/http" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/https" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/ftp" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/about" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/unknown" = [ "${firefox}.desktop" ];
-        "x-scheme-handler/webcal" = [ "${firefox}.desktop" ];
-        "x-www-browser" = [ "${firefox}.desktop" ];
+        "application/pdf" = [ "firefox.desktop" ];
+        "application/x-extension-htm" = [ "firefox.desktop" ];
+        "application/x-extension-html" = [ "firefox.desktop" ];
+        "application/x-extension-shtml" = [ "firefox.desktop" ];
+        "application/x-extension-xht" = [ "firefox.desktop" ];
+        "application/x-extension-xhtml" = [ "firefox.desktop" ];
+        "application/x-www-browser" = [ "firefox.desktop" ];
+        "application/xhtml+xml" = [ "firefox.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/chrome" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/ftp" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+        "x-scheme-handler/webcal" = [ "firefox.desktop" ];
+        "x-www-browser" = [ "firefox.desktop" ];
       };
     };
   };

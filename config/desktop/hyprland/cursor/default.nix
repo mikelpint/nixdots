@@ -1,14 +1,16 @@
 { lib, pkgs, ... }:
 let
-  cursorTheme = (import ../../theme/cursor/home.nix {
-    inherit pkgs;
-    inherit lib;
-  }).home.pointerCursor;
+  cursorTheme =
+    (import ../../theme/cursor/home.nix {
+      inherit pkgs;
+      inherit lib;
+    }).home.pointerCursor;
   cursor = {
     inherit (cursorTheme) name;
     inherit (cursorTheme) size;
   };
-in {
+in
+{
   home = {
     packages = with pkgs; [
       glib
@@ -18,9 +20,7 @@ in {
       (writeShellScriptBin "hyprsetup_cursor" ''
         hyprctl setcursor ${cursor.name} ${builtins.toString cursor.size}
         ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-theme ${cursor.name}
-        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-size ${
-          builtins.toString cursor.size
-        }
+        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface cursor-size ${builtins.toString cursor.size}
       '')
     ];
   };

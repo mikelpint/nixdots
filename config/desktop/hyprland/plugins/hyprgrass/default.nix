@@ -1,4 +1,5 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
@@ -16,7 +17,9 @@
               worskpace_swipe_edge = "d";
               edge_margin = 10;
 
-              experimental = { send_cancel = 0; };
+              experimental = {
+                send_cancel = 0;
+              };
             };
           };
 

@@ -1,4 +1,5 @@
-{ inputs, config, ... }: {
+{ inputs, config, ... }:
+{
   imports = [
     inputs.nix-colors.homeManagerModule
     ./cursor/home.nix

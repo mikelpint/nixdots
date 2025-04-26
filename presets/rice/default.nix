@@ -1,1 +1,1 @@
-{ }
+_: { imports = [ ../../config/rice ]; }

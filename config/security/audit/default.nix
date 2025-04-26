@@ -6,6 +6,8 @@
       rules = [ "-a exit,always -F arch=b64 -S execve" ];
     };
 
-    auditd = { enable = true; };
+    auditd = {
+      enable = true;
+    };
   };
 }

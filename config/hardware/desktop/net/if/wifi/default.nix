@@ -3,8 +3,12 @@
     network = {
       links = {
         "10-wifi" = {
-          matchConfig = { MACAddress = "40:74:e0:76:f4:b2"; };
-          linkConfig = { Name = "wifi"; };
+          matchConfig = {
+            MACAddress = "40:74:e0:76:f4:b2";
+          };
+          linkConfig = {
+            Name = "wifi";
+          };
         };
       };
 
@@ -12,7 +16,7 @@
         wifi = {
           enable = true;
 
-          addresses = [{ Address = "192.168.1.104/24"; }];
+          addresses = [ { Address = "192.168.1.104/24"; } ];
         };
       };
     };

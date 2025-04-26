@@ -1,1 +1,6 @@
-{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ nmap ]; }; }
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ nmap ];
+  };
+}

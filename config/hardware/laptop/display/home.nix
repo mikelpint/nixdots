@@ -1,16 +1,23 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
         settings = {
           monitor = lib.mkForce [ "eDP-1,1920x1080@60,0x0,1.25" ];
 
-          misc = { vfr = lib.mkForce true; };
+          misc = {
+            vfr = lib.mkForce true;
+          };
 
           decoration = {
-            blur = { enabled = lib.mkForce false; };
+            blur = {
+              enabled = lib.mkForce false;
+            };
 
-            shadow = { enabled = lib.mkForce false; };
+            shadow = {
+              enabled = lib.mkForce false;
+            };
           };
 
           bindle = [

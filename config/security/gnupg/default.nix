@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  environment = { systemPackages = with pkgs; [ pinentry-gnome3 ]; };
+  environment = {
+    systemPackages = with pkgs; [ pinentry-gnome3 ];
+  };
 
   programs = {
     gnupg = {
@@ -13,5 +15,11 @@
     };
   };
 
-  services = { gnome = { gnome-keyring = { enable = true; }; }; };
+  services = {
+    gnome = {
+      gnome-keyring = {
+        enable = true;
+      };
+    };
+  };
 }

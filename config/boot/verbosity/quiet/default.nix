@@ -1,24 +1,33 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   nixpkgs = {
     overlays = [
       (_self: _super: {
-        framebuffer_deferred_takeover = pkgs.linuxPackagesFor
-          (config.boot.kernelPackages.kernel.override {
+        framebuffer_deferred_takeover = pkgs.linuxPackagesFor (
+          config.boot.kernelPackages.kernel.override {
             structuredExtraConfig = with lib.kernel; {
               CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER = yes;
             };
 
             ignoreConfigErrors = true;
-          });
+          }
+        );
       })
     ];
   };
 
   boot = {
     consoleLogLevel = 0;
-    initrd = { verbose = false; };
+    initrd = {
+      verbose = false;
+    };
     kernelParams = [
-      "loglevel=3"
+      "loglevel=0"
       "quiet"
       "rd.systemd.show_status=false"
       "udev.log_level=3"

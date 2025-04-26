@@ -3,9 +3,13 @@
     network = {
       links = {
         "10-eth" = {
-          matchConfig = { MACAddress = "04:d9:f5:d2:4f:bf"; };
+          matchConfig = {
+            MACAddress = "04:d9:f5:d2:4f:bf";
+          };
 
-          linkConfig = { Name = "eth"; };
+          linkConfig = {
+            Name = "eth";
+          };
         };
       };
 
@@ -13,7 +17,7 @@
         eth = {
           enable = false;
 
-          addresses = [{ Address = "192.168.1.104/24"; }];
+          addresses = [ { Address = "192.168.1.104/24"; } ];
         };
       };
     };

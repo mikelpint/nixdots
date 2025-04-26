@@ -1,1 +1,6 @@
-{ pkgs, ... }: { environment = { systemPackages = with pkgs; [ ncdu ]; }; }
+{ pkgs, ... }:
+{
+  environment = {
+    systemPackages = with pkgs; [ ncdu ];
+  };
+}

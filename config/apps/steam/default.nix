@@ -1,12 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [ ./gamescope ];
 
   nixpkgs = {
     config = {
       packageOverrides = pkgs: {
         steam = pkgs.steam.override {
-          extraPkgs = pkgs:
-            with pkgs; [
+          extraPkgs =
+            pkgs: with pkgs; [
               xorg.libXcursor
               xorg.libXi
               xorg.libXinerama
@@ -27,13 +28,26 @@
     steam = {
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
 
-      extest = { enable = true; };
+      protontricks = {
+        enable = true;
+        package = pkgs.protontricks;
+      };
 
-      remotePlay = { openFirewall = false; };
+      extest = {
+        enable = true;
+      };
 
-      dedicatedServer = { openFirewall = true; };
+      remotePlay = {
+        openFirewall = false;
+      };
 
-      localNetworkGameTransfers = { openFirewall = false; };
+      dedicatedServer = {
+        openFirewall = true;
+      };
+
+      localNetworkGameTransfers = {
+        openFirewall = false;
+      };
     };
   };
 }

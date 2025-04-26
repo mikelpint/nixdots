@@ -1,9 +1,15 @@
-{ lib, config, pkgs, ... }: {
-  nixpkgs = {
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
+  nixpkgs = lib.mkIf (!config.security.apparmor.enable) {
     overlays = [
       (_self: _super: {
-        selinux = pkgs.linuxPackagesFor
-          (config.boot.kernelPackages.kernel.override {
+        selinux = pkgs.linuxPackagesFor (
+          config.boot.kernelPackages.kernel.override {
             structuredExtraConfig = with lib.kernel; {
               SECURITY_SELINUX = yes;
               SECURITY_SELINUX_BOOTPARAM = no;
@@ -15,7 +21,8 @@
             };
 
             ignoreConfigErrors = true;
-          });
+          }
+        );
       })
     ];
   };

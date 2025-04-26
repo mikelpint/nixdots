@@ -11,7 +11,8 @@ let
     "commit=120"
     "subvol=${subvol}"
   ];
-in {
+in
+{
   imports = [
     ./hdd
     ./ssd
@@ -28,21 +29,27 @@ in {
       luks = {
         devices = {
           crypt = {
-            device = lib.mkForce
-              "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
+            device = lib.mkForce "/dev/disk/by-uuid/50869e25-ac4e-487e-a471-faae5d57626e";
           };
         };
       };
     };
   };
 
-  services = { gvfs = { enable = true; }; };
+  services = {
+    gvfs = {
+      enable = true;
+    };
+  };
 
   fileSystems = {
     "/boot" = {
       device = "/dev/disk/by-uuid/41A4-CA82";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
     };
 
     "/" = {
@@ -85,7 +92,14 @@ in {
     "/mnt/WD_Black" = {
       device = "/dev/disk/by-uuid/1611231c-401a-4e80-8cac-1d09ab54454b";
       fsType = "ext4";
-      options = [ "rw" "users" "nofail" "rw" "exec" "x-gvfs-show" ];
+      options = [
+        "rw"
+        "users"
+        "nofail"
+        "rw"
+        "exec"
+        "x-gvfs-show"
+      ];
     };
   };
 }

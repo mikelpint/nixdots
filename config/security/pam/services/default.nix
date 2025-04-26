@@ -1,1 +1,9 @@
-{ imports = [ ./hyprlock.nix ]; }
+{
+  imports = [
+    ./hyprlock
+    ./login
+    ./passwd
+    ./su
+    ./system-login
+  ];
+}

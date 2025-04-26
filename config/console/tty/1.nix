@@ -1,4 +1,10 @@
-{ pkgs, config, user, ... }: {
+{
+  pkgs,
+  config,
+  user,
+  ...
+}:
+{
   systemd = {
     services = {
       "getty@tty1" = {

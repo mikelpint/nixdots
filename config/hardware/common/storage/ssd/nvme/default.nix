@@ -1,1 +1,7 @@
-{ boot = { initrd = { availableKernelModules = [ "nvme" ]; }; }; }
+{
+  boot = {
+    initrd = {
+      availableKernelModules = [ "nvme" ];
+    };
+  };
+}

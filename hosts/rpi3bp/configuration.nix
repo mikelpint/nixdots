@@ -6,5 +6,9 @@ _: {
     ../../config/hardware/rpi3bp
   ];
 
-  age = { rekey = { hostPubkey = builtins.readFile ./host.pub; }; };
+  age = {
+    rekey = {
+      hostPubkey = builtins.readFile ./host.pub;
+    };
+  };
 }

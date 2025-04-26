@@ -3,6 +3,7 @@ _: {
     ../../config/apps/easyeffects/home.nix
     ../../config/apps/firefox/home.nix
     ../../config/apps/gedit/home.nix
+    ../../config/apps/gimp/home.nix
     ../../config/apps/imv/home.nix
     ../../config/apps/libreoffice/home.nix
     ../../config/apps/nautilus/home.nix

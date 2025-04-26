@@ -1,4 +1,5 @@
-{ osConfig, ... }: {
+{ osConfig, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {

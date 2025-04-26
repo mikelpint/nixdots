@@ -1,5 +1,9 @@
 {
   imports = [ ./udf ];
 
-  fileSystems = { "/" = { noCheck = true; }; };
+  fileSystems = {
+    "/" = {
+      noCheck = true;
+    };
+  };
 }

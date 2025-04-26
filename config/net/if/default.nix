@@ -1,5 +1,8 @@
+{ lib, ... }:
 {
   imports = [ ./tornet ];
 
-  networking = { usePredictableInterfaceNames = true; };
+  networking = {
+    usePredictableInterfaceNames = lib.mkDefault true;
+  };
 }

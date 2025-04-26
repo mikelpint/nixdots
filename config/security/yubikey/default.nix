@@ -3,33 +3,31 @@
 let
   vendor = "Yubico";
   idVendor = "1050";
-  idProduct =
-    "0010|0111|0112|0113|0114|0115|0116|0401|0402|0403|0404|0405|0406|0407|0410";
+  idProduct = "0010|0111|0112|0113|0114|0115|0116|0401|0402|0403|0404|0405|0406|0407|0410";
 
   tmpfile = "/tmp/yubikey.serial";
 
-  yubikey-notification-add =
-    pkgs.writeShellScriptBin "yubikey-notification-add" ''
-      DISPLAY=:0.0
-      $(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep -session)/environ)
+  yubikey-notification-add = pkgs.writeShellScriptBin "yubikey-notification-add" ''
+    DISPLAY=:0.0
+    $(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep -session)/environ)
 
-      echo $(ykman list -s) | head -1 > "${tmpfile}"
-      notify-send "Yubikey plugged in" "$(< ${tmpfile})" -a com.yubico.authenticator.desktop
-    '';
-  yubikey-notification-remove =
-    pkgs.writeShellScriptBin "yubikey-notification-remove" ''
-      DISPLAY=:0.0
-      $(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep -session)/environ)
+    echo $(ykman list -s) | head -1 > "${tmpfile}"
+    notify-send "Yubikey plugged in" "$(< ${tmpfile})" -a com.yubico.authenticator.desktop
+  '';
+  yubikey-notification-remove = pkgs.writeShellScriptBin "yubikey-notification-remove" ''
+    DISPLAY=:0.0
+    $(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep -session)/environ)
 
-      notify-send "Yubikey unplugged" "$(< ${tmpfile})" -a com.yubico.authenticator.desktop
-      rm "${tmpfile}"
-    '';
-in {
+    notify-send "Yubikey unplugged" "$(< ${tmpfile})" -a com.yubico.authenticator.desktop
+    rm "${tmpfile}"
+  '';
+in
+{
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
-          pkgs.lib.makeLibraryPath (with pkgs; [ pcscliteWithPolkit ])
-        }";
+        pkgs.lib.makeLibraryPath (with pkgs; [ pcscliteWithPolkit ])
+      }";
     };
 
     systemPackages = with pkgs; [
@@ -45,9 +43,13 @@ in {
   };
 
   hardware = {
-    gpgSmartcards = { enable = true; };
+    gpgSmartcards = {
+      enable = true;
+    };
 
-    ledger = { enable = true; };
+    ledger = {
+      enable = true;
+    };
   };
 
   services = {
@@ -64,6 +66,8 @@ in {
       '';
     };
 
-    pcscd = { enable = true; };
+    pcscd = {
+      enable = true;
+    };
   };
 }

@@ -12,7 +12,10 @@
 #     - /tmp, /tmp
 #     - /swap, swapfile, 64 GB
 
-{ device ? throw "No disk device.", passwd ? throw "No LUKS password file.", ...
+{
+  device ? throw "No disk device.",
+  passwd ? throw "No LUKS password file.",
+  ...
 }:
 
 {
@@ -56,50 +59,75 @@
                   ];
 
                   settings = {
-                    crypttabExtraOpts =
-                      [ "fido2-device=auto" "token-timeout=10" ];
+                    crypttabExtraOpts = [
+                      "fido2-device=auto"
+                      "token-timeout=10"
+                    ];
                     allowDiscards = true;
                     keyFile = builtins.toPath passwd;
                   };
 
                   content = {
                     type = "btrfs";
-                    extraArgs = [ "-L" "nixos" "-f" ];
+                    extraArgs = [
+                      "-L"
+                      "nixos"
+                      "-f"
+                    ];
 
                     subvolumes = {
                       "/root" = {
                         mountpoint = "/";
-                        mountOptions =
-                          [ "subvol=root" "compress=zstd" "noatime" ];
+                        mountOptions = [
+                          "subvol=root"
+                          "compress=zstd"
+                          "noatime"
+                        ];
                       };
 
                       "/mikel" = {
                         mountpoint = "/home/mikel";
-                        mountOptions =
-                          [ "subvol=mikel" "compress=zstd" "noatime" ];
+                        mountOptions = [
+                          "subvol=mikel"
+                          "compress=zstd"
+                          "noatime"
+                        ];
                       };
 
                       "/nix" = {
                         mountpoint = "/nix";
-                        mountOptions =
-                          [ "subvol=nix" "compress=zstd" "noatime" ];
+                        mountOptions = [
+                          "subvol=nix"
+                          "compress=zstd"
+                          "noatime"
+                        ];
                       };
 
                       "/log" = {
                         mountpoint = "/var/log";
-                        mountOptions =
-                          [ "subvol=log" "compress=zstd" "noatime" ];
+                        mountOptions = [
+                          "subvol=log"
+                          "compress=zstd"
+                          "noatime"
+                        ];
                       };
 
                       "/tmp" = {
                         mountpoint = "/tmp";
-                        mountOptions =
-                          [ "subvol=tmp" "compress=zstd" "noatime" ];
+                        mountOptions = [
+                          "subvol=tmp"
+                          "compress=zstd"
+                          "noatime"
+                        ];
                       };
 
                       "/swap" = {
                         mountpoint = "/swap";
-                        swap = { swapfile = { size = "64G"; }; };
+                        swap = {
+                          swapfile = {
+                            size = "64G";
+                          };
+                        };
                       };
                     };
                   };

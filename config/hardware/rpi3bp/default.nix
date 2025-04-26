@@ -1,7 +1,15 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   imports = [ ../common ];
 
-  boot = { kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_zen; };
+  boot = {
+    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_zen;
+  };
 
-  environment = { packages = with pkgs; [ libraspberrypi raspberrypifw ]; };
+  environment = {
+    packages = with pkgs; [
+      libraspberrypi
+      raspberrypifw
+    ];
+  };
 }

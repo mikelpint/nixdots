@@ -1,1 +1,8 @@
-{ imports = [ ./noisetorch ./pipewire ./pulseaudio ./rtkit ]; }
+{
+  imports = [
+    ./noisetorch
+    ./pipewire
+    ./pulseaudio
+    ./rtkit
+  ];
+}

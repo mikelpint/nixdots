@@ -1,4 +1,6 @@
 {
+  "icon_theme": "Catppuccin Macchiato",
+
   "theme": {
     "mode": "system",
     "light": "Catppuccin Macchiato (pink)",

@@ -1,10 +1,13 @@
-{ user, ... }: {
+{ user, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
         settings = {
-          envd =
-            [ "MOZ_ENABLE_WAYLAND,1" "MOZ_GTK_TITLEBAR_DECORATION,client" ];
+          envd = [
+            "MOZ_ENABLE_WAYLAND,1"
+            "MOZ_GTK_TITLEBAR_DECORATION,client"
+          ];
         };
       };
     };
@@ -14,7 +17,13 @@
     firefox = {
       profiles = {
         ${user} = {
-          settings = { browser = { tabs = { inTitlebar = 1; }; }; };
+          settings = {
+            browser = {
+              tabs = {
+                inTitlebar = 1;
+              };
+            };
+          };
         };
       };
     };

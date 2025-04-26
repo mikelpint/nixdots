@@ -1,16 +1,30 @@
-{ pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_12;
-    # zfs = { package = config.boot.kernelPackages.zfs_unstable; };
+    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_13;
 
-    initrd = { supportedFilesystems = [ "zfs" ]; };
+    zfs = {
+      # package = config.boot.kernelPackages.zfs_unstable;
+      package = pkgs.zfs_unstable;
+
+      removeLinuxDRM = false;
+    };
+
+    initrd = {
+      supportedFilesystems = [ "zfs" ];
+    };
 
     supportedFilesystems = [ "zfs" ];
 
     loader = {
       grub = {
         zfsSupport = true;
-        # zfsPackage = lib.mkForce config.boot.zfs.package;
+        zfsPackage = lib.mkForce config.boot.zfs.package;
 
         copyKernels = true;
       };
@@ -19,9 +33,13 @@
 
   services = {
     zfs = {
-      autoScrub = { enable = true; };
+      autoScrub = {
+        enable = true;
+      };
 
-      autoSnapshot = { enable = true; };
+      autoSnapshot = {
+        enable = true;
+      };
     };
 
     udev = {

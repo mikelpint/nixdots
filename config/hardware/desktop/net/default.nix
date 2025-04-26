@@ -1,5 +1,9 @@
 {
-  imports = [ ./dhcp ./if ./kernel ];
+  imports = [
+    ./dhcp
+    ./if
+    ./kernel
+  ];
 
   networking = {
     hostId = "deadbeef";
@@ -7,5 +11,6 @@
     domain = "mikelpint.com";
 
     defaultGateway = "192.168.1.1";
+    defaultGateway6 = "::ffff:c0a8:101";
   };
 }

@@ -1,6 +1,12 @@
 # https://bbs.archlinux.org/viewtopic.php?pid=2132622#p2132622
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}:
 
 let
   enable = true;
@@ -11,7 +17,8 @@ let
     bridge = "0x10ca1";
     docker = "0xd0cca5e";
   };
-in {
+in
+{
   boot = lib.mkIf enable {
     kernel = {
       sysctl = {
@@ -20,11 +27,27 @@ in {
       };
     };
     kernelModules = [ "ip_vs" ];
+
+    blacklistedKernelModules = lib.mkIf (!config.virtualisation.docker.daemon.settings.iptables) [
+      "ip_tables"
+      "ip6_tables"
+    ];
+  };
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [ "docker" ];
+      };
+    };
   };
 
   virtualisation = {
     docker = {
       enable = lib.mkDefault enable;
+      enableOnBoot = lib.mkDefault enable;
+
+      logDriver = "journald";
 
       rootless = {
         enable = false;
@@ -33,10 +56,13 @@ in {
 
       daemon = {
         settings = {
-          # iptables = false;
-          # ip6tables = false;
+          iptables = !config.networking.nftables.enable;
+          ip6tables = !config.networking.nftables.enable;
 
-          dns = [ "1.1.1.1" "1.0.0.1" ];
+          dns = [
+            "1.1.1.1"
+            "1.0.0.1"
+          ];
 
           bip = "10.200.0.1/24";
           default-address-pools = [
@@ -88,10 +114,12 @@ in {
                 ${
                   (lib.lists.foldr (a: b: ''
                     ${a}
-                    ${b}'') "") (builtins.map (iface: ''
+                    ${b}'') "")
+                  (
+                    builtins.map (iface: ''
                       # iif ${iface} ip saddr != 192.168.0.0/16 counter drop
-                    '') (builtins.filter (iface: iface != interface)
-                      config.networking.firewall.trustedInterfaces))
+                    '') (builtins.filter (iface: iface != interface) config.networking.firewall.trustedInterfaces)
+                  )
                 }
                 counter accept
             }
@@ -103,13 +131,15 @@ in {
                 ${
                   (lib.lists.foldr (a: b: ''
                     ${a}
-                    ${b}'') "") (builtins.map (iface: ''
+                    ${b}'') "")
+                  (
+                    builtins.map (iface: ''
                       # iif ${iface} icmp type echo-request accept
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 22 accept
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 80 accept
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 443 accept
-                    '') (builtins.filter (iface: iface != interface)
-                      config.networking.firewall.trustedInterfaces))
+                    '') (builtins.filter (iface: iface != interface) config.networking.firewall.trustedInterfaces)
+                  )
                 }
             }
 
@@ -136,16 +166,27 @@ in {
                 ${
                   (lib.lists.foldr (a: b: ''
                     ${a}
-                    ${b}'') "") (lib.lists.flatten (builtins.map (port:
-                      builtins.map (ip:
-                        "tcp dport ${builtins.toString port} dnat ip to ${ip}")
-                      (builtins.map (x:
-                        builtins.elemAt
-                        (builtins.match "^(.+)/[[:digit:]]+$" x.base) 0)
-                        config.virtualisation.docker.daemon.settings.default-address-pools
-                        ++ [
-                          config.virtualisation.docker.daemon.settings.bip
-                        ])) [ 80 443 ]))
+                    ${b}'') "")
+                  (
+                    lib.lists.flatten (
+                      builtins.map
+                        (
+                          port:
+                          builtins.map (ip: "tcp dport ${builtins.toString port} dnat ip to ${ip}") (
+                            builtins.map (
+                              x: builtins.elemAt (builtins.match "^(.+)/[[:digit:]]+$" x.base) 0
+                            ) config.virtualisation.docker.daemon.settings.default-address-pools
+                            ++ [
+                              config.virtualisation.docker.daemon.settings.bip
+                            ]
+                          )
+                        )
+                        [
+                          80
+                          443
+                        ]
+                    )
+                  )
                 }
             }
 
@@ -160,50 +201,55 @@ in {
   };
 
   systemd = {
-    packages = [
-      (pkgs.writeTextFile {
+    packages = with pkgs; [
+      (writeTextFile {
         name = "docker-netns";
         destination = "/etc/systemd/system/docker.service.d/netns.conf";
 
-        text = if false then ''
-          [Service]
-          PrivateNetwork=yes
-          PrivateMounts=No
+        text =
+          if false then
+            ''
+              [Service]
+              PrivateNetwork=yes
+              PrivateMounts=No
 
-          ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link delete docker0
+              ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link delete docker0
 
-          ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link add docker0 type veth peer name docker0_ns
-          ExecStartPre=-${pkgs.runtimeShell} -c '${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link set docker0_ns netns "$$BASHPID" && true'
-          ExecStartPre=-${pkgs.iproute2}/bin/ip link set docker0_ns name wifi
+              ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link add docker0 type veth peer name docker0_ns
+              ExecStartPre=-${pkgs.runtimeShell} -c '${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link set docker0_ns netns "$$BASHPID" && true'
+              ExecStartPre=-${pkgs.iproute2}/bin/ip link set docker0_ns name wifi
 
-          ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip addr add ${config.virtualisation.docker.daemon.settings.bip} dev docker0
-          ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link set docker0 up
+              ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip addr add ${config.virtualisation.docker.daemon.settings.bip} dev docker0
+              ExecStartPre=-${pkgs.util-linux}/bin/nsenter -t 1 -n -- ip link set docker0 up
 
-          ExecStartPre=-${pkgs.iproute2}/bin/ip addr add ${
-            builtins.elemAt (builtins.match "^(.+)\\.[[:digit:]]+/[[:digit:]]+$"
-              config.virtualisation.docker.daemon.settings.bip) 0
-          }.100/24 dev wifi
-          ${(lib.lists.foldr (a: b: ''
-            ${a}
-            ${b}
-          '') "") (builtins.map (x:
-            "# ExecStartPre=-${pkgs.iproute2}/bin/ip addr add ${x.base} dev wifi")
-            config.virtualisation.docker.daemon.settings.default-address-pools)}
-          ExecStartPre=-${pkgs.iproute2}/bin/ip link set wifi up
-          ExecStartPre=-${pkgs.iproute2}/bin/ip route add default via ${
-            builtins.elemAt (builtins.match "^(.+)\\.[[:digit:]]+/[[:digit:]]+$"
-              config.virtualisation.docker.daemon.settings.bip) 0
-          }.1 dev wifi
-        '' else ''
-          [Service]
-          PrivateNetwork=No
-          PrivateMounts=No
+              ExecStartPre=-${pkgs.iproute2}/bin/ip addr add ${builtins.elemAt (builtins.match "^(.+)\\.[[:digit:]]+/[[:digit:]]+$" config.virtualisation.docker.daemon.settings.bip) 0}.100/24 dev wifi
+              ${
+                (lib.lists.foldr (a: b: ''
+                  ${a}
+                  ${b}
+                '') "")
+                (
+                  builtins.map (
+                    x: "# ExecStartPre=-${pkgs.iproute2}/bin/ip addr add ${x.base} dev wifi"
+                  ) config.virtualisation.docker.daemon.settings.default-address-pools
+                )
+              }
+              ExecStartPre=-${pkgs.iproute2}/bin/ip link set wifi up
+              ExecStartPre=-${pkgs.iproute2}/bin/ip route add default via ${builtins.elemAt (builtins.match "^(.+)\\.[[:digit:]]+/[[:digit:]]+$" config.virtualisation.docker.daemon.settings.bip) 0}.1 dev wifi
+            ''
+          else
+            ''
+              [Service]
+              PrivateNetwork=No
+              PrivateMounts=No
 
-          ExecStartPre=-${pkgs.runtimeShell} -c "true"
-        '';
+              ExecStartPre=-${pkgs.runtimeShell} -c "true"
+            '';
       })
     ];
   };
 
-  environment = { systemPackages = with pkgs; [ docker-compose ]; };
+  environment = {
+    systemPackages = with pkgs; [ docker-compose ];
+  };
 }

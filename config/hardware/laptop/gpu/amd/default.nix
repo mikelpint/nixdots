@@ -3,9 +3,15 @@ _:
 {
   hardware = {
     amdgpu = {
-      initrd = { enable = true; };
-      amdvlk = { enable = true; };
-      opencl = { enable = true; };
+      initrd = {
+        enable = true;
+      };
+      amdvlk = {
+        enable = true;
+      };
+      opencl = {
+        enable = true;
+      };
     };
   };
 }

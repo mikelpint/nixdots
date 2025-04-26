@@ -1,20 +1,25 @@
-{ pkgs, inputs, lib, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 
-let
-  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.system};
-in {
-  imports = [ ./amd ./nvidia ];
+{
+  imports = [
+    ./amd
+    ./nvidia
+  ];
 
   hardware = {
     graphics = {
-      package = pkgs-unstable.mesa;
-      package32 = pkgs-unstable.pkgsi686Linux.mesa;
+      package = lib.mkDefault pkgs.mesa;
+      package32 = lib.mkDefault pkgs.pkgsi686Linux.mesa;
 
       enable = true;
       enable32Bit = true;
 
       extraPackages = with pkgs; [
-        pkgs-unstable.mesa
+        mesa
 
         vaapiVdpau
         libva
@@ -32,8 +37,10 @@ in {
         vulkan-extension-layer
       ];
 
-      extraPackages32 = with pkgs.pkgsi686Linux;
-        with driversi686Linux; [
+      extraPackages32 =
+        with pkgs.pkgsi686Linux;
+        with driversi686Linux;
+        [
           libva
           libvdpau
           libva-vdpau-driver
@@ -44,33 +51,36 @@ in {
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:${
-          pkgs.lib.makeLibraryPath (with pkgs;
-            with xorg; [
-              icu.dev
-              libdecor
-              glfw
+        pkgs.lib.makeLibraryPath (
+          with pkgs;
+          with xorg;
+          [
+            icu.dev
+            libdecor
+            glfw
 
-              libGL
-              libGLU
+            libGL
+            libGLU
 
-              wayland
-              egl-wayland
+            wayland
+            egl-wayland
 
-              pipewire
+            pipewire
 
-              vulkan-loader
-              #vulkan-validation-layers
-              vulkan-extension-layer
+            vulkan-loader
+            #vulkan-validation-layers
+            vulkan-extension-layer
 
-              libX11
-              libXcursor
-              libXi
-              libXrandr
+            libX11
+            libXcursor
+            libXi
+            libXrandr
 
-              pcscliteWithPolkit
-              #stdenv.cc.cc.lib
-            ])
-        }:/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+            pcscliteWithPolkit
+            #stdenv.cc.cc.lib
+          ]
+        )
+      }:/run/opengl-driver/lib:/run/opengl-driver-32/lib";
     };
   };
 }

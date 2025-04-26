@@ -3,7 +3,8 @@
 {
   services = {
     tlp = {
-      enable = (lib.versionOlder (lib.versions.majorMinor lib.version) "21.05")
+      enable =
+        (lib.versionOlder (lib.versions.majorMinor lib.version) "21.05")
         || !config.services.power-profiles-daemon.enable;
 
       settings = {

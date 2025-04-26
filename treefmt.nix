@@ -1,33 +1,56 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   package = pkgs.treefmt;
 
   projectRootFile = "flake.nix";
 
   programs = {
-    deadnix = { enable = true; };
+    deadnix = {
+      enable = true;
+    };
 
-    statix = { enable = true; };
+    statix = {
+      enable = true;
+    };
 
-    nixfmt = { enable = true; };
+    nixfmt = {
+      enable = true;
+    };
 
-    yamlfmt = { enable = true; };
+    yamlfmt = {
+      enable = true;
+    };
 
-    shfmt = { enable = true; };
+    shfmt = {
+      enable = true;
+    };
 
-    shellcheck = { enable = false; };
+    shellcheck = {
+      enable = false;
+    };
 
-    prettier = { enable = true; };
+    prettier = {
+      enable = true;
+    };
   };
 
   settings = {
     global = {
-      excludes =
-        [ "*.age" "*.png" "*.gif" "*.pub" "*.asc" "*.bin" "*.conf" "*.lang" ];
+      excludes = [
+        "*.age"
+        "*.png"
+        "*.gif"
+        "*.pub"
+        "*.asc"
+        "*.bin"
+        "*.conf"
+        "*.lang"
+      ];
     };
 
     formatter = {
       nixfmt = {
-        command = lib.mkForce pkgs.nixfmt;
+        command = lib.mkForce pkgs.nixfmt-rfc-style;
         includes = [ "*.nix" ];
       };
 

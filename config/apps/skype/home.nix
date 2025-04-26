@@ -1,1 +1,8 @@
-{ pkgs, ... }: { home = { packages = with pkgs; [ skypeforlinux ]; }; }
+{ pkgs, ... }:
+let
+inherit (pkgs) skypeforlinux;
+in {
+  home = {
+    packages = [ skypeforlinux ];
+  };
+}

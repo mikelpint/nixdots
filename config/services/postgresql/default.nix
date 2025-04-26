@@ -1,15 +1,25 @@
-{ lib, pkgs, config, ... }:
-let sameHostAuth = "trust";
-in {
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  sameHostAuth = "trust";
+in
+{
   services = {
     postgresql = {
       enable = true;
       package = pkgs.postgresql;
 
-      extensions = ps: with ps; [ postgis pg_repack ];
+      extensions =
+        ps: with ps; [
+          postgis
+          pg_repack
+        ];
 
-      dataDir =
-        "/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
+      dataDir = "/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
 
       enableTCPIP = true;
 
@@ -22,11 +32,8 @@ in {
         logging_collector = true;
         log_disconnections = true;
         log_destination = lib.mkForce "syslog";
-        log_line_prefix = if config.services.postgresql.settings.log_destination
-        == "syslog" then
-          "[%p] "
-        else
-          "%m [%p] ";
+        log_line_prefix =
+          if config.services.postgresql.settings.log_destination == "syslog" then "[%p] " else "%m [%p] ";
       };
 
       authentication = lib.mkOverride 10 ''

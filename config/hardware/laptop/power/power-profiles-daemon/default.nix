@@ -1,1 +1,7 @@
-_: { services = { power-profiles-daemon = { enable = false; }; }; }
+_: {
+  services = {
+    power-profiles-daemon = {
+      enable = false;
+    };
+  };
+}

@@ -1,3 +1,8 @@
-{ pkgs, ... }: {
-  services = { printing = { drivers = with pkgs; [ hplipWithPlugin ]; }; };
+{ pkgs, ... }:
+{
+  services = {
+    printing = {
+      drivers = with pkgs; [ hplipWithPlugin ];
+    };
+  };
 }

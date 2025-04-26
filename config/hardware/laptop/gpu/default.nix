@@ -1,5 +1,9 @@
-{ user, ... }: {
-  imports = [ ./amd ./nvidia ];
+{ user, ... }:
+{
+  imports = [
+    ./amd
+    ./nvidia
+  ];
 
   system = {
     userActivationScripts = {

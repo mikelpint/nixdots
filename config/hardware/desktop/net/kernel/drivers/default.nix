@@ -1,1 +1,6 @@
-_: { imports = [ ./ethernet ./wifi ]; }
+_: {
+  imports = [
+    ./ethernet
+    ./wifi
+  ];
+}

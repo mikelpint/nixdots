@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }: {
-  home = { packages = with pkgs; [ playerctl ]; };
+{ pkgs, lib, ... }:
+{
+  home = {
+    packages = with pkgs; [ playerctl ];
+  };
 
   wayland = {
     windowManager = {

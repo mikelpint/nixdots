@@ -1,6 +1,15 @@
-{ lib, config, pkgs, self, user, ... }:
-let interfaceName = "tailscale0";
-in {
+{
+  lib,
+  config,
+  pkgs,
+  self,
+  user,
+  ...
+}:
+let
+  interfaceName = "tailscale0";
+in
+{
   services = {
     tailscale = lib.mkDefault {
       enable = true;
@@ -18,6 +27,8 @@ in {
   };
 
   networking = lib.mkIf config.services.tailscale.enable {
-    firewall = { trustedInterfaces = [ interfaceName ]; };
+    firewall = {
+      trustedInterfaces = [ interfaceName ];
+    };
   };
 }

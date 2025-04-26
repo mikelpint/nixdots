@@ -1,4 +1,5 @@
-{ config, user, ... }: {
+{ config, user, ... }:
+{
   programs = {
     hyprland = {
       enable = true;
@@ -17,8 +18,16 @@
   };
 
   users = {
-    users = { "${user}" = { extraGroups = [ config.services.seatd.group ]; }; };
+    users = {
+      "${user}" = {
+        extraGroups = [ config.services.seatd.group ];
+      };
+    };
   };
 
-  environment = { sessionVariables = { LIBSEAT_BACKEND = "logind"; }; };
+  environment = {
+    sessionVariables = {
+      LIBSEAT_BACKEND = "logind";
+    };
+  };
 }

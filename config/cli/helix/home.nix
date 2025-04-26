@@ -7,23 +7,24 @@
     helix = {
       enable = true;
 
-      package = inputs.helix.packages.${pkgs.system}.default.overrideAttrs
-        (old: {
-          makeWrapperArgs = with pkgs;
-            old.makeWrapperArgs or [ ] ++ [
-              "--suffix"
-              "PATH"
-              ":"
-              (lib.makeBinPath [
-                clang-tools
-                marksman
-                nil
-                nodePackages.bash-language-server
-                #nodePackages.vscode-langservers-extracted
-                shellcheck
-              ])
-            ];
-        });
+      package = inputs.helix.packages.${pkgs.system}.default.overrideAttrs (old: {
+        makeWrapperArgs =
+          with pkgs;
+          old.makeWrapperArgs or [ ]
+          ++ [
+            "--suffix"
+            "PATH"
+            ":"
+            (lib.makeBinPath [
+              clang-tools
+              marksman
+              nil
+              nodePackages.bash-language-server
+              #nodePackages.vscode-langservers-extracted
+              shellcheck
+            ])
+          ];
+      });
 
       defaultEditor = true;
 
@@ -46,9 +47,13 @@
             skip-levels = 1;
           };
 
-          lsp = { display-inlay-hints = true; };
+          lsp = {
+            display-inlay-hints = true;
+          };
 
-          statusline = { center = [ "position-percentage" ]; };
+          statusline = {
+            center = [ "position-percentage" ];
+          };
 
           whitespace = {
             render = {
@@ -67,7 +72,15 @@
           };
         };
 
-        keys = { normal = { space = { u = { f = ":format"; }; }; }; };
+        keys = {
+          normal = {
+            space = {
+              u = {
+                f = ":format";
+              };
+            };
+          };
+        };
       };
     };
   };

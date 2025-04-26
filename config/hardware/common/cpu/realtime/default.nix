@@ -1,8 +1,15 @@
-{ user, ... }: {
+{ user, ... }:
+{
   users = {
-    users = { ${user} = { extraGroups = [ "realtime" ]; }; };
+    users = {
+      ${user} = {
+        extraGroups = [ "realtime" ];
+      };
+    };
 
-    groups = { realtime = { }; };
+    groups = {
+      realtime = { };
+    };
   };
 
   services = {

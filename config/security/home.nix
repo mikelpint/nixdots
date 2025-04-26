@@ -1,1 +1,6 @@
-_: { imports = [ ./gnupg/home.nix ./yubikey/home.nix ]; }
+_: {
+  imports = [
+    ./gnupg/home.nix
+    ./yubikey/home.nix
+  ];
+}

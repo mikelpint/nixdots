@@ -3,11 +3,21 @@ _: {
     bat = {
       enable = true;
 
-      config = { pager = "less -FR"; };
+      config = {
+        pager = "less -FR";
+      };
     };
   };
 
-  home = { shellAliases = { cat = "bat"; }; };
+  home = {
+    shellAliases = {
+      cat = "bat";
+    };
+  };
 
-  catppuccin = { bat = { enable = true; }; };
+  catppuccin = {
+    bat = {
+      enable = true;
+    };
+  };
 }

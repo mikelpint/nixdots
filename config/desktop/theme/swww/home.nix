@@ -2,9 +2,13 @@
 
 { pkgs, ... }:
 
-let wallpaper = "/etc/nixos/assets/wallpapers/gif/wallpaper.gif";
-in {
-  home = { packages = with pkgs; [ swww ]; };
+let
+  wallpaper = "/etc/nixos/assets/wallpapers/gif/wallpaper.gif";
+in
+{
+  home = {
+    packages = with pkgs; [ swww ];
+  };
 
   systemd = {
     user = {
@@ -15,7 +19,9 @@ in {
             After = [ "graphical-session.target" ];
           };
 
-          Install = { WantedBy = [ "graphical-session.target" ]; };
+          Install = {
+            WantedBy = [ "graphical-session.target" ];
+          };
 
           Service = {
             Type = "simple";
@@ -32,12 +38,18 @@ in {
         wallpaper = {
           Unit = {
             Requires = [ "swww.service" ];
-            After = [ "swww.service" "hyprland-session.target" ];
+            After = [
+              "swww.service"
+              "hyprland-session.target"
+            ];
             PartOf = [ "swww.service" ];
           };
 
           Install = {
-            WantedBy = [ "swww.service" "hyprland-session.target" ];
+            WantedBy = [
+              "swww.service"
+              "hyprland-session.target"
+            ];
           };
 
           Service = {

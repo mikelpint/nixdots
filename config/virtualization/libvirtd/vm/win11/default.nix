@@ -21,8 +21,18 @@ _: {
   };
 
   networking = {
-    firewall = { trustedInterfaces = [ "virbr0" "macvtap1@virbr0" ]; };
+    firewall = {
+      trustedInterfaces = [
+        "virbr0"
+        "macvtap1@virbr0"
+      ];
+    };
 
-    networkmanager = { unmanaged = [ "virbr0" "macvtap1@virbr0" ]; };
+    networkmanager = {
+      unmanaged = [
+        "virbr0"
+        "macvtap1@virbr0"
+      ];
+    };
   };
 }

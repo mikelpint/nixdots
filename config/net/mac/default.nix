@@ -1,8 +1,10 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/mac-randomize.nix
 
 { pkgs, lib, ... }:
-let interface = "wifi";
-in {
+let
+  interface = "wifi";
+in
+{
   systemd = {
     services = {
       macchanger = {
@@ -18,8 +20,8 @@ in {
 
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = lib.mkDefault
-            (pkgs.writeShellScript "macchanger-service-script" ''
+          ExecStart = lib.mkDefault (
+            pkgs.writeShellScript "macchanger-service-script" ''
               tmp=$(mktemp)
               ${pkgs.macchanger}/bin/macchanger "${interface}" -s | grep -oP "[a-zA-Z0-9]{2}:[a-zA-Z0-9]{2}:[^ ]*" > "$tmp"
               mac1=$(cat "$tmp" | head -n 1)
@@ -33,9 +35,9 @@ in {
                       ${pkgs.macchanger}/bin/macchanger -r "${interface}"
                   fi
               fi
-            '');
-          ExecStop =
-            lib.mkDefault "${pkgs.macchanger}/bin/macchanger -p ${interface}";
+            ''
+          );
+          ExecStop = lib.mkDefault "${pkgs.macchanger}/bin/macchanger -p ${interface}";
           RemainAfterExit = true;
         };
       };

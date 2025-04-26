@@ -12,8 +12,11 @@ let
     "xdg-portal-3"
     "miner-fs-control-3"
   ];
-in {
-  environment = { systemPackages = with pkgs; [ hdapsd ]; };
+in
+{
+  environment = {
+    systemPackages = with pkgs; [ hdapsd ];
+  };
 
   boot = {
     kernelModules = [ "hdapsd" ];
@@ -21,18 +24,24 @@ in {
   };
 
   services = {
-    udev = { packages = with pkgs; [ hdapsd ]; };
+    udev = {
+      packages = with pkgs; [ hdapsd ];
+    };
 
-    hdapsd = { enable = true; };
+    hdapsd = {
+      enable = true;
+    };
   };
 
   systemd = {
     packages = with pkgs; [ hdapsd ];
 
     user = {
-      services = lib.genAttrs
-        (builtins.map (service: "tracker-${service}") tracker-miner-services)
-        (_service: { enable = false; });
+      services =
+        lib.genAttrs (builtins.map (service: "tracker-${service}") tracker-miner-services)
+          (_service: {
+            enable = false;
+          });
     };
   };
 }

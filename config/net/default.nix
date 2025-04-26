@@ -1,23 +1,26 @@
-_: {
+{ pkgs, ... }:
+{
   imports = [
     ./dhcp
     ./dns
     ./firewall
     ./if
     ./ip
+    ./iwd
     ./mac
     ./nat
     ./networkmanager
+    ./ntp
     ./systemd-networkd
     ./vpn
     ./wpa_supplicant
   ];
 
   networking = {
-    hosts = {
-      # "127.0.0.1" = [ "dspace.deustotech.eu" ];
-      # "10.0.0.50" = [ "dspace.deustotech.eu" ];
-      # "10.201.0.1" = [ "dspace.deustotech.eu" ];
-    };
+    hosts = { };
+  };
+
+  environment = {
+    systemPackages = with pkgs; [ ethtool traceroute ];
   };
 }

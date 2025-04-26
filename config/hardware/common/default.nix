@@ -1,5 +1,15 @@
-{ lib, ... }: {
-  imports = [ ./cpu ./display ./gpu ./input ./output ./storage ./usb ];
+{ lib, ... }:
+{
+  imports = [
+    ./cpu
+    ./display
+    ./gpu
+    ./input
+    ./memory
+    ./output
+    ./storage
+    ./usb
+  ];
 
   hardware = {
     enableAllFirmware = true;

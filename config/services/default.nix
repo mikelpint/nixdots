@@ -1,1 +1,7 @@
-_: { imports = [ ./mosh ./ssh ./systemd ]; }
+_: {
+  imports = [
+    ./mosh
+    ./ssh
+    ./systemd
+  ];
+}

@@ -1,10 +1,22 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home = {
-    packages = with pkgs;
-      [ grimblast ] ++ (builtins.map (type:
-        (pkgs.writeShellScriptBin "screenshot-${type}" ''
-          grimblast copysave ${type} $XDG_PICTURES_DIR/screenshots/$(date +"%F_%H-%M-%S-%N").png
-        '')) [ "area" "screen" "output" ]);
+    packages =
+      with pkgs;
+      [ grimblast ]
+      ++ (builtins.map
+        (
+          type:
+          (pkgs.writeShellScriptBin "screenshot-${type}" ''
+            grimblast copysave ${type} $XDG_PICTURES_DIR/screenshots/$(date +"%F_%H-%M-%S-%N").png
+          '')
+        )
+        [
+          "area"
+          "screen"
+          "output"
+        ]
+      );
   };
 
   wayland = {

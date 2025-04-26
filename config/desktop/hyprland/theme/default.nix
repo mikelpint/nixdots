@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   xdg = {
     configFile = {
       "hypr/macchiato.conf" = {
@@ -103,10 +104,9 @@
         settings = {
           exec-once = [ "hyprsetup_theme" ];
 
-          envd = with pkgs;
-            [
-              "GSETTINGS_SCHEMA_DIR,${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}/glib-2.0/schemas"
-            ];
+          envd = with pkgs; [
+            "GSETTINGS_SCHEMA_DIR,${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}/glib-2.0/schemas"
+          ];
         };
       };
     };

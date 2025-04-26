@@ -1,6 +1,13 @@
 { ... }:
 
 {
-  imports =
-    [ ./bootloader ./efi ./fs ./kernel ./plymouth ./systemd ./verbosity ];
+  imports = [
+    ./bootloader
+    ./efi
+    ./fs
+    ./kernel
+    ./plymouth
+    ./systemd
+    ./verbosity
+  ];
 }

@@ -1,1 +1,9 @@
-_: { imports = [ ../../config/apps/mangohud ../../config/apps/steam ]; }
+_: {
+  imports = [
+    ../../config/apps/lutris
+    ../../config/apps/mangohud
+    ../../config/apps/minecraft
+    ../../config/apps/shadps4
+    ../../config/apps/steam
+  ];
+}

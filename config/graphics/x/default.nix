@@ -1,15 +1,31 @@
-{ lib, user, config, pkgs, ... }:
+{
+  lib,
+  user,
+  config,
+  pkgs,
+  ...
+}:
 let
-  command = if config.programs.hyprland.withUWSM then ''
-    [ $(uwsm check may-start) ] && \
-    ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
-  '' else
-    "dbus-run-session Hyprland";
-in {
-  environment = { sessionVariables = { NIXOS_OZONE_WL = "1"; }; };
+  command =
+    if config.programs.hyprland.withUWSM then
+      ''
+        [ $(uwsm check may-start) ] && \
+        ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
+      ''
+    else
+      "dbus-run-session Hyprland";
+in
+{
+  environment = {
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
+  };
 
   services = {
-    xserver = { enable = true; };
+    xserver = {
+      enable = true;
+    };
 
     greetd = {
       enable = true;
@@ -36,9 +52,13 @@ in {
       sddm = {
         enable = false;
 
-        wayland = { enable = true; };
+        wayland = {
+          enable = true;
+        };
 
-        autoLogin = { relogin = true; };
+        autoLogin = {
+          relogin = true;
+        };
       };
 
       autoLogin = {

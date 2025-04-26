@@ -1,7 +1,15 @@
 { ... }:
 
 {
-  imports = [ ./amd ./nvidia ./vfio ];
+  imports = [
+    ./amd
+    ./nvidia
+    ./vfio
+  ];
 
-  services = { xserver = { videoDrivers = [ "amdgpu" ]; }; };
+  services = {
+    xserver = {
+      videoDrivers = [ "amdgpu" ];
+    };
+  };
 }

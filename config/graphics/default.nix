@@ -1,5 +1,10 @@
-{ pkgs, ... }: {
-  imports = [ ./hidpi ./x ./xdg ];
+{ pkgs, ... }:
+{
+  imports = [
+    ./hidpi
+    ./x
+    ./xdg
+  ];
 
   catppuccin = {
     enable = true;
@@ -7,5 +12,10 @@
     accent = "pink";
   };
 
-  environment = { systemPackages = with pkgs; [ ffmpeg SDL2 ]; };
+  environment = {
+    systemPackages = with pkgs; [
+      ffmpeg
+      SDL2
+    ];
+  };
 }

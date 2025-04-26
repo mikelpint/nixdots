@@ -1,5 +1,8 @@
-{ pkgs, ... }: {
-  home = { packages = with pkgs; [ hyprlock ]; };
+{ pkgs, ... }:
+{
+  home = {
+    packages = with pkgs; [ hyprlock ];
+  };
 
   wayland = {
     windowManager = {

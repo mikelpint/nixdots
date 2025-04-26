@@ -1,9 +1,12 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   programs = {
     fzf = {
       enable = true;
       enableZshIntegration = true;
-      tmux = { enableShellIntegration = true; };
+      tmux = {
+        enableShellIntegration = true;
+      };
 
       colors = lib.mkForce {
         bg = "-1";

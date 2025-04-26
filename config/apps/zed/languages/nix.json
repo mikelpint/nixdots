@@ -1,0 +1,10 @@
+{
+  "enable_language_server": true,
+  "lsp": {
+    "nixd": {
+      "binary": {
+        "path": "nixd"
+      }
+    }
+  }
+}

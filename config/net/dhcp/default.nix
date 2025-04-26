@@ -1,10 +1,16 @@
-{ lib, ... }: {
+{ lib, config, ... }:
+{
   networking = {
+    useDHCP = lib.mkDefault true;
+
     dhcpcd = {
-      enable = lib.mkDefault true;
+      enable = config.networking.useDHCP;
+      persistent = true;
 
       wait = "background";
-      extraConfig = "noarp";
+      extraConfig = ''
+        noarp
+      '';
     };
   };
 }

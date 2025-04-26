@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   wayland = {
     windowManager = {
       hyprland = {
