@@ -8,6 +8,7 @@
 
       extraConfig = ''
         Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
+        AddKeysToAgent yes
       '';
     };
   };

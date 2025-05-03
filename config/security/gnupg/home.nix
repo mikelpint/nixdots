@@ -2,8 +2,8 @@
 
 {
   pkgs,
+  config,
   osConfig,
-  user,
   ...
 }:
 {
@@ -16,9 +16,7 @@
     ];
 
     sessionVariables = {
-      SSH_AUTH_SOCK = "/run/user/${
-        builtins.toString osConfig.users.users.${user}.uid
-      }/gnupg/S.gpg-agent.ssh";
+      SSH_AUTH_SOCK = "${config.home.sessionVariables.XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh";
     };
   };
 
