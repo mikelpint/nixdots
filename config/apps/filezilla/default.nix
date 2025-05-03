@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     firejail = {
       wrappedBinaries = {
         filezilla = {
-          executable = "${pkgs.filezilla}/bin/filezilla";
+          executable = "${lib.getBin pkgs.filezilla}/bin/filezilla";
           profile = "${pkgs.firejail}/etc/firejail/filezilla.profile";
         };
       };

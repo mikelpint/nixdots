@@ -58,8 +58,8 @@ let
 in
 {
   imports = [
-    #../../../desktop/hyprland/plugins/csgo-vulkan-fix
-    #../../../desktop/hyprland/plugins/hyprtrails
+    ../../../desktop/hyprland/plugins/csgo-vulkan-fix
+    ../../../desktop/hyprland/plugins/hyprtrails
   ];
 
   home = {

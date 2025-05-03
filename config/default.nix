@@ -1,7 +1,8 @@
-_: {
+{ user, ... }:
+{
   users = {
     users = {
-      mikel = { };
+      "${user}" = { };
     };
   };
 
@@ -14,6 +15,7 @@ _: {
     ./graphics
     ./input
     ./locale
+    ./location
     ./net
     ./nix
     ./security

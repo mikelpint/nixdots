@@ -1,4 +1,9 @@
-{ user, lib, ... }:
+{
+  user,
+  lib,
+  osConfig,
+  ...
+}:
 {
   home = lib.mkForce {
     username = user;
@@ -6,7 +11,7 @@
 
     sessionPath = [ "$HOME/.local/bin" ];
 
-    stateVersion = "25.05";
+    inherit (osConfig.system) stateVersion;
   };
 
   programs = {

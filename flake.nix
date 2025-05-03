@@ -287,7 +287,7 @@
                   };
                 };
 
-                backupFileExtension = "backup";
+                backupFileExtension = "hm-backup";
               };
             }
           ];

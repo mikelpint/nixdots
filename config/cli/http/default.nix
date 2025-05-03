@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   environment = {
@@ -14,17 +14,17 @@
     firejail = {
       wrappedBinaries = {
         curl = {
-          executable = "${pkgs.curl}/bin/curl";
+          executable = "${lib.getBin pkgs.curl}/bin/curl";
           profile = "${pkgs.firejail}/etc/firejail/curl.profile";
         };
 
         wget = {
-          executable = "${pkgs.wget}/bin/wget";
+          executable = "${lib.getBin pkgs.wget}/bin/wget";
           profile = "${pkgs.firejail}/etc/firejail/wget.profile";
         };
 
         wget2 = {
-          executable = "${pkgs.wget2}/bin/wget2";
+          executable = "${lib.getBin pkgs.wget2}/bin/wget2";
           profile = "${pkgs.firejail}/etc/firejail/wget2.profile";
         };
       };

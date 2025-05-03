@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   package = pkgs.xfce.thunar;
 in
@@ -7,7 +7,7 @@ in
     firejail = {
       wrappedBinaries = {
         thunar = {
-          executable = "${package}/bin/thunar";
+          executable = "${lib.getBin package}/bin/thunar";
           profile = "${pkgs.firejail}/etc/firejail/thunar.profile";
         };
       };

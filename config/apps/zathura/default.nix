@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     firejail = {
       wrappedBinaries = {
         zathura = {
-          executable = "${pkgs.zathura}/bin/zathura";
+          executable = "${lib.getBin pkgs.zathura}/bin/zathura";
           profile = "${pkgs.firejail}/etc/firejail/gimp.profile";
         };
       };

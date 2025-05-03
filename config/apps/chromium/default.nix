@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   package = pkgs.chromium;
 in
@@ -7,7 +7,7 @@ in
     firejail = {
       wrappedBinaries = {
         chromium = {
-          executable = "${package}/bin/chromium";
+          executable = "${lib.getBin package}/bin/chromium";
           profile = "${pkgs.firejail}/etc/firejail/chromium.profile";
         };
       };

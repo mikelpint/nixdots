@@ -34,7 +34,9 @@
           };
 
           Network = {
-            NameResolvingService = lib.mkDefault "systemd";
+            NameResolvingService = lib.mkDefault (
+              if config.services.resolved.enable then "systemd" else "none"
+            );
             RoutePriorityOffset = lib.mkDefault 300;
           };
 

@@ -1,6 +1,7 @@
 {
   user,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -37,12 +38,12 @@ in
     firejail = {
       wrappedBinaries = {
         wireshark-cli = {
-          executable = "${package}/bin/tshark";
+          executable = "${lib.getBin package}/bin/tshark";
           profile = "${pkgs.firejail}/etc/firejail/tshark.profile";
         };
 
         wireshark-qt = {
-          executable = "${pkgs.wireshark-qt}/bin/wireshark-qt";
+          executable = "${lib.getBin pkgs.wireshark-qt}/bin/wireshark-qt";
           profile = "${pkgs.firejail}/etc/firejail/wireshark-qt.profile";
         };
       };

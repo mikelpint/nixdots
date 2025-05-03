@@ -4,6 +4,20 @@
     "nixd": {
       "binary": {
         "path": "nixd"
+      },
+      "settings": {
+        "autoArchive": true
+      }
+    }
+  },
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"],
+      "formatter": {
+        "external": {
+          "command": "nixfmt",
+          "arguments": ["--quiet", "--"]
+        }
       }
     }
   }

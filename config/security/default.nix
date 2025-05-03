@@ -1,4 +1,4 @@
-{
+_: {
   imports = [
     ./age
     ./audit
@@ -18,6 +18,9 @@
     ./storage
     ./systemd
     ./tpm
+    ./usbguard
+    ./virtualization
+    ./vulnix
     ./yubikey
   ];
 }

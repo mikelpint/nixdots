@@ -5,6 +5,6 @@
     "git_diff": true,
     "search_results": true,
     "selected_symbol": true,
-    "diagnostics": true
+    "diagnostics": "all"
   }
 }

@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     firejail = {
       wrappedBinaries = {
         tmux = {
-          executable = "${pkgs.tmux}/bin/tmux";
+          executable = "${lib.getBin pkgs.tmux}/bin/tmux";
           profile = "${pkgs.firejail}/etc/firejail/tmux.profile";
         };
       };

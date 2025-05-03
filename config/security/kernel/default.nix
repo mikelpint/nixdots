@@ -29,6 +29,10 @@
     };
   };
 
+  security = {
+    forcePageTableIsolation = true;
+  };
+
   environment = {
     etc = {
       "modprobe.d/nm-module-blacklist.conf" = {

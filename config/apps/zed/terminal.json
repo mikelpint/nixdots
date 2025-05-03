@@ -4,7 +4,7 @@
     "alternate_scroll": "off",
     "blinking": "terminal_controlled",
     "copy_on_select": false,
-    "font_family": null,
+    "font_family": "JetBrainsMono Nerd Font",
     "font_features": null,
     "font_size": null,
     "option_as_meta": false,

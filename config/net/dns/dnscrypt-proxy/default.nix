@@ -11,9 +11,13 @@ in
       enable = true;
 
       settings = {
-        listen_addresses = [ "[::1]:${toString port}" ];
+        listen_addresses = [
+          "127.0.0.1:${toString port}"
+        ]
+        # ++ (if config.networking.enableIPv6 then [ "::1:${toString port}" ] else [ ])
+        ;
 
-        ipv6_servers = true;
+        ipv6_servers = config.networking.enableIPv6;
         require_dnssec = true;
 
         server_names = [
@@ -46,8 +50,8 @@ in
       };
     };
 
-    resolved = lib.mkIf (config.services.dnscrypt-proxy2.enable && port == 53) {
-      enable = lib.mkForce false;
+    resolved = {
+      enable = !(config.services.dnscrypt-proxy2.enable && port == 53);
     };
   };
 
@@ -56,12 +60,15 @@ in
       dnscrypt-proxy2 = {
         serviceConfig = {
           StateDirectory = "dnscrypt-proxy";
+          AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         };
       };
     };
   };
 
   networking = lib.mkIf config.services.dnscrypt-proxy2.enable {
+    # nameservers = [ "127.0.0.1" ] ++ (if config.networking.enableIPv6 then [ "::1" ] else [ ]);
+
     firewall = {
       allowedTCPPorts = [ 53 ];
       allowedUDPPorts = [ 53 ];
@@ -79,7 +86,7 @@ in
     nftables = {
       tables = {
         nat = {
-          enable = !config.networking.nftables.enable && port != 53;
+          enable = config.networking.nftables.enable && port != 53;
           name = "nat";
           family = "ip6";
           content = ''

@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs = {
     firejail = {
       wrappedBinaries = {
         imv = {
-          executable = "${pkgs.imv}/bin/imv";
+          executable = "${lib.getBin pkgs.imv}/bin/imv";
           profile = "${pkgs.firejail}/etc/firejail/imv.profile";
         };
       };

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   inherit (pkgs) skypeforlinux;
 in
@@ -7,7 +7,7 @@ in
     firejail = {
       wrappedBinaries = {
         skypeforlinux = {
-          executable = "${skypeforlinux}/bin/skypeforlinux";
+          executable = "${lib.getBin skypeforlinux}/bin/skypeforlinux";
           profile = "${pkgs.firejail}/etc/firejail/skypeforlinux.profile";
         };
       };

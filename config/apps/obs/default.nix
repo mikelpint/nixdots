@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   package = pkgs.obs-studio;
 in
@@ -7,7 +7,7 @@ in
     firejail = {
       wrappedBinaries = {
         obs-studio = {
-          executable = "${package}/bin/obs";
+          executable = "${lib.getBin package}/bin/obs";
           profile = "${pkgs.firejail}/etc/firejail/obs.profile";
         };
       };

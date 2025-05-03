@@ -16,6 +16,7 @@ _: {
     ./output
     ./power
     ./storage
+    ./usb
   ];
 
   services = {

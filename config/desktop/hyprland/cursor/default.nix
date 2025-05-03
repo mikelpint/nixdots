@@ -1,9 +1,15 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   cursorTheme =
     (import ../../theme/cursor/home.nix {
       inherit pkgs;
       inherit lib;
+      inherit config;
     }).home.pointerCursor;
   cursor = {
     inherit (cursorTheme) name;

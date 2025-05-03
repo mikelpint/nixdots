@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   inherit (pkgs) lutris;
 in
@@ -7,7 +7,7 @@ in
     firejail = {
       wrappedBinaries = {
         lutris = {
-          executable = "${lutris}/bin/lutris";
+          executable = "${lib.getBin lutris}/bin/lutris";
           profile = "${pkgs.firejail}/etc/firejail/lutris.profile";
         };
       };

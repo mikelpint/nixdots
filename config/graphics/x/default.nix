@@ -67,4 +67,15 @@ in
       };
     };
   };
+
+  security = {
+    pam = {
+      services = {
+        greetd = {
+          inherit (config.services.greetd) enable;
+          enableGnomeKeyring = config.services.gnome.gnome-keyring.enable;
+        };
+      };
+    };
+  };
 }

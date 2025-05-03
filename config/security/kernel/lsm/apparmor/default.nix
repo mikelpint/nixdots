@@ -18,7 +18,7 @@
         apparmor-pam
       ];
 
-      killUnconfinedConfinables = lib.mkDefault true;
+      killUnconfinedConfinables = true;
     };
   };
 

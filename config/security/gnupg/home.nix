@@ -8,12 +8,23 @@
 }:
 {
   home = {
-    packages = with pkgs; [ pinentry-gnome3 ];
+    packages = with pkgs; [
+      pinentry-gnome3
+      gnome-keysign
+      gcr
+      seahorse
+    ];
 
     sessionVariables = {
       SSH_AUTH_SOCK = "/run/user/${
         builtins.toString osConfig.users.users.${user}.uid
       }/gnupg/S.gpg-agent.ssh";
+    };
+  };
+
+  services = {
+    gnome-keyring = {
+      inherit (osConfig.services.gnome.gnome-keyring) enable;
     };
   };
 
@@ -42,7 +53,10 @@
 
       enableExtraSocket = true;
 
-      pinentryPackage = pkgs.pinentry-curses;
+      pinentry = {
+        package = pkgs.pinentry-curses;
+      };
+
       extraConfig = ''
         allow-loopback-pinentry
       '';

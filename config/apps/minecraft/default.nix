@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   # inherit (pkgs) minecraft;
   prism =
@@ -18,12 +18,12 @@ in
     firejail = {
       wrappedBinaries = {
         # minecraft = {
-        #   executable = "${minecraft}/bin/minecraft-launcher";
+        #   executable = "${lib.getBin minecraft}/bin/minecraft-launcher";
         #   profile = "${pkgs.firejail}/etc/firejail/minecraft-launcher.profile";
         # };
 
         prismlauncher = {
-          executable = "${prism}/bin/prismlauncher";
+          executable = "${lib.getBin prism}/bin/prismlauncher";
           profile = "${pkgs.firejail}/etc/firejail/prismlauncher.profile";
         };
       };

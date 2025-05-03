@@ -2,6 +2,7 @@
 
 let
   extraGroups = [
+    "adm"
     "docker"
     "i2c"
     "input"
@@ -12,6 +13,7 @@ let
     "plugdev"
     "sev"
     "storage"
+    "systemd-journal"
     "vboxsf"
     "vboxusers"
     "video"

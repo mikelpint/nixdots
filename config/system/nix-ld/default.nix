@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 {
   programs = {
@@ -9,7 +14,14 @@
       libraries = with pkgs; [
         egl-wayland
         stdenv.cc.cc.lib
+        zlib
       ];
+    };
+  };
+
+  services = {
+    envfs = {
+      inherit (config.programs.nix-ld) enable;
     };
   };
 }

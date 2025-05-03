@@ -1,4 +1,9 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   flavor = "macchiato";
   accent = "pink";
@@ -11,12 +16,19 @@ in
       x11 = {
         enable = true;
       };
+
       gtk = {
         enable = true;
       };
 
       name = "catppuccin-${flavor}-${accent}-cursors";
       size = 24;
+    };
+  };
+
+  gtk = {
+    cursorTheme = {
+      inherit (config.home.pointerCursor) name size;
     };
   };
 

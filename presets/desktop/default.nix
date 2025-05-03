@@ -22,5 +22,8 @@ _: {
     ../../config/cli/clipboard
 
     ../../config/desktop
+
+    ../../config/system/flatpak
+    ../../config/system/wine
   ];
 }

@@ -1,1 +1,12 @@
-_: { imports = [ ./flakes ]; }
+_: {
+  imports = [ ./flakes ];
+
+  nix = {
+    settings = {
+      experimental-features = [
+        "auto-allocate-uids"
+        "nix-command"
+      ];
+    };
+  };
+}

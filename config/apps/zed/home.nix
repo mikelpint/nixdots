@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  osConfig,
   ...
 }:
 
@@ -76,11 +77,13 @@ in
   home = {
     activation = {
       zedSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        rm $HOME/.config/zed/settings.json
+        rm $HOME/.config/zed/settings.json.${osConfig.home-manager.backupFileExtension}
         run echo -e "${
           (builtins.replaceStrings [ ''"'' ] [ ''\"'' ]) (
             (lib.lists.foldr (a: b: "${a}${b}") "") (builtins.map builtins.readFile json)
           )
-        }" | ${pkgs.jq}/bin/jq -s add > $HOME/.config/zed/settings.json
+        }" | ${pkgs.jq}/bin/jq -s 'reduce .[] as $item ({}; . * $item)' > $HOME/.config/zed/settings.json
       '';
     };
   };
@@ -93,6 +96,7 @@ in
       extraPackages = with pkgs; [
         nixd
         clang-tools
+        gnome-keyring
       ];
     };
 

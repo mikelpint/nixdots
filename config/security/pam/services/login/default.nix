@@ -4,6 +4,10 @@
     pam = {
       services = {
         login = {
+          enable = true;
+          enableAppArmor = config.security.apparmor.enable;
+          enableGnomeKeyring = config.services.gnome.gnome-keyring.enable;
+
           rules = {
             auth = {
               "nologin" = {

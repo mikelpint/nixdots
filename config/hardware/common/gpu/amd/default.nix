@@ -39,15 +39,26 @@ in
     };
 
     graphics = {
-      extraPackages = with pkgs; [
-        amdvlk
-        amf
-      ]
-      # ++ (if pkgs ? rocmPackages.clr then
-      #   with pkgs.rocmPackages; [ clr clr.icd ]
-      # else
-      #   with pkgs; [ rocm-opencl-icd rocm-opencl-runtime ])
-      ;
+      extraPackages =
+        with pkgs;
+        [
+          amdvlk
+          amf
+        ]
+        ++ (
+          if pkgs ? rocmPackages.clr then
+            with pkgs.rocmPackages;
+            [
+              clr
+              clr.icd
+            ]
+          else
+            with pkgs;
+            [
+              rocm-opencl-icd
+              rocm-opencl-runtime
+            ]
+        );
 
       extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
     };
@@ -62,7 +73,8 @@ in
 
     sessionVariables = {
       VDPAU_DRIVER = "radeonsi";
-      LIBVA_DRIVER_NAME = lib.mkForce "amdgpu";
+      # LIBVA_DRIVER_NAME = lib.mkForce "amdgpu";
+      LIBVA_DRIVER_NAME = lib.mkForce "radeonsi";
 
       AMD_VULKAN_ICD = "RADV";
       VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/radeon_icd.i686.json";
@@ -73,14 +85,18 @@ in
 
   systemd = ifamdgpu {
     tmpfiles = {
-      # rules = [
-      #   "L+    /opt/rocm/hip   -    -    -     -    ${
-      #     pkgs.symlinkJoin {
-      #       name = "rocm-combined";
-      #       paths = with pkgs.rocmPackages; [ rocblas hipblas clr ];
-      #     }
-      #   }"
-      # ];
+      rules = [
+        "L+    /opt/rocm/hip   -    -    -     -    ${
+          pkgs.symlinkJoin {
+            name = "rocm-combined";
+            paths = with pkgs.rocmPackages; [
+              rocblas
+              hipblas
+              clr
+            ];
+          }
+        }"
+      ];
     };
 
     packages = with pkgs; [ lact ];

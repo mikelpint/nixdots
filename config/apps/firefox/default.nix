@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   package = pkgs.wrapFirefox (pkgs."firefox-unwrapped".override {
     # pipewireSupport = true;
@@ -9,7 +9,7 @@ in
     firejail = {
       wrappedBinaries = {
         firefox = {
-          executable = "${package}/bin/firefox";
+          executable = "${lib.getBin package}/bin/firefox";
           profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
         };
       };

@@ -24,6 +24,6 @@
     ../../config/services/redis
     ../../config/services/timescaledb
 
-    #../../config/system/lib/argon2
+    # ../../config/system/lib/argon2
   ];
 }

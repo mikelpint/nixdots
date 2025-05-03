@@ -1,4 +1,11 @@
-_: {
+{
+  pkgs,
+  lib,
+  user,
+  config,
+  ...
+}:
+{
   imports = [
     ./autoupgrade
     ./cachix
@@ -11,11 +18,17 @@ _: {
   ];
 
   nix = {
+    package = lib.mkDefault pkgs.nixVersions.latest;
+
     settings = {
       allowed-users = [
-        "@wheel"
         "root"
+        "@wheel"
       ];
+
+      trusted-users = config.nix.settings.allowed-users ++ [ user ];
+
+      sandbox = true;
     };
   };
 }

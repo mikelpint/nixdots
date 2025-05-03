@@ -21,5 +21,6 @@
     ./net
     ./output
     ./storage
+    ./usb
   ];
 }
