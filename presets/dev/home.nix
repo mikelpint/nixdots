@@ -15,6 +15,7 @@ _: {
     ../../config/cli/helix/home.nix
     ../../config/cli/httpie/home.nix
     ../../config/cli/onefetch/home.nix
+    ../../config/cli/rainfrog/home.nix
 
     ../../config/langs/home.nix
 

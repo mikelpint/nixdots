@@ -1,12 +1,12 @@
-{ lib, ... }:
+{ lib, self, ... }:
 {
-  #age = {
-  #  secrets = {
-  #    luks-passwd = {
-  #      rekeyFile = "${self}/secrets/luks-passwd.age";
-  #    };
-  #  };
-  #};
+  age = {
+    secrets = {
+      luks-passwd = {
+        rekeyFile = "${self}/secrets/luks-passwd.age";
+      };
+    };
+  };
 
   boot = {
     initrd = {

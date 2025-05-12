@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
-  imports = [ ./gamescope ];
+  imports = [
+    # ./gamescope
+  ];
 
   nixpkgs = {
     config = {
@@ -19,6 +21,8 @@
               libkrb5
               keyutils
             ];
+
+          # withJava = true;
         };
       };
     };

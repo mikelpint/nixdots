@@ -18,11 +18,11 @@
   ];
 
   age = {
-    identityPaths = [ "/home/${user}/.ssh/id_rsa" ];
+    identityPaths = [ "/home/${user}/.ssh/desktop" ];
 
     rekey = {
       hostPubkey = builtins.readFile ./host.pub;
-      masterIdentities = [ "/home/${user}/.ssh/id_rsa" ];
+      masterIdentities = [ "/home/${user}/.ssh/desktop" ];
     };
   };
 }

@@ -102,4 +102,10 @@ in
       ];
     };
   };
+
+  virtualisation = lib.mkIf (device.fsType == "btrfs") {
+    docker = {
+      # storage-driver = "btrfs";
+    };
+  };
 }

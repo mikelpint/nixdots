@@ -1,9 +1,22 @@
 {
   pkgs,
   lib,
+  inputs,
+  config,
   ...
 }:
-
+let
+  inherit
+    (
+      if config.programs.hyprland.enable then
+        inputs.hyprland.inputs.nixpkgs.legacyPackages."${pkgs.system}"
+      else
+        pkgs
+    )
+    mesa
+    pkgsi686Linux
+    ;
+in
 {
   imports = [
     ./amd
@@ -12,8 +25,8 @@
 
   hardware = {
     graphics = {
-      package = lib.mkDefault pkgs.mesa;
-      package32 = lib.mkDefault pkgs.pkgsi686Linux.mesa;
+      package = lib.mkDefault mesa;
+      package32 = lib.mkDefault pkgsi686Linux.mesa;
 
       enable = true;
       enable32Bit = true;
@@ -38,9 +51,10 @@
       ];
 
       extraPackages32 =
-        with pkgs.pkgsi686Linux;
+        with pkgsi686Linux;
         with driversi686Linux;
         [
+          pkgsi686Linux.mesa
           libva
           libvdpau
           libva-vdpau-driver
@@ -80,7 +94,7 @@
             #stdenv.cc.cc.lib
           ]
         )
-      }:/run/opengl-driver/lib:/run/opengl-driver-32/lib";
+      }${if false then ":/run/opengl-driver/lib:/run/opengl-driver-32/lib" else ""}";
     };
   };
 }

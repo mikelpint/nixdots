@@ -30,4 +30,12 @@ in
       };
     };
   };
+
+  environment = {
+    etc = {
+      "NetworkManager/NetworkManager.conf" = {
+        mode = "0644";
+      };
+    };
+  };
 }

@@ -1,5 +1,21 @@
-{ pkgs, ... }:
 {
+  pkgs,
+  self,
+  ...
+}:
+{
+  age = {
+    secrets = {
+      "mikelpint.com.crt" = {
+        rekeyFile = "${self}/secrets/mikelpint.com.crt.age";
+      };
+
+      "mikelpint.com.key" = {
+        rekeyFile = "${self}/secrets/mikelpint.com.key.age";
+      };
+    };
+  };
+
   imports = [
     ./dhcp
     ./dns
@@ -12,6 +28,7 @@
     ./networkmanager
     ./ntp
     ./systemd-networkd
+    ./tor
     ./vpn
     ./wpa_supplicant
   ];
@@ -22,8 +39,15 @@
 
   environment = {
     systemPackages = with pkgs; [
+      bridge-utils
       ethtool
       traceroute
     ];
+  };
+
+  security = {
+    pki = {
+      # certificateFiles = [ config.age.secrets."mikelpint.com.crt".path ];
+    };
   };
 }

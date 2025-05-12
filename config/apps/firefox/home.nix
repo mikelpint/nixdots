@@ -6,7 +6,9 @@
   pkgs,
   inputs,
   osConfig,
+  config,
   user,
+  self,
   ...
 }:
 
@@ -14,13 +16,21 @@ let
   package = pkgs.wrapFirefox (pkgs."firefox-unwrapped".override {
     # pipewireSupport = true;
   }) { };
+
+  kagiPrivateTokenPlaceholder = "kagi-private-token-placeholder";
 in
 {
   home = {
     activation = {
       "chrome" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         rm -rf /home/${user}/.mozilla/firefox/${user}/chrome
-        cp -r /etc/nixos/config/apps/firefox/chrome /home/${user}/.mozilla/firefox/${user}
+        cp -r ${self}/config/apps/firefox/chrome "/home/${user}/.mozilla/firefox/${user}"
+      '';
+
+      "replaceKagiPrivateToken" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        	ESCAPED=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
+        	sed -i "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" /home/${user}/.mozilla/firefox/${user}/user.js
+        	${pkgs.mozlz4a}/bin/mozlz4a -d "/home/${user}/.mozilla/firefox/${user}/search.json.mozlz4" |  sed "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" | mozlz4a - "/home/${user}/.mozilla/firefox/${user}/search.json.mozlz4"
       '';
     };
   };
@@ -35,8 +45,23 @@ in
           isDefault = true;
 
           search = {
-            default = "ddg";
             force = true;
+            default = "kagi";
+            engines = {
+              "kagi" = {
+                urls = [
+                  {
+                    template = "https://kagi.com/search?token=${kagiPrivateTokenPlaceholder}&q={searchTerms}";
+                  }
+                ]; # I know this should never be done!
+                icon = "https://assets.kagi.com/v2/favicon-32x32.png";
+                updateInterval = 24 * 60 * 60 * 1000;
+                definedAliases = [
+                  "@kagi"
+                  "@kg"
+                ];
+              };
+            };
           };
 
           extensions = {
@@ -44,14 +69,14 @@ in
               with (import inputs.nur {
                 inherit pkgs;
                 nurpkgs = pkgs;
-              }).repos.rycee.firefox-addons; [
+              }).repos.rycee.firefox-addons;
+              [
                 anchors-reveal
                 auto-tab-discard
                 clearurls
                 cookie-autodelete
                 darkreader
                 decentraleyes
-                duckduckgo-privacy-essentials
                 enhanced-github
                 libredirect
                 link-cleaner
@@ -64,7 +89,14 @@ in
                 tampermonkey
                 ublock-origin
                 user-agent-string-switcher
-              ];
+              ]
+              ++ (lib.optionals (config.programs.firefox.profiles.${user}.search.default == "ddg") [
+                duckduckgo-privacy-essentials
+              ])
+              ++ (lib.optionals (config.programs.firefox.profiles.${user}.search.default == "kagi") [
+                kagi-privacy-pass
+                kagi-search
+              ]);
           };
 
           userChrome = ''
@@ -82,6 +114,7 @@ in
           settings = {
             "content.notify.interval" = 10000;
 
+            "keyword.url.kagi" = "https://kagi.com/search?token=${kagiPrivateTokenPlaceholder}&q=%s";
             "keyword.url.ddg" = "https://duckduckgo.com/?q=%s";
 
             "full-screen-api.transition-duration.enter" = "0 0";
@@ -219,6 +252,11 @@ in
 
             "browser.menu.showViewImageInfo" = true;
 
+            "browser.newtab.url" =
+              if (config.programs.firefox.profiles.${user}.search.default == "kagi") then
+                "https://kagi.com"
+              else
+                "about:newtab";
             "browser.newtabpage.activity-stream.telemetry" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
@@ -259,10 +297,16 @@ in
             "browser.tabs.tabmanager.enabled" = false;
 
             "browser.toolbars.bookmarks.visibility" = "never";
-            "browser.toolbars.urlbar.placeHolderName" = "DuckDuckGo";
+            "browser.toolbars.urlbar.placeHolderName" =
+              if (config.programs.firefox.profiles.${user}.search.default == "kagi") then
+                "Kagi"
+              else
+                "DuckDuckGo";
             "browser.toolbars.urlbar.suggest.openpage" = false;
 
             "browser.uitour.enabled" = false;
+
+            "browser.urlbar.update2.engineAliasRefresh" = true;
 
             "browser.urlbar.quicksuggest.enabled" = false;
             "browser.urlbar.suggest.calculator" = false;

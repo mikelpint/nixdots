@@ -26,12 +26,6 @@
     };
   };
 
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-  };
-
   imports = [
     ./audio/home.nix
     ./cli/home.nix

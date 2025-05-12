@@ -1,11 +1,11 @@
 { config, lib, ... }:
 {
   networking = {
-    enableIPv6 = false;
+    enableIPv6 = lib.mkDefault false;
   };
 
-  boot = (lib.mkIf (!(config.networking.enableIpv6 or false))) {
-    kernelParams = [ "ipv6.disable=1" ];
+  boot = {
+    kernelParams = [ "ipv6.disable=${if config.networking.enableIPv6 then "0" else "1"}" ];
 
     kernel = {
       sysctl = {

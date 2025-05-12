@@ -13,6 +13,12 @@
     ];
   };
 
+  catppuccin = {
+    mako = {
+      enable = true;
+    };
+  };
+
   xdg = {
     configFile = {
       "mako/config" = {

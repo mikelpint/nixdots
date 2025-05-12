@@ -161,6 +161,10 @@
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
     };
+
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+    };
   };
 
   outputs =
@@ -175,6 +179,7 @@
       catppuccin,
       lanzaboote,
       treefmt-nix,
+      nixcord,
       ...
     }@inputs:
     let
@@ -286,6 +291,10 @@
                     ];
                   };
                 };
+
+                sharedModules = [
+                  nixcord.homeModules.nixcord
+                ];
 
                 backupFileExtension = "hm-backup";
               };

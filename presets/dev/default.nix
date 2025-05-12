@@ -15,6 +15,7 @@
     ../../config/cli/helix
     ../../config/cli/httpie
     ../../config/cli/onefetch
+    ../../config/cli/rainfrog
 
     ../../config/langs
 

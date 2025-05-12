@@ -2,6 +2,7 @@
 {
   imports = [
     ./binfmt
+    ./cgroups
     ./fs
     ./lsm
     ./proc

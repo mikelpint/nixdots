@@ -9,9 +9,7 @@
 }:
 
 let
-  enable = true;
-
-  interface = "docker0";
+  bridge = "docker0";
 
   mark = {
     bridge = "0x10ca1";
@@ -19,71 +17,134 @@ let
   };
 in
 {
-  boot = lib.mkIf enable {
+  boot = lib.mkIf config.virtualisation.docker.enable {
     kernel = {
       sysctl = {
         "net.ipv4.ip_nonlocal_bind" = 1;
-        "net.ipv4.ip_forward" = 0;
+        "net.ipv4.ip_forward" = 1;
+        "net.ipv4.conf.all.forwarding" = 1;
+        "net.ipv4.conf.default.forwarding" = 1;
+
+        "net.ipv6.conf.all.forwarding" = 1;
+        "net.ipv6.conf.default.forwarding" = 1;
       };
     };
     kernelModules = [ "ip_vs" ];
 
-    blacklistedKernelModules = lib.mkIf (!config.virtualisation.docker.daemon.settings.iptables) [
-      "ip_tables"
-      "ip6_tables"
-    ];
+    blacklistedKernelModules =
+      lib.mkIf (!(config.virtualisation.docker.daemon.settings.iptables or true))
+        [
+          "ip_tables"
+          "ip6_tables"
+        ];
   };
 
   users = {
     users = {
       "${user}" = {
-        extraGroups = [ "docker" ];
+        extraGroups = [ config.virtualisation.docker.daemon.settings.group ];
       };
     };
   };
 
   virtualisation = {
     docker = {
-      enable = lib.mkDefault enable;
-      enableOnBoot = lib.mkDefault enable;
+      enable = lib.mkDefault true;
+      enableOnBoot = lib.mkDefault true;
+      package = pkgs.docker;
 
       logDriver = "journald";
 
       rootless = {
-        enable = false;
-        setSocketVariable = config.virtualisation.docker.rootless.enable;
+        enable = lib.mkDefault false;
+        inherit (config.virtualisation.docker) package;
+        setSocketVariable = true;
       };
 
       daemon = {
-        settings = {
-          iptables = !config.networking.nftables.enable;
-          ip6tables = !config.networking.nftables.enable;
+        settings = lib.mkMerge [
+          {
+            live-restore = true;
 
-          dns = [
-            "1.1.1.1"
-            "1.0.0.1"
-          ];
+            storage-driver = lib.mkDefault "overlay2";
 
-          bip = "10.200.0.1/24";
-          default-address-pools = [
+            selinux-enabled = !config.security.apparmor.enable;
+
+            exec-opts = [ "native.cgroupdriver=systemd" ];
+            cgroup-parent = "docker.slice";
+            default-cgroupns-mode = "private";
+
+            group = "docker";
+            # userns-remap = "${user}";
+
+            # containerd = "/run/containerd/containerd.sock";
+            containerd-namespace = "docker";
+            containerd-plugins-namespace = "docker-plugins";
+
+            experimental = true;
+            features = {
+              buildkit = true;
+              cdi = true;
+              containerd-snapshotter = (config.virtualisation.docker.daemon.settings.containerd or null) != null;
+            };
+
+            # inherit bridge;
+
+            ip = lib.mkDefault "0.0.0.0";
+            # ipv6 = config.networking.enableIPv6;
+            ip-masq = true;
+            ip-forward = (toString (config.boot.kernel.sysctl."net.ipv4.ip_forward" or 0)) == "1";
+
+            dns = [
+              "1.1.1.1"
+              "1.0.0.1"
+            ]
+            # config.networking.nameservers
+            ;
+
+            bip = "10.200.0.1/24";
+            default-address-pools = [
+              {
+                base = "10.201.0.0/16";
+                size = 24;
+              }
+
+              {
+                base = "10.202.0.0/16";
+                size = 24;
+              }
+            ];
+
+            iptables = !config.networking.nftables.enable;
+            ip6tables = !config.networking.nftables.enable;
+
+            default-shm-size = "64M";
+            default-ulimits = {
+              nofile = {
+                Hard = 64000;
+                Name = "nofile";
+                Soft = 64000;
+              };
+            };
+          }
+
+          (lib.mkIf
+            (false && (builtins.hasAttr "domain" config.networking) && config.networking.domain != null)
             {
-              base = "10.201.0.0/16";
-              size = 24;
+              tls = true;
+              tlscert = config.age.secrets."${config.networking.domain}.crt".path;
+              tlskey = config.age.secrets."${config.networking.domain}.key".path;
+              tlsverify = true;
             }
-
-            {
-              base = "10.202.0.0/16";
-              size = 24;
-            }
-          ];
-        };
+          )
+        ];
       };
     };
   };
 
-  networking = lib.mkIf enable {
+  networking = lib.mkIf config.virtualisation.docker.enable {
     firewall = {
-      trustedInterfaces = [ interface ];
+      trustedInterfaces = [ bridge ];
 
       # https://unix.stackexchange.com/a/657786
       extraCommands = lib.mkIf (!config.networking.nftables.enable) ''
@@ -118,7 +179,7 @@ in
                   (
                     builtins.map (iface: ''
                       # iif ${iface} ip saddr != 192.168.0.0/16 counter drop
-                    '') (builtins.filter (iface: iface != interface) config.networking.firewall.trustedInterfaces)
+                    '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
                   )
                 }
                 counter accept
@@ -138,7 +199,7 @@ in
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 22 accept
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 80 accept
                       # iif ${iface} ip 192.168.0.0/16 tcp dport 443 accept
-                    '') (builtins.filter (iface: iface != interface) config.networking.firewall.trustedInterfaces)
+                    '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
                   )
                 }
             }
@@ -250,6 +311,9 @@ in
   };
 
   environment = {
-    systemPackages = with pkgs; [ docker-compose ];
+    systemPackages = with pkgs; [
+      docker-compose
+      docker
+    ];
   };
 }
