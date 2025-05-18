@@ -1,9 +1,10 @@
+{ lib, ... }:
 {
   imports = [ ./udf ];
 
   fileSystems = {
     "/" = {
-      noCheck = true;
+      noCheck = lib.mkDefault true;
     };
   };
 }

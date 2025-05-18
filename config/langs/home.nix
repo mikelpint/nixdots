@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./asm/home.nix
     ./c/home.nix
     ./java/home.nix
     ./js/home.nix

@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./asm
     ./c
     ./java
     ./js

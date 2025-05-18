@@ -1,7 +1,0 @@
-{
-  "show_call_status_icon": true,
-  "calls": {
-    "mute_on_join": false,
-    "share_on_join": false
-  }
-}

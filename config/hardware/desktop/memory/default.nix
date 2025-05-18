@@ -1,5 +1,7 @@
 {
-  imports = [ ./firefox ];
+  imports = [
+    # ./firefox
+  ];
 
   boot = {
     kernel = {

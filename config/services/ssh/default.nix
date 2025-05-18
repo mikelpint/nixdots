@@ -75,12 +75,12 @@ in
         );
       }
 
-      (lib.mkIf (!config.services.tor.enable) {
+      (lib.mkIf (!(config.services.tor.enable && config.services.tor.relay.enable)) {
         ports = lib.mkDefault [ port ];
         openFirewall = lib.mkDefault true;
       })
 
-      (lib.mkIf config.services.tor.enable {
+      (lib.mkIf (config.services.tor.enable && config.services.tor.relay.enable) {
         listenAddresses = [
           {
             addr = "127.0.0.1";
@@ -113,6 +113,23 @@ in
         openssh = {
           authorizedKeys = {
             keyFiles = builtins.map (host: "${self}/hosts/${host}/host.pub") hosts;
+          };
+        };
+      };
+    };
+  };
+
+  services = {
+    tor = {
+      relay = {
+        onionServices = {
+          ssh = {
+            version = 3;
+            path = "/var/lib/tor/hidden_service/ssh";
+            map = builtins.map (listenAddress: {
+              inherit port;
+              target = { inherit (listenAddress) addr port; };
+            }) config.services.openssh.listenAddresses;
           };
         };
       };

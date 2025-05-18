@@ -16,6 +16,6 @@
 
   boot = {
     kernelModules = [ "kvm_amd" ];
-    # kernelParams = [ "amd_iommu=force_isolation" ];
+    kernelParams = [ "amd_iommu=force_isolation" ];
   };
 }

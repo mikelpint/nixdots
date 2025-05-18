@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs = {
     btop = {
@@ -91,15 +91,14 @@
 
   xdg = {
     configFile = {
-      "btop/themes/catppuccin_macchiato.theme".text = builtins.readFile (
+      "btop/themes/catppuccin_${config.catppuccin.flavor}.theme".text = builtins.readFile "${
         pkgs.fetchFromGitHub {
           owner = "catppuccin";
           repo = "btop";
-          rev = "ecb8562bb6181bb9f2285c360bbafeb383249ec3";
-          sha256 = "sha256-ovVtupO5jWUw6cwA3xEzRe1juUB8ykfarMRVTglx3mk=";
+          rev = "cf50077d8d50e009b5f58aad4bb32603db895f17";
+          sha256 = "v9OLsI7/r32CLikeOAyLCd8kl5YyFsxIRdi2yDwavbk=";
         }
-        + "/catppuccin_macchiato.theme"
-      );
+      }/themes/catppuccin_${config.catppuccin.flavor}.theme";
     };
   };
 }

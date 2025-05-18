@@ -1,8 +1,0 @@
-{
-  "vim": {
-    "use_multiline_find": true,
-    "use_smartcase_find": true,
-    "use_system_clipboard": "always"
-  },
-  "vim_mode": false
-}

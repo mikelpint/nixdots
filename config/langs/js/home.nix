@@ -4,12 +4,19 @@
   home = {
     packages = with pkgs; [
       deno
+
       graphviz
+
       nodePackages_latest.nodejs
       nodePackages_latest.pnpm
+
       nodePackages_latest.prisma
-      nodePackages_latest.tailwindcss
+
+      tailwindcss_4
+      tailwindcss-language-server
+
       turbo-unwrapped
+
       typescript
     ];
 

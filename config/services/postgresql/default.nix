@@ -3,13 +3,29 @@
   pkgs,
   config,
   user,
+  self,
   ...
 }:
 let
   sameHostAuth = "trust";
+  owner = "postgres";
   ssl = (builtins.hasAttr "domain" config.networking) && config.networking.domain != null;
 in
 {
+  age = lib.mkIf ssl {
+    secrets = {
+      postgres_ssl_cert = {
+        inherit owner;
+        rekeyFile = "${self}/secrets/${config.networking.domain}.crt.age";
+      };
+
+      postgres_ssl_key = {
+        inherit owner;
+        rekeyFile = "${self}/secrets/${config.networking.domain}.key.age";
+      };
+    };
+  };
+
   services = {
     postgresql = {
       enable = true;
@@ -40,8 +56,8 @@ in
 
         (lib.mkIf ssl {
           ssl = lib.mkDefault ssl;
-          ssl_cert_file = lib.mkDefault config.age.secrets."${config.networking.domain}.crt".path;
-          ssl_key_file = lib.mkDefault config.age.secrets."${config.networking.domain}.key".path;
+          ssl_cert_file = lib.mkDefault config.age.secrets.postgres_ssl_cert.path;
+          ssl_key_file = lib.mkDefault config.age.secrets.postgres_ssl_key.path;
         })
       ];
 
@@ -50,9 +66,11 @@ in
           local   all         all                       trust
           local   sameuser    all                       peer           map=user_map
         # ipv4
-          host    all         all     127.0.0.1/32      ${sameHostAuth}
+          host${if ssl then "ssl" else ""}    all         all     127.0.0.1/32      ${sameHostAuth}
         # ipv6
-          host    all         all     ::1/128           ${sameHostAuth}
+        ${
+          if config.networking.enableIPv6 then "" else "#"
+        }  host${if ssl then "ssl" else ""}    all         all     ::1/128           ${sameHostAuth}
       '';
 
       identMap = ''

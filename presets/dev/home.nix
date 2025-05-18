@@ -20,5 +20,7 @@ _: {
     ../../config/langs/home.nix
 
     ../../config/services/mongodb/home.nix
+    ../../config/services/postgresql/home.nix
+    ../../config/services/redis/home.nix
   ];
 }

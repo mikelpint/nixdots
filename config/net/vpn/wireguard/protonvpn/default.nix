@@ -3,6 +3,7 @@
   lib,
   self,
   pkgs,
+  user,
   ...
 }:
 
@@ -160,6 +161,7 @@ in
 {
   age = {
     secrets = builtins.mapAttrs (name: _value: {
+      owner = user;
       rekeyFile = "${self}/secrets/${name}.age";
     }) interfaces;
   };

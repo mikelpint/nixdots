@@ -5,8 +5,8 @@
       "mitigations=auto"
       "pti=on"
       "iommu=force"
-      "iommu.strict=1"
-      "iommu.passthrough=0"
+      # "iommu.strict=1"
+      # "iommu.passthrough=0"
     ];
   };
 }

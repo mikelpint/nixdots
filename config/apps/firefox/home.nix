@@ -8,7 +8,6 @@
   osConfig,
   config,
   user,
-  self,
   ...
 }:
 
@@ -21,16 +20,27 @@ let
 in
 {
   home = {
-    activation = {
-      "chrome" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        rm -rf /home/${user}/.mozilla/firefox/${user}/chrome
-        cp -r ${self}/config/apps/firefox/chrome "/home/${user}/.mozilla/firefox/${user}"
-      '';
+    file = {
+      # ".mozilla/firefox/${user}/user.js" = {
+      #   force = true;
+      # };
+      # ".mozilla/firefox/static-${user}/user.js" = {
+      #   force = true;
+      # };
 
-      "replaceKagiPrivateToken" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        	ESCAPED=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
-        	sed -i "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" /home/${user}/.mozilla/firefox/${user}/user.js
-        	${pkgs.mozlz4a}/bin/mozlz4a -d "/home/${user}/.mozilla/firefox/${user}/search.json.mozlz4" |  sed "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" | mozlz4a - "/home/${user}/.mozilla/firefox/${user}/search.json.mozlz4"
+      # ".mozilla/firefox/static-${user}/search.json.mozlz4" = {
+      #   force = true;
+      # };
+      # ".mozilla/firefox/${user}/search.json.mozlz4" = {
+      #   force = true;
+      # };
+    };
+
+    activation = {
+      "firefox-replaceKagiPrivateToken" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        ESCAPED=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
+
+        sed -i "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" $([ -f "/home/${user}/.mozilla/firefox/${user}/user.js" ] && echo -n "/home/${user}/.mozilla/firefox/${user}/user.js" || echo -n "/home/${user}/.mozilla/firefox/static-${user}/user.js")
       '';
     };
   };
@@ -40,20 +50,74 @@ in
       enable = true;
       inherit package;
 
+      languagePacks = [
+        "en-US"
+        "es"
+      ];
+
+      policies = {
+        AppAutoUpdate = false;
+        Authentication = {
+
+        };
+        DisableFirefoxStudies = true;
+        DisableMasterPasswordCreation = true;
+        DisablePocket = true;
+        DisableProfileImport = true;
+        DisableProfileRefresh = true;
+        DisableSecurityBypass = {
+          InvalidCertificate = false;
+          SafeBrowsing = false;
+        };
+        DisableSetDesktopBackground = true;
+        DisableTelemetry = true;
+        DNSOverHTTPS = {
+          Enabled =
+            (osConfig.services.resolved.enable && (toString osConfig.services.resolved.dnsovertls == "true"))
+            || osConfig.services.dnscrypt-proxy2.enable;
+        };
+        DontCheckDefaultBrowser = true;
+        DownloadDirectory = config.home.sessionVariables.XDG_DOWNLOAD_DIR;
+        EnableTrackingProtection = {
+          Value = true;
+        };
+        EncryptedMediaExtensions = {
+          Enabled = true;
+        };
+        SearchEngines = {
+          Default = "kagi";
+        };
+        SSLVersionMax = "tls1.3";
+        SSLVersionMin = "tls.12";
+      };
+
       profiles = {
         ${user} = {
           isDefault = true;
 
           search = {
             force = true;
-            default = "kagi";
+            default = config.programs.firefox.policies.SearchEngines.Default;
+            privateDefault = config.programs.firefox.profiles."${user}".search.default;
             engines = {
               "kagi" = {
+                name = "Kagi";
                 urls = [
                   {
-                    template = "https://kagi.com/search?token=${kagiPrivateTokenPlaceholder}&q={searchTerms}";
+                    template = "https://kagi.com/search";
+                    params = [
+                      {
+                        name = "token";
+                        value = kagiPrivateTokenPlaceholder;
+                      }
+
+                      {
+                        name = "q";
+                        value = "{searchTerms}";
+                      }
+                    ];
                   }
-                ]; # I know this should never be done!
+                ];
                 icon = "https://assets.kagi.com/v2/favicon-32x32.png";
                 updateInterval = 24 * 60 * 60 * 1000;
                 definedAliases = [
@@ -75,9 +139,10 @@ in
                 auto-tab-discard
                 clearurls
                 cookie-autodelete
-                darkreader
                 decentraleyes
                 enhanced-github
+                enhancer-for-youtube
+                firefox-color
                 libredirect
                 link-cleaner
                 linkhints
@@ -90,6 +155,12 @@ in
                 ublock-origin
                 user-agent-string-switcher
               ]
+              ++ (lib.optionals ((lib.lists.count (x: x == pkgs.protonvpn-gui) config.home.packages) > 0) [
+                proton-vpn
+              ])
+              ++ (lib.optionals ((lib.lists.count (x: x == pkgs.protonvpn-gui) config.home.packages) > 0) [
+                proton-pass
+              ])
               ++ (lib.optionals (config.programs.firefox.profiles.${user}.search.default == "ddg") [
                 duckduckgo-privacy-essentials
               ])
@@ -99,17 +170,31 @@ in
               ]);
           };
 
-          userChrome = ''
-            @import 'includes/cascade-config.css';
-            @import 'includes/cascade-colours.css';
+          userChrome =
+            let
+              cascade = pkgs.fetchFromGitHub {
+                owner = "andreasgrafen";
+                repo = "cascade";
+                rev = "f8c6bb5a36f24aba61995204ff5497c865e78e50";
+                sha256 = "aylkbsKLuCJqao8oeEZvSMaZUvjIxhlT/kGJ1DDsEt0=";
+              };
 
-            @import 'includes/cascade-layout.css';
-            @import 'includes/cascade-responsive.css';
-            @import 'includes/cascade-floating-panel.css';
-
-            @import 'includes/cascade-nav-bar.css';
-            @import 'includes/cascade-tabs.css';
-          '';
+            in
+            lib.strings.concatLines (
+              builtins.map (
+                line:
+                if (builtins.match "^@import \"includes/(.*)\";" line) != null then
+                  (builtins.readFile "${cascade}/chrome/includes/${
+                    builtins.substring ((builtins.stringLength "import \"includes/") + 1) (
+                      (builtins.stringLength line)
+                      - (builtins.stringLength "\";")
+                      - ((builtins.stringLength "import \"includes/") + 1)
+                    ) line
+                  }")
+                else
+                  line
+              ) (lib.strings.splitString "\n" (builtins.readFile "${cascade}/chrome/userChrome.css"))
+            );
 
           settings = {
             "content.notify.interval" = 10000;
@@ -316,6 +401,8 @@ in
             "browser.urlbar.suggest.quicksuggest.nonsponsored" = false;
 
             "browser.xul.error_pages.expert_bad_cert" = true;
+
+            "browser.translations.neverTranslateLanguages" = "en,es,eu";
 
             "breakpad.reportURL" = "";
 

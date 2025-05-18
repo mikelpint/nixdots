@@ -2,6 +2,7 @@
   imports = [
     ./archive
     ./bat
+    ./bc
     ./eza
     ./fd
     ./fzf

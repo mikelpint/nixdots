@@ -32,7 +32,7 @@
       usbutils
       libusb1
       libusb-compat-0_1
-      python312Packages.pyusb
+      python3Packages.pyusb
     ];
   };
 }

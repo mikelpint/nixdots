@@ -2,6 +2,7 @@
   pkgs,
   lib,
   self,
+  user,
   ...
 }:
 let
@@ -13,6 +14,7 @@ in
   age = {
     secrets = {
       kagi-private-token = {
+        owner = user;
         rekeyFile = "${self}/secrets/kagi-private-token.age";
       };
     };

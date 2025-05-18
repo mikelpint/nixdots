@@ -1,10 +1,14 @@
-{ lib, inputs, ... }:
+{ lib, ... }:
 {
   nixpkgs = {
     config = {
       allowUnfree = true;
 
       allowBroken = true;
+
+      permittedInsecurePackages = [
+        "python-2.7.18.8"
+      ];
 
       packageOverrides = pkgs: {
         nur = import (builtins.fetchTarball {
@@ -13,21 +17,6 @@
         }) { inherit pkgs; };
       };
     };
-
-    overlays = with inputs; [
-      (_final: prev: {
-        sf-mono-liga-bin = prev.stdenvNoCC.mkDerivation {
-          pname = "sf-mono-liga-bin";
-          version = "dev";
-          src = sf-mono-liga-src;
-          dontConfigure = true;
-          installPhase = ''
-            mkdir -p $out/share/fonts/opentype
-            cp -R $src/*.otf $out/share/fonts/opentype/
-          '';
-        };
-      })
-    ];
   };
 
   home-manager = {

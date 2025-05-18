@@ -31,4 +31,14 @@
       localStorageDir = "${self}/secrets/rekeyed/${lib.strings.removeSuffix user config.networking.hostName}";
     };
   };
+
+  fileSystems = {
+    "/home" = {
+      neededForBoot = true;
+    };
+
+    "/home/${user}" = {
+      neededForBoot = true;
+    };
+  };
 }

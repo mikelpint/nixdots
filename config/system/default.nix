@@ -19,7 +19,7 @@
 
   system = {
     name = lib.mkDefault (lib.strings.removeSuffix user config.networking.hostName);
-    stateVersion = "25.05";
+    stateVersion = "25.11";
 
     tools = {
       # nixos-build-vms = {

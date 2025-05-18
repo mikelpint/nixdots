@@ -18,7 +18,7 @@
 
   services = {
     tailscale = lib.mkDefault {
-      enable = false;
+      enable = true;
       package = pkgs.tailscale;
 
       port = 41641;

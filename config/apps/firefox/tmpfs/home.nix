@@ -19,13 +19,14 @@
           IFS=
           set -efu
 
-          cd ~/.mozilla/firefox
+          cd /home/${user}/.mozilla/firefox
 
           if [ ! -r $volatile ]; then
               mkdir -p -m0700 $volatile
           fi
 
           if [ "$(readlink $link)" != "$volatile" ]; then
+              rm -rf $static
               mv $link $static
               ln -s $volatile $link
           fi

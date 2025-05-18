@@ -13,7 +13,7 @@
     dataFile = {
       "gedit/styles/catppuccin-macchiato.xml" = {
         text = ''
-                      <?xml version="1.0" encoding="UTF-8"?>
+          <?xml version="1.0" encoding="UTF-8"?>
           <style-scheme id="catppuccin-macchiato" name="Catppuccin Macchiato" kind="dark">
             <description>Soothing pastel theme for Gedit</description>
 
