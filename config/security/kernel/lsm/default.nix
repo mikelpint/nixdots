@@ -10,12 +10,15 @@
       "lsm=landlock,lockdown,yama,integrity,safesetid,${
         if config.security.apparmor.enable then "apparmor" else "selinux"
       },bpf"
+      "lockdown=confidentiality"
     ];
+
     kernel = {
       sysctl = {
-        "kernel.yama.ptrace_scope" = "1";
-        "kernel.unprivileged_bpf_disabled" = "1";
+        "kernel.yama.ptrace_scope" = "2";
+        "kernel.unprivileged_bpf_disabled" = true;
         "net.core.bpf_jit_harden" = "2";
+        "net.core.bpf_jit_enable" = false;
       };
     };
   };

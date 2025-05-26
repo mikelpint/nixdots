@@ -6,6 +6,7 @@
         passwd = {
           enable = true;
           enableAppArmor = config.security.apparmor.enable;
+          allowNullPassword = true;
 
           rules = {
             password = {

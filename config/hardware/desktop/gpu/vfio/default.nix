@@ -41,28 +41,32 @@ in
   boot = {
     initrd = {
       kernelModules = [
+        "vfio_virqfd"
         "vfio_pci"
-        "vfio"
         "vfio_iommu_type1"
+        "vfio"
       ];
     };
 
-    kernelParams = lib.mkIf false [
+    kernelParams = [
       "amd_iommu=on"
       "iommu=pt"
-      (
-        "vfio-pci.ids="
-        + lib.concatStringsSep "," (
-          builtins.elemAt ids (
-            if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
-              #1
-              0
-            else
-              0
-          )
-        )
-      )
     ];
+
+    extraModprobeConfig = ''
+        softdep amdgpu pre: vfio-pci
+        softdep snd_hda_intel pre: vfio-pci
+        options vfio-pci ids=${lib.concatStringsSep "," (
+            builtins.elemAt ids (
+              if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
+                #1
+                0
+              else
+                0
+            )
+          )
+        }
+    ''
   };
 
   virtualisation = {

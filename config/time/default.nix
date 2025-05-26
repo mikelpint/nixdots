@@ -1,6 +1,6 @@
-{
+{lib, ...}: {
   time = {
     hardwareClockInLocalTime = true;
-    timeZone = "Europe/Madrid";
+    timeZone = lib.mkDefault "Europe/Madrid";
   };
 }

@@ -3,6 +3,7 @@ _: {
     ./age
     ./audit
     ./clamav
+    ./cpu
     ./doas
     ./entropy
     ./fail2ban
@@ -11,6 +12,7 @@ _: {
     ./issue
     ./kernel
     ./machine-id
+    ./memory
     ./nix
     ./pam
     ./polkit

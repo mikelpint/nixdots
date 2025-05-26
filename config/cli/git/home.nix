@@ -17,7 +17,7 @@
         key = "0xD78A0EF85709BB96!";
         signByDefault = true;
         format = "openpgp";
-        signer = "${lib.getBin config.programs.gpg.package}";
+        signer = "${lib.getBin config.programs.gpg.package}/bin/gpg";
       };
 
       lfs = {

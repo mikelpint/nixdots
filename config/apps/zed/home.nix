@@ -57,11 +57,17 @@
             ".env"
           ];
         };
+
         cursor_blink = true;
+
         buffer_font_family = "JetBrainsMono Nerd Font";
         buffer_font_weight = 400;
         buffer_font_features = { };
         buffer_font_size = 18;
+        buffer_line_height = {
+          custom = 1.5;
+        };
+
         inlay_hints = {
           enabled = false;
           show_type_hints = true;
@@ -71,9 +77,7 @@
           scroll_debounce_ms = 50;
         };
         hover_popover_enabled = true;
-        buffer_line_height = {
-          custom = 1.5;
-        };
+
         current_line_highlight = "gutter";
         preferred_line_length = 120;
         soft_wrap = "prefer_line";
@@ -81,9 +85,11 @@
         wrap_guides = [
           120
         ];
+
         autosave = "off";
         ensure_final_newline_on_save = true;
         remove_trailing_whitespace_on_save = true;
+
         show_whitespaces = "all";
         indent_guides = {
           enabled = true;
@@ -94,6 +100,7 @@
         };
         hard_tabs = false;
         tab_size = 4;
+
         auto_install_extensions = {
           biome = true;
           catppuccin-icons = true;
@@ -121,7 +128,9 @@
           toml = true;
           xml = true;
         };
+
         enable_language_server = true;
+
         lsp = {
           clangd = {
             binary = {
@@ -132,14 +141,17 @@
               ];
             };
           };
+
           nixd = {
             binary = {
-              path = "nixd";
+              path = "${lib.getBin pkgs.nixd}/bin/nixd";
             };
+
             settings = {
               autoArchive = true;
             };
           };
+
           tailwindcss-language-server = {
             settings = {
               classAttributes = [
@@ -150,6 +162,7 @@
               ];
             };
           };
+
           typescript-language-server = {
             preferences = {
               includeInlayParameterNameHints = "all";
@@ -163,22 +176,24 @@
             };
           };
         };
+
         languages = {
           Nix = {
             language_servers = [
               "nixd"
               "!nil"
             ];
+
             formatter = {
               external = {
-                command = "nixfmt";
+                command = "nix fmt";
                 arguments = [
                   "--quiet"
-                  "--"
                 ];
               };
             };
           };
+
           TypeScript = {
             language_servers = [
               "biome"
@@ -186,6 +201,7 @@
               "!prettier"
               "..."
             ];
+
             inlay_hints = {
               enabled = true;
               show_parameter_hints = false;
@@ -194,33 +210,39 @@
             };
           };
         };
+
+        vim_mode = false;
         vim = {
           use_multiline_find = true;
           use_smartcase_find = true;
           use_system_clipboard = "always";
         };
-        vim_mode = false;
-        centered_layout = {
-          left_padding = 0;
-          right_padding = 0.2;
-        };
+
         show_call_status_icon = true;
         calls = {
           mute_on_join = false;
           share_on_join = false;
         };
+
+        centered_layout = {
+          left_padding = 0;
+          right_padding = 0.2;
+        };
         default_dock_anchor = "bottom";
         ui_font_size = 18;
         ui_font_family = "JetBrainsMono Nerd Font";
+
         journal = {
           path = "~";
-          hour_format = "hour12";
+          hour_format = "hour24";
         };
+
         preview_tabs = {
           enabled = true;
           enable_preview_from_file_finder = false;
           enable_preview_from_code_navigation = false;
         };
+
         projects_online_by_default = false;
         project_panel = {
           button = true;
@@ -236,7 +258,9 @@
             show = "always";
           };
         };
+
         confirm_quit = false;
+
         scrollbar = {
           show = "never";
           cursors = true;
@@ -245,6 +269,7 @@
           selected_symbol = true;
           diagnostics = "all";
         };
+
         tab_bar = {
           show = false;
           show_nav_history_buttons = true;
@@ -254,24 +279,30 @@
           file_icons = true;
           git_status = true;
         };
+
         toolbar = {
           breadcrumbs = true;
           quick_actions = true;
           selections_menu = true;
         };
+
         load_direnv = "shell_hook";
+
         format_on_save = "on";
         formatter = "language_server";
+
         git = {
           git_gutter = "tracked_files";
           inline_blame = {
             enabled = true;
           };
         };
+
         telemetry = {
           diagnostics = false;
           metrics = false;
         };
+
         terminal = {
           working_directory = "current_project_directory";
           alternate_scroll = "off";
@@ -286,12 +317,14 @@
             title = true;
           };
         };
+
         icon_theme = "Catppuccin Macchiato";
         theme = {
           mode = "system";
           light = "Catppuccin Macchiato (pink)";
           dark = "Catppuccin Macchiato (pink)";
         };
+
         auto_update = false;
       };
     };

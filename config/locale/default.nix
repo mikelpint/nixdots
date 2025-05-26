@@ -17,9 +17,9 @@
     };
 
     extraLocales = lib.mkDefault [
-      "C.UTF-8"
-      "en_US.UTF-8"
-      "es_ES.UTF-8"
+      "C.UTF-8/UTF-8"
+      "en_US.UTF-8/UTF-8"
+      "es_ES.UTF-8/UTF-8"
     ];
   };
 

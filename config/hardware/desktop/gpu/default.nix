@@ -4,7 +4,7 @@
   imports = [
     ./amd
     ./nvidia
-    ./vfio
+    # ./vfio
   ];
 
   services = {

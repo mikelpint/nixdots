@@ -60,7 +60,7 @@ in
       options amdgpu si_support=0
       options amdgpu cik_support=0
 
-      options amdgpu ppfeaturemask=0xFFF7FFFF
+      options amdgpu ppfeaturemask=${config.programs.corectrl.gpuOverclock.ppfeaturemask}
     '';
   };
 }
