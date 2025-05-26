@@ -98,6 +98,8 @@ in
             dns = [
               "1.1.1.1"
               "1.0.0.1"
+              "8.8.8.8"
+              "8.8.4.4"
             ]
             # config.networking.nameservers
             ;
@@ -126,6 +128,8 @@ in
                 Soft = 64000;
               };
             };
+
+            debug = true;
           }
 
           (lib.mkIf

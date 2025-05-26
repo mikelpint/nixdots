@@ -72,7 +72,15 @@
         receive = {
           fsckobjects = true;
         };
+
+        merge = {
+          conflictstyle = "diff3";
+        };
       };
     };
+  };
+
+  home = {
+    packages = with pkgs; [ lazygit ];
   };
 }
