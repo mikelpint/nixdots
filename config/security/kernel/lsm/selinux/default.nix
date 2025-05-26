@@ -20,8 +20,7 @@ in
 
   boot = ifnotapparmor {
     kernelParams = [
-      # "lsm=selinux"
-      # "security=selinux"
+        "selinux=1"
     ];
   };
 }

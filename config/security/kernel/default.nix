@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   imports = [
     ./binfmt
@@ -9,29 +9,48 @@
   ];
 
   boot = {
+    # kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
+
     kernelParams = [
-      "kernel.modules_disabled=0"
       "module.sig_enforce=1"
     ];
+
     kernel = {
       sysctl = {
-        "kernel.unprivileged_userns_clone" = "0";
-        "kernel.sysrq" = "0";
+        "kernel.sysrq" = lib.mkDefault "0";
         "kernel.io_uring_disabled" = "2";
         "kernel.dmesg_restrict" = "1";
+        "kernel.ftrace_enabled" =  lib.mkDefault false;
         "kernel.kexec_load_disabled" = lib.mkOverride 900 "1";
         "kernel.kptr_restrict" = lib.mkOverride 900 "2";
         "kernel.printk" = lib.mkOverride 900 "3 3 3 3";
-        "kernel.core_pattern" = "|/bin/false";
+        "kernel.core_pattern" = "|/usr/bin/env false";
         "kernel.perf_event_paranoid" = "3";
         "kernel.perf_cpu_time_max_percent" = "1";
         "kernel.perf_event_max_sample_rate" = "1";
       };
     };
+
+    blacklistedKernelModules = [
+        "vivid"
+    ];
   };
+
 
   security = {
     forcePageTableIsolation = true;
+
+    protectKernelImage = lib.mkDefault true;
+
+    lockKernelModules = lib.mkDefault true;
+
+    unprivilegedUsernsClone = lib.mkDefault (config.virtualisation.containers.enable || config.virtualisation.docker.rootless.enable);
+  };
+
+  systemd = {
+      coredump = {
+          enable = lib.mkDefault false;
+      };
   };
 
   environment = {

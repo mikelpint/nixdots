@@ -34,6 +34,12 @@ in
         };
       };
     };
+
+    kernel = {
+        sysctl = {
+            "vm.dirty_writeback_centisecs" = 1500;
+        };
+    };
   };
 
   services = {

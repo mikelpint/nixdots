@@ -12,6 +12,7 @@ _: {
     ../../config/apps/libreoffice/home.nix
     ../../config/apps/nautilus/home.nix
     ../../config/apps/proton-pass/home.nix
+    ../../config/apps/protonvpn/home.nix
     ../../config/apps/qalculate/home.nix
     ../../config/apps/tor-browser/home.nix
     ../../config/apps/transmission/home.nix

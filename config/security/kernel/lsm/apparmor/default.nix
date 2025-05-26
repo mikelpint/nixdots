@@ -24,8 +24,7 @@
 
   boot = lib.mkIf config.security.apparmor.enable {
     kernelParams = [
-      # "lsm=apparmor"
-      # "security=apparmor"
+        "apparmor=1"
     ];
   };
 }

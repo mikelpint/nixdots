@@ -13,4 +13,10 @@ in
       };
     };
   };
+
+  security = {
+      chromiumSuidSandbox = {
+          enable = true;
+      };
+  };
 }

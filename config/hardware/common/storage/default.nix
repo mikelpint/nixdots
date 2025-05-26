@@ -4,6 +4,10 @@
     hdapsd = {
       enable = lib.mkDefault false;
     };
+
+    udisks2 = {
+        enable = true;
+    };
   };
 
   boot = {

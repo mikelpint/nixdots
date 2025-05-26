@@ -7,6 +7,8 @@
 
         "https://colmena.cachix.org"
         "https://numtide.cachix.org"
+
+        "https://cache.lix.systems"
       ];
 
       trusted-public-keys = [
@@ -14,6 +16,8 @@
 
         "colmena.cachix.org-1:7BzpDnjjH8ki2CT3f6GdOk7QAzPOl+1t3LvTLXqYcSg="
         "numtide.cachix.org-1:2ps1kLBUWjxIneOy1Ik6cQjb41X0iXVXeHigGmycPPE="
+
+        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
       ];
 
       always-allow-substitutes = true;

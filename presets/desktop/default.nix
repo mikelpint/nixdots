@@ -12,6 +12,7 @@ _: {
     ../../config/apps/libreoffice
     ../../config/apps/nautilus
     ../../config/apps/proton-pass
+    ../../config/apps/protonvpn
     ../../config/apps/qalculate
     ../../config/apps/tor-browser
     ../../config/apps/transmission

@@ -32,7 +32,7 @@
           "nosuid"
           "nodev"
           "noexec"
-          "hidepid=4"
+          "hidepid=2"
           "gid=${toString config.users.groups.proc.gid}"
         ];
       };
