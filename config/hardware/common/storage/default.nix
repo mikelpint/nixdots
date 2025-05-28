@@ -6,7 +6,7 @@
     };
 
     udisks2 = {
-        enable = true;
+      enable = true;
     };
   };
 
@@ -19,5 +19,23 @@
     };
 
     kernelModules = [ "sg" ];
+  };
+
+  fileSystems = {
+    "/mnt/WD_Black" = {
+      device = "/dev/disk/by-uuid/1611231c-401a-4e80-8cac-1d09ab54454b";
+      fsType = "ext4";
+      noCheck = lib.mkDefault true;
+      options = [
+        "rw"
+        "users"
+        "nofail"
+        "noauto"
+        "rw"
+        "exec"
+        "x-gvfs-show"
+        "x-systemd.automount"
+      ];
+    };
   };
 }

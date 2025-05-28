@@ -10,7 +10,7 @@
 
         useOSProber = lib.mkDefault true;
 
-        configurationLimit = lib.mkDefault 5;
+        configurationLimit = lib.mkDefault 50;
 
         efiSupport = true;
         efiInstallAsRemovable = lib.mkDefault false;

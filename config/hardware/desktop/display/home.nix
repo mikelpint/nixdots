@@ -122,7 +122,7 @@ in
 
           plugin = {
             csgo-vulkan-fix = {
-              res_w = lib.mkForce builtins.elemAt (builtins.elemAt monitors 0).px 0;
+              res_w = lib.mkForce (builtins.elemAt (builtins.elemAt monitors 0).px 0);
               # res_w = lib.mkForce ((builtins.elemAt (builtins.elemAt monitors 0).px 1) * 16 / 10);
               res_h = lib.mkForce (builtins.elemAt (builtins.elemAt monitors 0).px 1);
             };

@@ -15,7 +15,6 @@
     ./mac
     ./nat
     ./networkmanager
-    ./ntp
     ./systemd-networkd
     ./tor
     ./vpn
@@ -56,26 +55,26 @@
   };
 
   boot = {
-      blacklistedKernelModules = [
-          "dccp"
-          "sctp"
-          "rds"
-          "tipc"
-          "n-hdlc"
-          "ax25"
-          "netrom"
-          "x25"
-          "rose"
-          "decnet"
-          "econet"
-          "af_802154"
-          "ipx"
-          "appletalk"
-          "psnap"
-          "p8023"
-          "p8022"
-          "can"
-          "atm"
-      ];
+    blacklistedKernelModules = [
+      "dccp"
+      "sctp"
+      "rds"
+      "tipc"
+      "n-hdlc"
+      "ax25"
+      "netrom"
+      "x25"
+      "rose"
+      "decnet"
+      "econet"
+      "af_802154"
+      "ipx"
+      "appletalk"
+      "psnap"
+      "p8023"
+      "p8022"
+      "can"
+      "atm"
+    ];
   };
 }

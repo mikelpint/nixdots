@@ -24,7 +24,7 @@
 
   boot = lib.mkIf config.security.apparmor.enable {
     kernelParams = [
-        "apparmor=1"
+      "apparmor=1"
     ];
   };
 }

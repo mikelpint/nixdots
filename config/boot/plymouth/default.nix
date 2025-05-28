@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   boot = {
     initrd = {
@@ -10,7 +10,7 @@
 
   boot = {
     plymouth = {
-      enable = lib.mkDefault true;
+      # enable = lib.mkDefault true;
 
       font = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
     };

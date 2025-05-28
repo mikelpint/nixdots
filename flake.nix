@@ -277,6 +277,7 @@
                     inputs
                     self
                     hyprland
+                    home-manager
                     spicetify-nix
                     ;
                   inherit (value) user;

@@ -8,6 +8,7 @@
   osConfig,
   config,
   user,
+  home-manager,
   ...
 }:
 
@@ -37,11 +38,14 @@ in
     };
 
     activation = {
-      "firefox-replaceKagiPrivateToken" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ESCAPED=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
+      "firefox-replaceKagiPrivateToken" =
+        home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "firefox" ]
+          ''
+            TOKEN=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
+            TARGET=$([ -f "/home/${user}/.mozilla/firefox/${user}/user.js" ] && echo -n "/home/${user}/.mozilla/firefox/${user}/user.js" || echo -n "/home/${user}/.mozilla/firefox/static-${user}/user.js")
 
-        sed -i "s/${kagiPrivateTokenPlaceholder}/$ESCAPED/g" $([ -f "/home/${user}/.mozilla/firefox/${user}/user.js" ] && echo -n "/home/${user}/.mozilla/firefox/${user}/user.js" || echo -n "/home/${user}/.mozilla/firefox/static-${user}/user.js")
-      '';
+            [ -n TOKEN ] && sed -i "s/${kagiPrivateTokenPlaceholder}/$TOKEN/g" $TARGET || sed -i "s/token=${kagiPrivateTokenPlaceholder}&//g" $TARGET
+          '';
     };
   };
 
@@ -49,6 +53,8 @@ in
     firefox = {
       enable = true;
       inherit package;
+
+      nativeMessagingHosts = with pkgs; [ web-eid-app ];
 
       languagePacks = [
         "en-US"

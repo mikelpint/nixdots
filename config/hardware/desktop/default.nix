@@ -20,6 +20,7 @@
     ./motherboard
     ./net
     ./output
+    ./power
     ./storage
     ./usb
   ];

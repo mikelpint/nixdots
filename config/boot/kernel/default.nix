@@ -15,12 +15,12 @@
     ];
 
     crashDump = {
-        enable = true;
-        reservedMemory = lib.mkDefault "512M-2G:64M@16M,2G-:128M@16M";
-        kernelParams = [
-          "1"
-          "boot.shell_on_fail"
-        ];
+      enable = false;
+      reservedMemory = lib.mkDefault "512M-2G:64M,2G-:128M";
+      kernelParams = [
+        "1"
+        "boot.shell_on_fail"
+      ];
     };
   };
 }

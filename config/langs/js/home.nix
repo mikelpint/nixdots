@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, home-manager, ... }:
 
 {
   home = {
@@ -26,7 +26,7 @@
     };
 
     activation = {
-      npm-prefix = lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+      npm-prefix = home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
         run ${pkgs.nodePackages_latest.nodejs}/bin/npm set prefix $HOME/.npm-global
         run ${pkgs.nodePackages_latest.pnpm}/bin/pnpm set prefix $HOME/.pnpm-global
       '';

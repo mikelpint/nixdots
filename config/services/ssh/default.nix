@@ -125,7 +125,7 @@ in
         onionServices = {
           ssh = {
             version = 3;
-            path = "/var/lib/tor/hidden_service/ssh";
+            # path = "/var/lib/tor/hidden_service/ssh";
             map = builtins.map (listenAddress: {
               inherit port;
               target = { inherit (listenAddress) addr port; };

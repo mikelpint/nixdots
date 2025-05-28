@@ -15,11 +15,15 @@
       removeLinuxDRM = false;
     };
 
-    initrd = {
-      supportedFilesystems = [ "zfs" ];
+    supportedFilesystems = {
+      zfs = lib.mkDefault true;
     };
 
-    supportedFilesystems = [ "zfs" ];
+    initrd = {
+      supportedFilesystems = {
+        inherit (config.boot.supportedFilesystems) zfs;
+      };
+    };
 
     loader = {
       grub = {
@@ -39,6 +43,23 @@
 
       autoSnapshot = {
         enable = true;
+      };
+
+      zed = {
+        enableMail = false;
+
+        settings = {
+          ZED_DEBUG_LOG = "/tmp/zed.debug.log";
+          ZED_EMAIL_ADDR = [ "root" ];
+          ZED_EMAIL_PROG = "${pkgs.msmtp}/bin/msmtp";
+          ZED_EMAIL_OPTS = "@ADDRESS@";
+
+          ZED_NOTIFY_INTERVAL_SECS = 3600;
+          ZED_NOTIFY_VERBOSE = true;
+
+          ZED_USE_ENCLOSURE_LEDS = true;
+          ZED_SCRUB_AFTER_RESILVER = true;
+        };
       };
     };
 

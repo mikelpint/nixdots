@@ -1,6 +1,6 @@
 {
   pkgs,
-  lib,
+  home-manager,
   config,
   ...
 }:
@@ -114,8 +114,8 @@
 
   home = {
     activation = {
-      "gedit-theme" = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.glib}/bin/gsettings set org.gnome.gedit.preferences.editor scheme 'catppuccin-${config.catppuccin.flavor}'
+      "gedit-theme" = home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" ] ''
+        ${pkgs.glib}/bin/gsettings --schemadir ${pkgs.gedit}/share/gsettings-schemas set org.gnome.gedit.preferences.editor scheme 'catppuccin-${config.catppuccin.flavor}'
       '';
     };
   };

@@ -8,7 +8,7 @@
   config = {
     services = {
       tor = {
-        enable = lib.mkDefault true;
+        enable = lib.mkDefault false;
         package = lib.mkDefault pkgs.tor;
 
         openFirewall = lib.mkDefault config.services.tor.relay.enable;

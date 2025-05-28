@@ -33,10 +33,6 @@
   };
 
   fileSystems = {
-    "/home" = {
-      neededForBoot = true;
-    };
-
     "/home/${user}" = {
       neededForBoot = true;
     };

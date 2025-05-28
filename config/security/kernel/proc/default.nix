@@ -1,6 +1,12 @@
-{ config, ... }:
+{ config, user, ... }:
 {
   users = {
+    users = {
+      "${user}" = {
+        extraGroups = [ "proc" ];
+      };
+    };
+
     groups = {
       proc = {
         gid = config.ids.gids.proc;
@@ -32,8 +38,8 @@
           "nosuid"
           "nodev"
           "noexec"
-          "hidepid=2"
-          "gid=${toString config.users.groups.proc.gid}"
+          # "hidepid=1"
+          # "gid=${toString config.users.groups.proc.gid}"
         ];
       };
     };

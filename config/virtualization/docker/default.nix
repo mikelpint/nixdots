@@ -90,7 +90,7 @@ in
 
             # inherit bridge;
 
-            ip = lib.mkDefault "0.0.0.0";
+            # ip = lib.mkDefault "0.0.0.0";
             # ipv6 = config.networking.enableIPv6;
             ip-masq = true;
             ip-forward = (toString (config.boot.kernel.sysctl."net.ipv4.ip_forward" or 0)) == "1";

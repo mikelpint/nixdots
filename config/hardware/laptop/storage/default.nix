@@ -36,9 +36,9 @@ in
     };
 
     kernel = {
-        sysctl = {
-            "vm.dirty_writeback_centisecs" = 1500;
-        };
+      sysctl = {
+        "vm.dirty_writeback_centisecs" = 1500;
+      };
     };
   };
 
@@ -93,19 +93,6 @@ in
       inherit fsType;
       options = options "log";
       neededForBoot = true;
-    };
-
-    "/mnt/WD_Black" = {
-      device = "/dev/disk/by-uuid/1611231c-401a-4e80-8cac-1d09ab54454b";
-      fsType = "ext4";
-      options = [
-        "rw"
-        "users"
-        "nofail"
-        "rw"
-        "exec"
-        "x-gvfs-show"
-      ];
     };
   };
 

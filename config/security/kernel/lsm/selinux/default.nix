@@ -20,7 +20,7 @@ in
 
   boot = ifnotapparmor {
     kernelParams = [
-        "selinux=1"
+      "selinux=1"
     ];
   };
 }

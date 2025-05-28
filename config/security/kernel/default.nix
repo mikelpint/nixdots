@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./binfmt
@@ -9,7 +14,7 @@
   ];
 
   boot = {
-    # kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
+    kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
 
     kernelParams = [
       "module.sig_enforce=1"
@@ -17,10 +22,10 @@
 
     kernel = {
       sysctl = {
-        "kernel.sysrq" = lib.mkDefault "0";
+        # "kernel.sysrq" = lib.mkDefault "0";
         "kernel.io_uring_disabled" = "2";
         "kernel.dmesg_restrict" = "1";
-        "kernel.ftrace_enabled" =  lib.mkDefault false;
+        "kernel.ftrace_enabled" = lib.mkDefault false;
         "kernel.kexec_load_disabled" = lib.mkOverride 900 "1";
         "kernel.kptr_restrict" = lib.mkOverride 900 "2";
         "kernel.printk" = lib.mkOverride 900 "3 3 3 3";
@@ -32,10 +37,9 @@
     };
 
     blacklistedKernelModules = [
-        "vivid"
+      "vivid"
     ];
   };
-
 
   security = {
     forcePageTableIsolation = true;
@@ -44,13 +48,15 @@
 
     lockKernelModules = lib.mkDefault true;
 
-    unprivilegedUsernsClone = lib.mkDefault (config.virtualisation.containers.enable || config.virtualisation.docker.rootless.enable);
+    unprivilegedUsernsClone = lib.mkDefault (
+      config.virtualisation.containers.enable || config.virtualisation.docker.rootless.enable
+    );
   };
 
   systemd = {
-      coredump = {
-          enable = lib.mkDefault false;
-      };
+    coredump = {
+      enable = lib.mkDefault false;
+    };
   };
 
   environment = {

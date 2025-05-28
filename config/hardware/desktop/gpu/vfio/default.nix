@@ -54,19 +54,20 @@ in
     ];
 
     extraModprobeConfig = ''
-        softdep amdgpu pre: vfio-pci
-        softdep snd_hda_intel pre: vfio-pci
-        options vfio-pci ids=${lib.concatStringsSep "," (
-            builtins.elemAt ids (
-              if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
-                #1
-                0
-              else
-                0
-            )
+      softdep amdgpu pre: vfio-pci
+      softdep snd_hda_intel pre: vfio-pci
+      options vfio-pci ids=${
+        lib.concatStringsSep "," (
+          builtins.elemAt ids (
+            if (builtins.elem "amdgpu" config.services.xserver.videoDrivers) then
+              #1
+              0
+            else
+              0
           )
-        }
-    ''
+        )
+      }
+    '';
   };
 
   virtualisation = {

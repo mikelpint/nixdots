@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   isnvidia = builtins.elem "nvidia" config.services.xserver.videoDrivers;
   isamd = builtins.elem "amdgpu" config.services.xserver.videoDrivers;
@@ -29,6 +34,16 @@ in
 
   hardware = {
     display = {
+      edid = {
+        enable = true;
+        packages = [
+          (pkgs.runCommand "edid-VG24VQE" { } ''
+            mkdir -p "$out/lib/firmware/edid"
+            cp ${./VG24VQE.bin} $out/lib/firmware/edid/VG24VQE.bin
+          '')
+        ];
+      };
+
       outputs = {
         "DP-1" = mkifnvidia { edid = "VG24VQE.bin"; };
 

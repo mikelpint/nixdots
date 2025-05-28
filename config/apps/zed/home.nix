@@ -134,7 +134,7 @@
         lsp = {
           clangd = {
             binary = {
-              path = "clangd";
+              path = "${lib.getBin pkgs.clang-tools}/bin/clangd";
               arguments = [
                 "--background-index"
                 "--compile-commands-dir=build"

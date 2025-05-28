@@ -15,8 +15,8 @@ in
   };
 
   security = {
-      chromiumSuidSandbox = {
-          enable = true;
-      };
+    chromiumSuidSandbox = {
+      enable = true;
+    };
   };
 }

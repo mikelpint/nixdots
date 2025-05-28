@@ -35,13 +35,13 @@ in
   };
 
   services = {
-      udiskie = {
-          settings = {
-              program_options = {
-                  file_manager = "${lib.getBin pkgs.nautilus}/bin/nautilus";
-              };
-          };
+    udiskie = {
+      settings = {
+        program_options = {
+          file_manager = "${lib.getBin pkgs.nautilus}/bin/nautilus";
+        };
       };
+    };
   };
 
   home = {

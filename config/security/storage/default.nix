@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, config, ... }:
 {
   fileSystems = {
     "/home" = {
@@ -20,15 +20,15 @@
       ];
     };
 
-    # "/tmp" = {
-    #   device = lib.mkDefault "/tmp";
-    #   options = [
-    #     "bind"
-    #     "nosuid"
-    #     "noexec"
-    #     "nodev"
-    #   ];
-    # };
+    "/tmp" = {
+      device = lib.mkDefault "/tmp";
+      options = [
+        "bind"
+        "nosuid"
+        "noexec"
+        "nodev"
+      ];
+    };
 
     "/var" = {
       device = lib.mkDefault "/var";

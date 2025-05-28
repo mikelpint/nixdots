@@ -18,6 +18,7 @@ in
     mangohud = {
       enable = true;
       enableSessionWide = true;
+      package = pkgs.mangohud;
 
       settings = {
         legacy_layout = false;

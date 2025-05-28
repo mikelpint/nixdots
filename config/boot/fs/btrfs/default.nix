@@ -1,9 +1,11 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   imports = [ ./borg ];
 
   boot = {
-    supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = {
+      btrfs = lib.mkDefault true;
+    };
   };
 
   environment = {
