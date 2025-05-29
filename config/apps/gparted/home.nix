@@ -9,7 +9,7 @@
           postInstall =
             (old.postInstall or "")
             + ''
-              wrapProgram $out/bin/gparted --prefix '${pkgs.xorg.xhost}/bin/xhost +SI:localuser:root; ' --suffix '; ${pkgs.xorg.xhost}/bin/xhost -SI:localuser:root'
+              wrapProgram $out/bin/gparted --run '${pkgs.xorg.xhost}/bin/xhost +SI:localuser:root; '
             '';
         });
       })

@@ -55,4 +55,23 @@
       };
     };
   };
+
+  environment = lib.mkIf config.networking.wireless.iwd.enable {
+    systemPackages = [ config.networking.wireless.iwd.package ];
+  };
+
+  systemd = lib.mkIf config.networking.wireless.iwd.enable {
+    services = {
+      iwd = {
+        after = [
+          "network-pre.target"
+          "sys-subsystem-net-devices-wifi.device"
+        ];
+        wants = [
+          "network.target"
+          "sys-subsystem-net-devices-wifi.device"
+        ];
+      };
+    };
+  };
 }

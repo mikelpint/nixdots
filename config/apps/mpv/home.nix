@@ -63,6 +63,8 @@ in
     };
 
     mimeApps = {
+      enable = true;
+
       associations = {
         added = {
           "video/mp4" = [ "mpv.desktop" ];

@@ -17,12 +17,15 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_hardened;
 
     kernelParams = [
+      "vsyscall=none"
+      "debugfs=off"
+      "oops=panic"
       "module.sig_enforce=1"
     ];
 
     kernel = {
       sysctl = {
-        # "kernel.sysrq" = lib.mkDefault "0";
+        "kernel.sysrq" = lib.mkDefault "4";
         "kernel.io_uring_disabled" = "2";
         "kernel.dmesg_restrict" = "1";
         "kernel.ftrace_enabled" = lib.mkDefault false;

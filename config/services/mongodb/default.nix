@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   package = "mongodb-ce";
 in
@@ -26,12 +26,16 @@ in
       enable = true;
       package = pkgs.${package};
 
-      dbpath = "/var/db/mongo";
+      dbpath = lib.mkDefault "/var/db/mongo";
 
-      user = "mongodb";
+      user = lib.mkDefault "mongodb";
 
-      bind_ip = "0.0.0.0";
+      bind_ip = lib.mkDefault "127.0.0.1";
     };
+  };
+
+  environment = {
+    systemPackages = [ pkgs.${package} ];
   };
 
   boot = {
@@ -47,7 +51,7 @@ in
         description = "Enable Transparent Hugepages (THP)";
 
         unitConfig = {
-          defaultDependencies = "no";
+          DefaultDependencies = "no";
         };
 
         before = [ "mongodb.service" ];

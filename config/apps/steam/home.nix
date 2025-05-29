@@ -3,7 +3,7 @@
   programs = {
     mangohud = {
       settingsPerApplication = {
-        wezterm = {
+        steam = {
           no_display = true;
         };
       };

@@ -14,7 +14,7 @@ in
       apparmor = ifapparmor "enabled";
 
       dbusPackage = pkgs.dbus;
-      brokerPackage = pkgs.dbus;
+      brokerPackage = pkgs.dbus-broker;
       implementation = if apparmor then "dbus" else "broker"; # https://wiki.archlinux.org/title/D-Bus
     };
   };

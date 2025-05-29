@@ -6,7 +6,7 @@
 
   services = {
     geoclue2 = {
-      enable = lib.mkDefault false;
+      enable = lib.mkDefault true;
       package = pkgs.geoclue2;
     };
   };

@@ -139,4 +139,12 @@ in
       };
     };
   };
+
+  boot = {
+    extraModprobeConfig = ''
+      options snd-hda-intel single_cmd=1
+      options snd-hda-intel probe_mask=1
+      options snd-hda-intel model=basic
+    '';
+  };
 }

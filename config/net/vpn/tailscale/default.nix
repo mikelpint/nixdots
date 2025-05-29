@@ -38,7 +38,7 @@
         openFirewall = false;
       };
 
-      # authKeyFile = config.age.secrets.tailscale-authkey.path;
+      authKeyFile = config.age.secrets.tailscale-authkey.path;
       permitCertUid = user;
 
       extraDaemonFlags = [ "--no-logs-no-support" ];
@@ -56,6 +56,7 @@
           [
             "network-online.target"
           ]
+          ++ (lib.optionals config.networking.networkmanager.enable [ "NetworkManager-wait-online.service" ])
           ++ (lib.optionals config.services.dnscrypt-proxy2.enable [ "dnscrypt-proxy2.service" ])
           ++ (lib.optionals config.services.resolved.enable [ "systemd-resolved.service" ])
           ++ (lib.optionals config.networking.resolvconf.enable [ "resolvconf.service" ]);

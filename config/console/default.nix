@@ -3,7 +3,6 @@ _: {
 
   boot = {
     kernelParams = [
-      "boot.shell_on_fail"
       "fbcon=nodefer"
     ];
   };

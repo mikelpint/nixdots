@@ -18,7 +18,7 @@ in
       };
 
       connectionConfig = {
-        "ipv6-ip6-privacy" = 2;
+        "ipv6.ip6-privacy" = 2;
       };
     };
   };

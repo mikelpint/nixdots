@@ -32,7 +32,8 @@ in
     kernelModules = [ "ip_vs" ];
 
     blacklistedKernelModules =
-      lib.mkIf (!(config.virtualisation.docker.daemon.settings.iptables or true))
+      lib.mkIf
+        (config.networking.nftables.enable && !config.virtualisation.docker.daemon.settings.iptables)
         [
           "ip_tables"
           "ip6_tables"

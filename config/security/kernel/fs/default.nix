@@ -48,13 +48,13 @@
     ];
   };
 
-  systemd = {
-    services = {
-      "user@" = {
-        serviceConfig = {
-          SupplementaryGroups = [ "sysfs" ];
-        };
-      };
-    };
-  };
+  # systemd = {
+  #   services = {
+  #     "user@" = {
+  #       serviceConfig = {
+  #         SupplementaryGroups = [ "sysfs" ];
+  #       };
+  #     };
+  #   };
+  # };
 }

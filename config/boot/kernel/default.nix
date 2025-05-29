@@ -8,12 +8,6 @@
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
-    kernelParams = [
-      "vsyscall=none"
-      "debugfs=off"
-      "oops=panic"
-    ];
-
     crashDump = {
       enable = false;
       reservedMemory = lib.mkDefault "512M-2G:64M,2G-:128M";

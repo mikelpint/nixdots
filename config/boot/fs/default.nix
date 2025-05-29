@@ -1,6 +1,10 @@
 { lib, ... }:
 {
-  imports = [ ./udf ];
+  imports = [
+    ./nfs
+    ./ntfs
+    ./udf
+  ];
 
   fileSystems = {
     "/" = {

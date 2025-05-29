@@ -18,6 +18,7 @@
           enable = false;
 
           addresses = [ { Address = "192.168.1.104/24"; } ];
+          routes = [ { Gateway = "192.168.1.1"; } ];
         };
       };
     };

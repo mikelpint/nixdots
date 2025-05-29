@@ -8,8 +8,8 @@
   boot = {
     kernelParams = [
       "extra_latent_entropy"
-      "random.trust_cpu=on"
-      "random.trust_bootloader=on"
+      "random.trust_cpu=off"
+      "random.trust_bootloader=off"
     ];
 
     kernelModules = lib.mkIf config.services.jitterentropy-rngd.enable [ "jitterentropy_rng" ];

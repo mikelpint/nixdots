@@ -7,8 +7,7 @@
 {
   services = {
     usbguard = {
-      # enable = !config.boot.isContainer;
-      enable = false;
+      enable = !config.boot.isContainer && false;
 
       dbus = {
         enable = true;

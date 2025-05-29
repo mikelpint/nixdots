@@ -11,7 +11,5 @@
         efiSysMountPoint = lib.mkDefault "/boot";
       };
     };
-
-    kernelParams = [ "efi=disable_early_pci_dma" ];
   };
 }

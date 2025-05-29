@@ -56,6 +56,10 @@
     "/libvirt" = {
       device = "zroot/libvirt";
       fsType = "zfs";
+      options = [
+        "defaults"
+        "nofail"
+      ];
     };
 
     "/nix" = {
