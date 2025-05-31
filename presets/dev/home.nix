@@ -7,6 +7,7 @@ _: {
     ../../config/apps/mongodb-compass/home.nix
     ../../config/apps/pgadmin/home.nix
     ../../config/apps/redisinsight/home.nix
+    ../../config/apps/texstudio/home.nix
     ../../config/apps/wireshark/home.nix
     ../../config/apps/vscode/home.nix
     ../../config/apps/zed/home.nix

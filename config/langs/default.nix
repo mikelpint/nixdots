@@ -6,5 +6,6 @@ _: {
     ./js
     ./markdown
     ./python
+    ./tex
   ];
 }

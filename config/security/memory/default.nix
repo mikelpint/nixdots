@@ -2,7 +2,7 @@
 {
   environment = {
     memoryAllocator = {
-      # provider = "scudo";
+      provider = lib.mkOverride 900 "graphene-hardened-light";
     };
 
     variables = lib.mkIf (config.environment.memoryAllocator.provider == "scudo") {

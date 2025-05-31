@@ -8,6 +8,7 @@
     ./js/home.nix
     ./markdown/home.nix
     ./python/home.nix
+    ./tex/home.nix
   ];
 
   home = {

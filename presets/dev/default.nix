@@ -7,6 +7,7 @@
     ../../config/apps/mongodb-compass
     ../../config/apps/pgadmin
     ../../config/apps/redisinsight
+    ../../config/apps/texstudio
     ../../config/apps/wireshark
     ../../config/apps/vscode
     ../../config/apps/zed

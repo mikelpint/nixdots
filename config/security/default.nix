@@ -2,6 +2,7 @@ _: {
   imports = [
     ./age
     ./audit
+    ./bwrap
     ./clamav
     ./cpu
     ./doas

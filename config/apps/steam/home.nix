@@ -1,5 +1,12 @@
-{ pkgs, inputs, ... }:
 {
+  pkgs,
+  inputs,
+  user,
+  ...
+}:
+{
+  imports = [ ./gamescope/home.nix ];
+
   programs = {
     mangohud = {
       settingsPerApplication = {
@@ -15,35 +22,18 @@
       with pkgs;
       with inputs.nix-gaming.packages.${pkgs.system};
       [
-        (steam.override {
-          extraEnv = {
-            MANGOHUD = true;
-            OBS_VKCAPTURE = true;
-            RADV_TEX_ANISO = 16;
-          };
-
-          extraPkgs = _pkgs: [
-            xorg.libXcursor
-            xorg.libXi
-            xorg.libXinerama
-            xorg.libXScrnSaver
-            libpng
-            libpulseaudio
-            libvorbis
-            stdenv.cc.cc.lib
-            libkrb5
-            keyutils
-          ];
-        })
+        steam-run
+        steam-tui
+        steamcmd
+        steamguard-cli
 
         protonup
-
-        # wine-discord-ipc-bridge
         # wine-ge
+        # wine-discord-ipc-bridge
       ];
 
     sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${user}/.steam/root/compatibilitytools.d";
     };
   };
 }

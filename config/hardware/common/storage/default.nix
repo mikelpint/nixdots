@@ -1,4 +1,9 @@
-{ lib, ... }:
+{
+  lib,
+  user,
+  config,
+  ...
+}:
 {
   services = {
     hdapsd = {
@@ -28,11 +33,13 @@
       noCheck = lib.mkDefault true;
       options = [
         "rw"
-        "users"
         "nofail"
         "noauto"
         "rw"
         "exec"
+        "uid=${user}"
+        "gid=${config.users.users.${user}.group}"
+        "users"
         "x-gvfs-show"
         "x-systemd.automount"
       ];

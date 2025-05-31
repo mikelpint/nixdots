@@ -1,25 +1,5 @@
-{
-  pkgs,
-  lib,
-  user,
-  ...
-}:
-{
-  environment = {
-    systemPackages = with pkgs; [ bubblewrap ];
-  };
-
-  security = {
-    wrappers = {
-      bwrap = {
-        owner = user;
-        group = user;
-        source = builtins.toPath "${pkgs.bubblewrap}/bin/bwrap";
-        setuid = lib.mkForce true;
-        # capabilities = "all+eip";
-      };
-    };
-  };
+_: {
+  imports = [ ../../../security/bwrap ];
 
   programs = {
     gamescope = {

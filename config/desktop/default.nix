@@ -3,4 +3,10 @@ _: {
     ./extra
     ./hyprland
   ];
+
+  environment = {
+    memoryAllocator = {
+      provider = "libc";
+    };
+  };
 }

@@ -1,14 +1,24 @@
 { pkgs, ... }:
 {
-  imports = [
-    # ./gamescope
-  ];
+  imports = [ ./gamescope ];
 
   nixpkgs = {
     config = {
       packageOverrides = pkgs: {
         steam = pkgs.steam.override {
+          extraEnv = {
+            MANGOHUD = true;
+            OBS_VKCAPTURE = true;
+            RADV_TEX_ANISO = 16;
+          };
+
           extraPkgs =
+            pkgs: with pkgs; [
+              keyutils
+              steamcontroller
+            ];
+
+          extraLibraries =
             pkgs: with pkgs; [
               xorg.libXcursor
               xorg.libXi
@@ -19,17 +29,36 @@
               libvorbis
               stdenv.cc.cc.lib
               libkrb5
-              keyutils
+              atk
             ];
 
-          # withJava = true;
+          privateTmp = true;
+
         };
       };
     };
+
+    overlays = [
+      (_self: super: {
+        steam = super.steam.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+
+          postInstall =
+            (old.postInstall or "")
+            + ''
+              substituteInPlace $out/share/applications/slack.desktop \
+                      --replace "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
+            '';
+        });
+      })
+    ];
   };
 
   programs = {
     steam = {
+      enable = true;
+      package = pkgs.steam;
+
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
 
       protontricks = {
