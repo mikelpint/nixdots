@@ -184,15 +184,15 @@
               "!nil"
             ];
 
-            formatter = {
-              external = {
-                command = "nix";
-                arguments = [
-                  "fmt"
-                  "--quiet"
-                ];
-              };
-            };
+            # formatter = {
+            # external = {
+            # command = "nix";
+            # arguments = [
+            # "fmt"
+            # "--quiet"
+            # ];
+            # };
+            # };
           };
 
           TypeScript = {

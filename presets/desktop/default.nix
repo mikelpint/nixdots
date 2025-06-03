@@ -10,6 +10,7 @@ _: {
     ../../config/apps/imv
     ../../config/apps/k3b
     ../../config/apps/libreoffice
+    ../../config/apps/mega
     ../../config/apps/nautilus
     ../../config/apps/proton-pass
     ../../config/apps/protonvpn

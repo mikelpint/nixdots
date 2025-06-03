@@ -10,6 +10,7 @@ _: {
     ../../config/apps/imv/home.nix
     ../../config/apps/k3b/home.nix
     ../../config/apps/libreoffice/home.nix
+    ../../config/apps/mega/home.nix
     ../../config/apps/nautilus/home.nix
     ../../config/apps/proton-pass/home.nix
     ../../config/apps/protonvpn/home.nix

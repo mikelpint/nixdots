@@ -211,24 +211,68 @@ in
     };
 
     wireguard = {
-      interfaces = builtins.mapAttrs (name: value: {
-        inherit listenPort;
-        inherit (value) privateKeyFile;
-        ips = value.address;
-        inherit (value) peers;
+      interfaces = builtins.mapAttrs (
+        name: value:
+        let
+          ips = value.address;
+          nets = builtins.map (
+            ip:
+            let
+              matches = builtins.match "^(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(/3[0-2]|/[12]?[0-9])?$" ip;
+              length = builtins.length (
+                assert (lib.asserts.assertMsg (matches != null) "Not a valid IP address: \"${ip}\".");
+                matches
+              );
+              addrlen =
+                if length == 5 then
+                  (lib.strings.toInt (builtins.substring 1 (-1) (builtins.elemAt matches 4)))
+                else
+                  24;
+              power = lib.fix (
+                self: x: y:
+                if y == 0 then 1 else x * (self x (y - 1))
+              );
+              mask = lib.lists.foldl (mask: bit: mask + (power (if bit < addrlen then 2 else 0) (31 - bit))) 0 (
+                lib.lists.range 0 31
+              );
+              ipn = lib.lists.foldl (total: sub: total + sub) 0 (
+                lib.lists.imap0 (idx: sub: (lib.strings.toInt sub) * (power 2 (8 * idx))) (
+                  lib.lists.sublist 0 3 matches
+                )
+              );
+              masked = lib.bitAnd ipn mask;
+              getByte32 =
+                n: idx:
+                (builtins.bitAnd n (
+                  lib.lists.foldl (mask: bit: mask + (power 2 (31 - bit))) 0 (
+                    lib.lists.range (8 * (3 - idx)) (7 + 8 * (3 - idx))
+                  )
+                ))
+                / (power 2 (8 * idx));
+            in
+            "${builtins.toString (getByte32 masked 0)}.${builtins.toString (getByte32 masked 1)}.${builtins.toString (getByte32 masked 2)}.${builtins.toString (getByte32 masked 3)}/${builtins.toString addrlen}"
+          ) ips;
 
-        postSetup = ''
-          ${pkgs.iptables}/bin/iptables -A FORWARD -i ${name} -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
-        '';
+          nat =
+            action:
+            lib.strings.concatLines (
+              builtins.map (net: ''
+                ${pkgs.iptables}/bin/iptables        -${action} FORWARD               -i ${name} -j ACCEPT
+                ${pkgs.iptables}/bin/iptables -t nat -${action} POSTROUTING -s ${net} -o eth     -j MASQUERADE
+                ${pkgs.iptables}/bin/iptables -t nat -${action} POSTROUTING -s ${net} -o wifi    -j MASQUERADE
+              '') nets
+            );
+        in
+        {
+          inherit listenPort;
+          inherit (value) privateKeyFile;
+          inherit ips;
+          inherit (value) peers;
 
-        preShutdown = ''
-          ${pkgs.iptables}/bin/iptables -D FORWARD -i ${name} -j ACCEPT
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
-        '';
-      }) interfaces;
+          postSetup = nat "A";
+          preShutdown = nat "D";
+        }
+      ) interfaces;
     };
   };
 }
