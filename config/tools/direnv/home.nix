@@ -10,6 +10,13 @@ _: {
 
       enableZshIntegration = true;
     };
+
+    git = {
+      ignores = [
+        ".envrc"
+        ".direnv"
+      ];
+    };
   };
 
   home = {

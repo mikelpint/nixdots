@@ -169,15 +169,12 @@ in
   networking = {
     enableIPv6 = lib.mkForce true;
 
-    firewall = {
-      allowedUDPPorts = [ listenPort ];
-    };
-
-    wg-quick = {
+    wg-quick = lib.mkIf false {
       interfaces = builtins.mapAttrs (
-        _name: value:
+        name: value:
         value
         // {
+          autostart = lib.mkDefault false;
           inherit listenPort;
 
           postUp =
@@ -189,8 +186,9 @@ in
               ""
               (
                 builtins.map (_x: ''
-                  ${pkgs.iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
-                  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o eth0 -j MASQUERADE
+                  ${pkgs.iptables}/bin/iptables -A FORWARD -i ${name} -j ACCEPT
+                  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
+                  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
                 '') value.address
               );
 
@@ -203,23 +201,34 @@ in
               ""
               (
                 builtins.map (_x: ''
-                  ${pkgs.iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
-                  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o eth0 -j MASQUERADE
+                  ${pkgs.iptables}/bin/iptables -D FORWARD -i ${name} -j ACCEPT
+                  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
+                  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
                 '') value.address
               );
         }
       ) interfaces;
     };
 
-    /*
-      wireguard = {
-        interfaces = builtins.mapAttrs (name: value: {
-          inherit listenPort;
-          privateKeyFile = value.privateKeyFile;
-          ips = value.address;
-          peers = value.peers;
-        }) interfaces;
-      };
-    */
+    wireguard = {
+      interfaces = builtins.mapAttrs (name: value: {
+        inherit listenPort;
+        inherit (value) privateKeyFile;
+        ips = value.address;
+        inherit (value) peers;
+
+        postSetup = ''
+          ${pkgs.iptables}/bin/iptables -A FORWARD -i ${name} -j ACCEPT
+          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
+          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
+        '';
+
+        preShutdown = ''
+          ${pkgs.iptables}/bin/iptables -D FORWARD -i ${name} -j ACCEPT
+          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o eth -j MASQUERADE
+          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.0.0.1/24 -o wifi -j MASQUERADE
+        '';
+      }) interfaces;
+    };
   };
 }

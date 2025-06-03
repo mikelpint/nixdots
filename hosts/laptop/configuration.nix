@@ -1,5 +1,4 @@
-{ user, ... }:
-{
+_: {
   imports = [
     ./hardware-configuration.nix
 
@@ -13,13 +12,4 @@
     ../../presets/social
     ../../presets/video
   ];
-
-  age = {
-    identityPaths = [ "/home/${user}/.ssh/laptop" ];
-
-    rekey = {
-      hostPubkey = builtins.readFile ./host.pub;
-      masterIdentities = [ "/home/${user}/.ssh/laptop" ];
-    };
-  };
 }

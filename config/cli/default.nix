@@ -6,9 +6,11 @@
     ./eza
     ./fd
     ./fzf
+    ./gping
     ./http
     ./jq
     ./pop
+    ./procs
     ./tmux
     ./tree
     ./zoxide

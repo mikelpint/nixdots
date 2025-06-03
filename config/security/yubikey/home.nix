@@ -1,6 +1,6 @@
 # https://wiki.archlinux.org/title/YubiKey#Start_Yubico_Authenticator_on_insertion
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   device = "dev-yubikey.device";
@@ -21,7 +21,7 @@ in
 
           Service = {
             Type = "oneshot";
-            ExecStart = "${pkgs.yubioath-flutter}/bin/yubioath-flutter";
+            ExecStart = "${lib.getBin pkgs.yubioath-flutter}/bin/yubioath-flutter";
           };
         };
       };

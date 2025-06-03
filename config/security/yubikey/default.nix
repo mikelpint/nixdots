@@ -1,5 +1,12 @@
-{ pkgs, ... }:
-
+{
+  config,
+  inputs,
+  pkgs,
+  lib,
+  self,
+  user,
+  ...
+}:
 let
   vendor = "Yubico";
   idVendor = "1050";
@@ -23,6 +30,8 @@ let
   '';
 in
 {
+  imports = [ ../age ];
+
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:$NIX_LD_LIBRARY_PATH:${
@@ -39,6 +48,9 @@ in
       libnotify
       yubikey-notification-add
       yubikey-notification-remove
+
+      age-plugin-yubikey
+      age-plugin-fido2-hmac
     ];
   };
 
@@ -68,6 +80,47 @@ in
 
     pcscd = {
       enable = true;
+    };
+  };
+
+  age = {
+    rekey = {
+      agePlugins = with pkgs; [
+        age-plugin-yubikey
+        age-plugin-fido2-hmac
+      ];
+
+      masterIdentities =
+        let
+          inherit
+            ((import ../age {
+              inherit
+                config
+                inputs
+                pkgs
+                lib
+                self
+                user
+                ;
+            }).age.rekey
+            )
+            masterIdentities
+            ;
+        in
+        lib.mkDefault (
+          ((if builtins.isAttrs masterIdentities then masterIdentities else { }).content or masterIdentities)
+          ++ [ ./yubikey.pub ]
+        );
+    };
+  };
+
+  fileSystems = {
+    "/tmp" = {
+      neededForBoot = true;
+    };
+
+    "/nix" = {
+      depends = [ "/tmp" ];
     };
   };
 }

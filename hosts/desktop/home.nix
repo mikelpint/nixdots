@@ -1,4 +1,4 @@
-{
+_: {
   imports = [
     ../../presets/desktop/home.nix
     ../../presets/dev/home.nix

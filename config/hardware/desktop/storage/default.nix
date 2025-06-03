@@ -46,11 +46,13 @@
     "/home" = {
       device = "zroot/user/home";
       fsType = "zfs";
+      neededForBoot = true;
     };
 
     "/home/${user}" = {
       device = "zroot/user/home/${user}";
       fsType = "zfs";
+      neededForBoot = true;
     };
 
     "/libvirt" = {

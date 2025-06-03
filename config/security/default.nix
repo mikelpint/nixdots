@@ -3,6 +3,7 @@ _: {
     ./age
     ./audit
     ./bwrap
+    ./chkrootkit
     ./clamav
     ./cpu
     ./doas

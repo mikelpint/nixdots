@@ -2,6 +2,7 @@
   config,
   lib,
   user,
+  pkgs,
   ...
 }:
 {
@@ -16,6 +17,12 @@
       "${user}" = {
         extraGroups = lib.mkIf config.programs.adb.enable [ "adbusers" ];
       };
+    };
+  };
+
+  services = {
+    udev = {
+      packages = with pkgs; [ android-udev-rules ];
     };
   };
 }

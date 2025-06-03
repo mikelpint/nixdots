@@ -9,6 +9,7 @@
   imports = [
     ./autoupgrade
     ./cachix
+    ./channels
     ./features
     ./gc
     ./lang

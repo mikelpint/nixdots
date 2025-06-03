@@ -1,5 +1,4 @@
-{ user, ... }:
-{
+_: {
   imports = [
     ./hardware-configuration.nix
 
@@ -16,13 +15,4 @@
 
     ../../config/virtualization/libvirtd/vm/win11
   ];
-
-  age = {
-    identityPaths = [ "/home/${user}/.ssh/desktop" ];
-
-    rekey = {
-      hostPubkey = builtins.readFile ./host.pub;
-      masterIdentities = [ "/home/${user}/.ssh/desktop" ];
-    };
-  };
 }

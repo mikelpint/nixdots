@@ -13,7 +13,7 @@ let
         ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
       ''
     else
-      "dbus-run-session Hyprland";
+      "dbus-run-session Hyprland &> /dev/null";
 in
 {
   environment = {

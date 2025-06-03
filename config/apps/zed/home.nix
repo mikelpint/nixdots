@@ -186,8 +186,9 @@
 
             formatter = {
               external = {
-                command = "nix fmt";
+                command = "nix";
                 arguments = [
+                  "fmt"
                   "--quiet"
                 ];
               };

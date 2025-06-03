@@ -19,6 +19,16 @@
     };
   };
 
+  documentation = {
+    enable = lib.mkDefault true;
+    man = {
+      generateCaches = lib.mkDefault true;
+    };
+    dev = {
+      enable = lib.mkDefault true;
+    };
+  };
+
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = false;

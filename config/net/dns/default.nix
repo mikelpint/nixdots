@@ -50,6 +50,10 @@
       };
     };
 
-    systemPackages = with pkgs; [ whois ];
+    systemPackages = with pkgs; [
+      whois
+      dig
+      doggo
+    ];
   };
 }

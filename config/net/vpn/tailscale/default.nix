@@ -7,6 +7,8 @@
   ...
 }:
 {
+  imports = [ ../../tun ];
+
   age = {
     secrets = {
       tailscale-authkey = {
@@ -39,7 +41,7 @@
       };
 
       authKeyFile = config.age.secrets.tailscale-authkey.path;
-      permitCertUid = user;
+      permitCertUid = "tailscale";
 
       extraDaemonFlags = [ "--no-logs-no-support" ];
     };
@@ -62,6 +64,47 @@
           ++ (lib.optionals config.networking.resolvconf.enable [ "resolvconf.service" ]);
 
         wants = config.systemd.services.tailscaled.after;
+
+        # https://tailscale.com/kb/1279/security-node-hardening#alternative-use-userspace-networking
+
+        serviceConfig =
+          {
+            ExecStartPre = "${config.services.tailscale.package}/bin/tailscaled --cleanup";
+            ExecStopPre = "${config.services.tailscale.package}/bin/tailscaled --cleanup";
+
+            User = config.services.tailscale.permitCertUid;
+            Group = config.services.tailscale.permitCertUid;
+
+            DeviceAllow = [
+              "/dev/tun"
+              "/dev/net/tun"
+            ];
+            AmbientCapabilities = "CAP_NET_RAW CAP_NET_ADMIN CAP_SYS_MODULE";
+            ProtectKernelModules = "no";
+            RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6 AF_NETLINK";
+            NoNewPrivileges = "yes";
+            PrivateTmp = "yes";
+            PrivateMounts = "yes";
+            RestrictNamespaces = "yes";
+            RestrictRealtime = "yes";
+            RestrictSUIDSGID = "yes";
+            MemoryDenyWriteExecute = "yes";
+            LockPersonality = "yes";
+            ProtectHome = "yes";
+            ProtectControlGroups = "yes";
+            ProtectKernelLogs = "yes";
+            ProtectSystem = "full";
+            ProtectProc = "noaccess";
+            SystemCallArchitectures = "native";
+            SystemCallFilter = [
+              "@known"
+              "~@clock @cpu-emulation @raw-io @reboot @mount @obsolete @swap @debug @keyring @mount @pkey"
+            ];
+          }
+          // (lib.mkIf (builtins.elem "tun" config.boot.kernelModules) {
+            AmbientCapabilities = "CAP_NET_RAW CAP_NET_ADMIN";
+            ProtectKernelModules = "yes";
+          });
       };
     };
   };

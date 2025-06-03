@@ -46,7 +46,7 @@
           postInstall =
             (old.postInstall or "")
             + ''
-              substituteInPlace $out/share/applications/slack.desktop \
+              substituteInPlace $out/share/applications/steam.desktop \
                       --replace "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
             '';
         });

@@ -45,6 +45,7 @@
       ethtool
       inetutils
       traceroute
+      mtr
     ];
   };
 
