@@ -1,7 +1,5 @@
 {
   lib,
-  user,
-  config,
   ...
 }:
 {
@@ -37,8 +35,6 @@
         "noauto"
         "rw"
         "exec"
-        "uid=${user}"
-        "gid=${config.users.users.${user}.group}"
         "users"
         "x-gvfs-show"
         "x-systemd.automount"
