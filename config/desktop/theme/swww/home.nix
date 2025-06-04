@@ -1,13 +1,19 @@
 # https://raw.githubusercontent.com/Ruixi-rebirth/flakes/9e7fe7b2a40c4ae0d86f67898eed9f82e7d859e2/home/wall/default.nix
 
-{ pkgs, ... }:
+{
+  pkgs,
+  inputs,
+  self,
+  ...
+}:
 
 let
-  wallpaper = "/etc/nixos/assets/wallpapers/gif/wallpaper.gif";
+  wallpaper = "${self}/assets/wallpapers/gif/wallpaper.gif";
+  swww = inputs.swww.packages.${pkgs.system}.swww or pkgs.swww;
 in
 {
   home = {
-    packages = with pkgs; [ swww ];
+    packages = [ swww ];
   };
 
   systemd = {
@@ -26,8 +32,9 @@ in
           Service = {
             Type = "simple";
 
-            ExecStart = "${pkgs.swww}/bin/swww-daemon --no-cache -q";
-            ExecStop = "${pkgs.swww}/bin/swww kill";
+            ExecPreStart = "${swww}/bin/sww kill";
+            ExecStart = "${swww}/bin/swww-daemon --no-cache --format xrgb --layer background";
+            ExecStop = "${swww}/bin/swww kill";
 
             Restart = "on-failure";
             StartLimitIntervalSec = 0;
@@ -53,7 +60,7 @@ in
           };
 
           Service = {
-            ExecStart = ''${pkgs.swww}/bin/swww img "${wallpaper}"'';
+            ExecStart = ''${swww}/bin/swww img "${wallpaper}"'';
 
             Restart = "on-failure";
             StartLimitIntervalSec = 0;

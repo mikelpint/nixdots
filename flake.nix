@@ -165,6 +165,10 @@
     nixcord = {
       url = "github:kaylorben/nixcord";
     };
+
+    swww = {
+      url = "github:LGFae/swww";
+    };
   };
 
   outputs =
