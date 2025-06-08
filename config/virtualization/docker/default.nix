@@ -9,35 +9,44 @@
 }:
 
 let
-  bridge = "docker0";
-
   mark = {
     bridge = "0x10ca1";
     docker = "0xd0cca5e";
   };
 in
 {
-  boot = lib.mkIf config.virtualisation.docker.enable {
-    kernel = {
-      sysctl = {
-        "net.ipv4.ip_nonlocal_bind" = 1;
-        "net.ipv4.ip_forward" = 1;
-        "net.ipv4.conf.all.forwarding" = 1;
-        "net.ipv4.conf.default.forwarding" = 1;
+  boot =
+    let
+      noiptables = config.networking.nftables.enable # && !config.virtualisation.docker.daemon.settings.iptables
+      ;
+    in
+    lib.mkIf config.virtualisation.docker.enable {
+      kernel = {
+        sysctl = {
+          "net.ipv4.ip_nonlocal_bind" = 1;
+          "net.ipv4.ip_forward" = 1;
+          "net.ipv4.conf.all.forwarding" = 1;
+          "net.ipv4.conf.default.forwarding" = 1;
 
-        "net.ipv6.conf.all.forwarding" = 1;
-        "net.ipv6.conf.default.forwarding" = 1;
+          "net.ipv6.conf.all.forwarding" = 1;
+          "net.ipv6.conf.default.forwarding" = 1;
+          "net.bridge.bridge-nf-call-iptables" = if noiptables then 0 else null; # https://serverfault.com/a/964491
+        };
       };
-    };
-    kernelModules = [ "ip_vs" ];
+      kernelModules = [
+        "ip_vs"
+        "addrtype"
+      ];
 
-    blacklistedKernelModules =
-      lib.mkIf
-        (config.networking.nftables.enable && !config.virtualisation.docker.daemon.settings.iptables)
-        [
-          "ip_tables"
-          "ip6_tables"
-        ];
+      blacklistedKernelModules = lib.mkIf noiptables [
+        "ip_tables"
+        "ip6_tables"
+        "br_netfilter" # https://serverfault.com/a/964491
+      ];
+    };
+
+  security = lib.mkIf config.virtualisation.docker.enable {
+    lockKernelModules = false;
   };
 
   users = {
@@ -76,11 +85,7 @@ in
             default-cgroupns-mode = "private";
 
             group = "docker";
-            # userns-remap = "${user}";
-
-            # containerd = "/run/containerd/containerd.sock";
-            containerd-namespace = "docker";
-            containerd-plugins-namespace = "docker-plugins";
+            userns-remap = "${user}";
 
             experimental = true;
             features = {
@@ -89,14 +94,15 @@ in
               containerd-snapshotter = (config.virtualisation.docker.daemon.settings.containerd or null) != null;
             };
 
-            # inherit bridge;
+            # bridge = docker0;
 
             # ip = lib.mkDefault "0.0.0.0";
             # ipv6 = config.networking.enableIPv6;
             ip-masq = true;
-            ip-forward = (toString (config.boot.kernel.sysctl."net.ipv4.ip_forward" or 0)) == "1";
+            ip-forward = (builtins.toString (config.boot.kernel.sysctl."net.ipv4.ip_forward" or 0)) == "1";
 
             dns = [
+              "127.0.0.1"
               "1.1.1.1"
               "1.0.0.1"
               "8.8.8.8"
@@ -114,6 +120,26 @@ in
 
               {
                 base = "10.202.0.0/16";
+                size = 24;
+              }
+
+              {
+                base = "10.0.0.0/24";
+                size = 24;
+              }
+
+              {
+                base = "10.0.1.0/24";
+                size = 24;
+              }
+
+              {
+                base = "10.0.2.0/24";
+                size = 24;
+              }
+
+              {
+                base = "10.0.3.0/24";
                 size = 24;
               }
             ];
@@ -142,129 +168,139 @@ in
               tlsverify = true;
             }
           )
+
+          (lib.mkIf config.virtualisation.containerd.enable {
+            containerd = config.virtualisation.containerd.settings.grpc.address;
+            containerd-namespace = "docker";
+            containerd-plugins-namespace = "docker-plugins";
+          })
         ];
       };
     };
   };
 
-  networking = lib.mkIf config.virtualisation.docker.enable {
-    firewall = {
-      trustedInterfaces = [ bridge ];
+  networking =
+    let
+      bridge = config.virtualisation.docker.daemon.settings.bridge or "bridge0";
+    in
+    lib.mkIf config.virtualisation.docker.enable {
+      firewall = {
+        trustedInterfaces = [ bridge ];
 
-      # https://unix.stackexchange.com/a/657786
-      extraCommands = lib.mkIf (!config.networking.nftables.enable) ''
-        iptables -N DOCKER-USER
-        iptables -I DOCKER-USER 1 -j MARK --set-mark ${mark.docker}
-        iptables -I DOCKER-USER 2 -m physdev --physdev-is-bridged -j MARK --set-mark ${mark.bridge}
-        iptables -A FORWARD -m mark --mark ${mark.docker} -j MARK --set-mark 0
-        iptables -A FORWARD -j ACCEPT
-      '';
-    };
+        # https://unix.stackexchange.com/a/657786
+        extraCommands = lib.mkIf (!config.networking.nftables.enable) ''
+          iptables -N DOCKER-USER
+          iptables -I DOCKER-USER 1 -j MARK --set-mark ${mark.docker}
+          iptables -I DOCKER-USER 2 -m physdev --physdev-is-bridged -j MARK --set-mark ${mark.bridge}
+          iptables -A FORWARD -m mark --mark ${mark.docker} -j MARK --set-mark 0
+          iptables -A FORWARD -j ACCEPT
+        '';
+      };
 
-    nftables = {
-      tables = {
-        docker-filter = {
-          enable = false;
+      nftables = {
+        tables = {
+          docker-filter = {
+            enable = false;
 
-          name = "filter";
-          family = "inet";
+            name = "filter";
+            family = "inet";
 
-          content = ''
-            chain forward {
-                type filter hook forward priority 10; policy drop;
-                meta mark ${mark.bridge} counter accept
-                meta mark ${mark.docker} counter jump dockercase
-            }
+            content = ''
+              chain forward {
+                  type filter hook forward priority 10; policy drop;
+                  meta mark ${mark.bridge} counter accept
+                  meta mark ${mark.docker} counter jump dockercase
+              }
 
-            chain dockercase {
-                ${
-                  (lib.lists.foldr (a: b: ''
-                    ${a}
-                    ${b}'') "")
-                  (
-                    builtins.map (iface: ''
-                      # iif ${iface} ip saddr != 192.168.0.0/16 counter drop
-                    '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
-                  )
-                }
-                counter accept
-            }
-
-            chain input {
-                type filter hook input priority 0; policy drop;
-                ct state related,established accept
-                iif lo accept
-                ${
-                  (lib.lists.foldr (a: b: ''
-                    ${a}
-                    ${b}'') "")
-                  (
-                    builtins.map (iface: ''
-                      # iif ${iface} icmp type echo-request accept
-                      # iif ${iface} ip 192.168.0.0/16 tcp dport 22 accept
-                      # iif ${iface} ip 192.168.0.0/16 tcp dport 80 accept
-                      # iif ${iface} ip 192.168.0.0/16 tcp dport 443 accept
-                    '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
-                  )
-                }
-            }
-
-            chain output {
-                type filter hook output priority 0; policy drop;
-                ct state related,established accept
-                oif lo accept
-                udp dport { 53, 123 } accept
-                tcp dport { 53, 80, 443 } accept
-                icmp type echo-request accept
-            }
-          '';
-        };
-
-        docker-nat = {
-          enable = false;
-
-          name = "nat";
-          family = "inet";
-
-          content = ''
-            chain prerouting {
-                type nat hook prerouting priority dstnat;
-                ${
-                  (lib.lists.foldr (a: b: ''
-                    ${a}
-                    ${b}'') "")
-                  (
-                    lib.lists.flatten (
-                      builtins.map
-                        (
-                          port:
-                          builtins.map (ip: "tcp dport ${builtins.toString port} dnat ip to ${ip}") (
-                            builtins.map (
-                              x: builtins.elemAt (builtins.match "^(.+)/[[:digit:]]+$" x.base) 0
-                            ) config.virtualisation.docker.daemon.settings.default-address-pools
-                            ++ [
-                              config.virtualisation.docker.daemon.settings.bip
-                            ]
-                          )
-                        )
-                        [
-                          80
-                          443
-                        ]
+              chain dockercase {
+                  ${
+                    (lib.lists.foldr (a: b: ''
+                      ${a}
+                      ${b}'') "")
+                    (
+                      builtins.map (iface: ''
+                        # iif ${iface} ip saddr != 192.168.0.0/16 counter drop
+                      '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
                     )
-                  )
-                }
-            }
+                  }
+                  counter accept
+              }
 
-            chain postrouting {
-                type nat hook postrouting priority srcnat;
-                masquerade
-            }
-          '';
+              chain input {
+                  type filter hook input priority 0; policy drop;
+                  ct state related,established accept
+                  iif lo accept
+                  ${
+                    (lib.lists.foldr (a: b: ''
+                      ${a}
+                      ${b}'') "")
+                    (
+                      builtins.map (iface: ''
+                        # iif ${iface} icmp type echo-request accept
+                        # iif ${iface} ip 192.168.0.0/16 tcp dport 22 accept
+                        # iif ${iface} ip 192.168.0.0/16 tcp dport 80 accept
+                        # iif ${iface} ip 192.168.0.0/16 tcp dport 443 accept
+                      '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
+                    )
+                  }
+              }
+
+              chain output {
+                  type filter hook output priority 0; policy drop;
+                  ct state related,established accept
+                  oif lo accept
+                  udp dport { 53, 123 } accept
+                  tcp dport { 53, 80, 443 } accept
+                  icmp type echo-request accept
+              }
+            '';
+          };
+
+          docker-nat = {
+            enable = false;
+
+            name = "nat";
+            family = "inet";
+
+            content = ''
+              chain prerouting {
+                  type nat hook prerouting priority dstnat;
+                  ${
+                    (lib.lists.foldr (a: b: ''
+                      ${a}
+                      ${b}'') "")
+                    (
+                      lib.lists.flatten (
+                        builtins.map
+                          (
+                            port:
+                            builtins.map (ip: "tcp dport ${builtins.toString port} dnat ip to ${ip}") (
+                              builtins.map (
+                                x: builtins.elemAt (builtins.match "^(.+)/[[:digit:]]+$" x.base) 0
+                              ) config.virtualisation.docker.daemon.settings.default-address-pools
+                              ++ [
+                                config.virtualisation.docker.daemon.settings.bip
+                              ]
+                            )
+                          )
+                          [
+                            80
+                            443
+                          ]
+                      )
+                    )
+                  }
+              }
+
+              chain postrouting {
+                  type nat hook postrouting priority srcnat;
+                  masquerade
+              }
+            '';
+          };
         };
       };
     };
-  };
 
   systemd = {
     packages = with pkgs; [

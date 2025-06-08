@@ -6,10 +6,10 @@
 }:
 {
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_13;
+    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_14;
 
     zfs = {
-      # package = config.boot.kernelPackages.zfs_unstable;
+      # package = config.boot.kernelPackages.zfs_unstable or pkgs.zfs_unstable;
       package = pkgs.zfs_unstable;
 
       removeLinuxDRM = false;

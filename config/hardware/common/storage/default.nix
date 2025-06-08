@@ -37,7 +37,7 @@
         "exec"
         "users"
         "x-gvfs-show"
-        "x-systemd.automount"
+        # "x-systemd.automount"
       ];
     };
   };

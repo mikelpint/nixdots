@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home = {
-    packages = with pkgs; [ texliveFull ];
+    packages = with pkgs; [
+      texliveFull
+      inkscape
+    ];
   };
 }

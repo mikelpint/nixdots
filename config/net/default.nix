@@ -2,6 +2,7 @@
   pkgs,
   self,
   user,
+  lib,
   ...
 }:
 {
@@ -35,9 +36,15 @@
     };
   };
 
-  networking = {
-    hosts = { };
-  };
+  networking = lib.mkMerge [
+    {
+      hosts = { };
+    }
+
+    # (lib.mkIf (builtins.isString machineId) {
+    #   hostId = builtins.substring 0 7 machineId;
+    # })
+  ];
 
   environment = {
     systemPackages = with pkgs; [

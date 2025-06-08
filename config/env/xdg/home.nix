@@ -2,6 +2,7 @@
   osConfig,
   config,
   user,
+  pkgs,
   ...
 }:
 {
@@ -9,6 +10,12 @@
     sessionVariables = {
       LESSHISTFILE = "$XDG_CACHE_HOME/less.history";
     };
+
+    packages = with pkgs; [
+      xdg-utils
+      xdg-user-dirs
+      xdg-user-dirs-gtk
+    ];
   };
 
   xdg = {

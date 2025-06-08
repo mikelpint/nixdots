@@ -1,10 +1,10 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 {
   home = {
     packages = [
       (pkgs.writeShellScriptBin "hyprsetup_wallpaper" ''
-        systemctl start --user swww
-        ${inputs.swww.packages.${pkgs.system}.swww or pkgs.swww}/bin/swww restore
+        systemctl restart --user swww
+        systemctl restart --user wallpaper
       '')
     ];
   };

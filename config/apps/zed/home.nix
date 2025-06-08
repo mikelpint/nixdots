@@ -175,6 +175,20 @@
               includeInlayEnumMemberValueHints = true;
             };
           };
+
+          texlab = {
+            binary = {
+              path = "${lib.getBin pkgs.texlab}/bin/texlab";
+            };
+
+            settings = {
+              texlab = {
+                build = {
+                  onSave = false;
+                };
+              };
+            };
+          };
         };
 
         languages = {
