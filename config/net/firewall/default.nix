@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   boot = {
     kernel = {
@@ -43,8 +44,8 @@
       logReversePathDrops = true;
       logRefusedUnicastsOnly = true;
 
-      allowPing = false;
-      pingLimit = "2/minute burst 5 packets";
+      allowPing = lib.mkDefault false;
+      pingLimit = lib.mkDefault "2/minute burst 5 packets";
 
       allowedTCPPorts = [
         80
@@ -53,9 +54,9 @@
       ];
       allowedUDPPorts = [ 53 ];
 
-      filterForward = true;
+      filterForward = lib.mkDefault true;
 
-      rejectPackets = false;
+      rejectPackets = lib.mkDefault false;
     };
   };
 

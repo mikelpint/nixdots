@@ -111,7 +111,7 @@
 
   networking = lib.mkIf config.services.tailscale.enable {
     firewall = {
-      checkReversePath = "loose";
+      checkReversePath = lib.mkDefault "loose";
       trustedInterfaces = [ config.services.tailscale.interfaceName ];
 
       allowedTCPPorts = [

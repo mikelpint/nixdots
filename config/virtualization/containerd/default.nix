@@ -1,7 +1,7 @@
 {
   virtualisation = {
     containerd = {
-      enable = lib.mkDefault true;
+      enable = true;
 
       settings = {
         grpc = {

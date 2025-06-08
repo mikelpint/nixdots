@@ -9,10 +9,19 @@
 }:
 
 let
+  # https://unix.stackexchange.com/a/657786
   mark = {
     bridge = "0x10ca1";
     docker = "0xd0cca5e";
   };
+
+  extraCommands = ''
+    # iptables -N DOCKER-USER
+    iptables -I DOCKER-USER 1 -j MARK --set-mark ${mark.docker}
+    iptables -I DOCKER-USER 2 -m physdev --physdev-is-bridged -j MARK --set-mark ${mark.bridge}
+    iptables -A FORWARD -fm mark --mark ${mark.docker} -j MARK --set-mark 0
+    iptables -A FORWARD -j ACCEPT
+  '';
 in
 {
   boot =
@@ -33,6 +42,7 @@ in
           "net.bridge.bridge-nf-call-iptables" = if noiptables then 0 else null; # https://serverfault.com/a/964491
         };
       };
+
       kernelModules = [
         "ip_vs"
         "addrtype"
@@ -49,13 +59,17 @@ in
     lockKernelModules = false;
   };
 
-  users = {
-    users = {
-      "${user}" = {
-        extraGroups = [ config.virtualisation.docker.daemon.settings.group ];
+  users =
+    let
+      inherit (config.virtualisation.docker.daemon.settings) group;
+    in
+    lib.mkIf (builtins.isString group) {
+      users = {
+        "${user}" = {
+          extraGroups = [ group ];
+        };
       };
     };
-  };
 
   virtualisation = {
     docker = {
@@ -76,7 +90,14 @@ in
           {
             live-restore = true;
 
+            # storage-driver = lib.mkDefault (
+            #   if config.virtualisation.docker.daemon.settings.features.containerd-snapshotter then
+            #     "overlayfs"
+            #   else
+            #     "overlay2"
+            # );
             storage-driver = lib.mkDefault "overlay2";
+            data-root = lib.mkDefault "/var/lib/docker";
 
             selinux-enabled = !config.security.apparmor.enable;
 
@@ -85,31 +106,32 @@ in
             default-cgroupns-mode = "private";
 
             group = "docker";
-            userns-remap = "${user}";
+            # userns-remap = "${user}";
 
             experimental = true;
             features = {
               buildkit = true;
               cdi = true;
-              containerd-snapshotter = (config.virtualisation.docker.daemon.settings.containerd or null) != null;
+              # containerd-snapshotter = (config.virtualisation.docker.daemon.settings.containerd or null) != null;
             };
 
-            # bridge = docker0;
+            # bridge = "docker0";
 
             # ip = lib.mkDefault "0.0.0.0";
             # ipv6 = config.networking.enableIPv6;
+            # default-gateway = lib.mkDefault (
+            # config.virtualisation.docker.daemon.settings.bip or config.networking.defaultGateway.address or null
+            # );
             ip-masq = true;
             ip-forward = (builtins.toString (config.boot.kernel.sysctl."net.ipv4.ip_forward" or 0)) == "1";
 
-            dns = [
-              "127.0.0.1"
+            dns = lib.mkDefault [
               "1.1.1.1"
               "1.0.0.1"
               "8.8.8.8"
               "8.8.4.4"
-            ]
-            # config.networking.nameservers
-            ;
+            ];
+            # dns = lib.mkDefault config.networking.nameservers;
 
             bip = "10.200.0.1/24";
             default-address-pools = [
@@ -144,8 +166,10 @@ in
               }
             ];
 
-            iptables = !config.networking.nftables.enable;
-            ip6tables = !config.networking.nftables.enable;
+            # iptables = !config.networking.nftables.enable;
+            # ip6tables = !config.networking.nftables.enable;
+            iptables = true;
+            ip6tables = true;
 
             default-shm-size = "64M";
             default-ulimits = {
@@ -156,18 +180,15 @@ in
               };
             };
 
-            debug = true;
+            debug = lib.mkDefault true;
           }
 
-          (lib.mkIf
-            (false && (builtins.hasAttr "domain" config.networking) && config.networking.domain != null)
-            {
-              tls = true;
-              tlscert = config.age.secrets."${config.networking.domain}.crt".path;
-              tlskey = config.age.secrets."${config.networking.domain}.key".path;
-              tlsverify = true;
-            }
-          )
+          (lib.mkIf ((builtins.hasAttr "domain" config.networking) && config.networking.domain != null) {
+            tls = true;
+            tlscert = config.age.secrets."${config.networking.domain}.crt".path;
+            tlskey = config.age.secrets."${config.networking.domain}.key".path;
+            tlsverify = true;
+          })
 
           (lib.mkIf config.virtualisation.containerd.enable {
             containerd = config.virtualisation.containerd.settings.grpc.address;
@@ -181,33 +202,38 @@ in
 
   networking =
     let
-      bridge = config.virtualisation.docker.daemon.settings.bridge or "bridge0";
+      bridge = config.virtualisation.docker.daemon.settings.bridge or "docker0";
+      inherit (config.virtualisation.docker.daemon.settings) bip;
+      interfaces =
+        # config.networking.firewall.trustedInterfaces ++
+        [
+          "wifi"
+          "eth"
+        ];
     in
     lib.mkIf config.virtualisation.docker.enable {
       firewall = {
         trustedInterfaces = [ bridge ];
+        checkReversePath = lib.mkForce false;
+        filterForward = false;
 
         # https://unix.stackexchange.com/a/657786
-        extraCommands = lib.mkIf (!config.networking.nftables.enable) ''
-          iptables -N DOCKER-USER
-          iptables -I DOCKER-USER 1 -j MARK --set-mark ${mark.docker}
-          iptables -I DOCKER-USER 2 -m physdev --physdev-is-bridged -j MARK --set-mark ${mark.bridge}
-          iptables -A FORWARD -m mark --mark ${mark.docker} -j MARK --set-mark 0
-          iptables -A FORWARD -j ACCEPT
-        '';
+        extraCommands = lib.mkIf (
+          !config.networking.nftables.enable && config.virtualisation.docker.daemon.settings.iptables
+        ) extraCommands;
       };
 
       nftables = {
         tables = {
           docker-filter = {
-            enable = false;
+            enable = true;
 
             name = "filter";
             family = "inet";
 
             content = ''
               chain forward {
-                  type filter hook forward priority 10; policy drop;
+                  type filter hook forward priority filter + 10; policy drop;
                   meta mark ${mark.bridge} counter accept
                   meta mark ${mark.docker} counter jump dockercase
               }
@@ -219,8 +245,8 @@ in
                       ${b}'') "")
                     (
                       builtins.map (iface: ''
-                        # iif ${iface} ip saddr != 192.168.0.0/16 counter drop
-                      '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
+                        iifname "${iface}" ip saddr != ${bip} counter drop
+                      '') (builtins.filter (iface: iface != bridge) interfaces)
                     )
                   }
                   counter accept
@@ -236,11 +262,11 @@ in
                       ${b}'') "")
                     (
                       builtins.map (iface: ''
-                        # iif ${iface} icmp type echo-request accept
-                        # iif ${iface} ip 192.168.0.0/16 tcp dport 22 accept
-                        # iif ${iface} ip 192.168.0.0/16 tcp dport 80 accept
-                        # iif ${iface} ip 192.168.0.0/16 tcp dport 443 accept
-                      '') (builtins.filter (iface: iface != bridge) config.networking.firewall.trustedInterfaces)
+                        iifname "${iface}" icmp type echo-request accept
+                        iifname "${iface}" ip saddr ${bip} tcp dport 22 accept
+                        iifname "${iface}" ip saddr ${bip} tcp dport 80 accept
+                        iifname "${iface}" ip saddr ${bip} tcp dport 443 accept
+                      '') (builtins.filter (iface: iface != bridge) interfaces)
                     )
                   }
               }
@@ -303,8 +329,47 @@ in
     };
 
   systemd = {
-    packages = with pkgs; [
-      (writeTextFile {
+    packages = [
+      (pkgs.writeTextFile {
+        name = "docker-mark";
+        destination = "/etc/systemd/system/docker.service.d/mark.conf";
+
+        text =
+          if config.virtualisation.docker.daemon.settings.iptables then
+            ''
+              [Service]
+              PrivateNetwork=yes
+              PrivateMounts=No
+
+              ${lib.strings.concatLines (
+                builtins.map
+                  (
+                    cmd:
+                    "ExecStartPre=-${
+                      if (builtins.match "^ip6?tables[[:blank:]].*" cmd) != null then
+                        "${pkgs.iptables}/bin/${cmd}"
+                      else
+                        cmd
+                    }"
+                  )
+                  (
+                    builtins.filter (cmd: (builtins.match "^[[:blank:]]*#.*" cmd) == null) (
+                      lib.strings.splitString "\n" extraCommands
+                    )
+                  )
+              )}
+            ''
+          else
+            ''
+              [Service]
+              PrivateNetwork=No
+              PrivateMounts=No
+
+              ExecStartPre=-${pkgs.runtimeShell} -c "true"
+            '';
+      })
+
+      (pkgs.writeTextFile {
         name = "docker-netns";
         destination = "/etc/systemd/system/docker.service.d/netns.conf";
 

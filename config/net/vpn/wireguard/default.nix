@@ -105,7 +105,7 @@ in
     in
     {
       wireguard = {
-        enable = true;
+        enable = false;
 
         interfaces = builtins.mapAttrs (
           name: value:

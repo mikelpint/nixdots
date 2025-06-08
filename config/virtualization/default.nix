@@ -1,5 +1,6 @@
 {
   imports = [
+    ./containerd
     ./docker
     ./kvm
     ./libvirtd

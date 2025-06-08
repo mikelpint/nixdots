@@ -90,7 +90,7 @@ in
           name = "nat";
           family = "ip6";
           content = ''
-            chain OUTPUT {
+            chain output {
               type nat hook prerouting priority -100; policy accept;
               tcp dport 53 redirect to :${toString port}
             }

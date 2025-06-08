@@ -166,7 +166,7 @@ in
   };
 
   networking = {
-    enableIPv6 = lib.mkForce true;
+    enableIPv6 = lib.mkForce config.networking.wireguard.enable;
 
     wg-quick = lib.mkIf false {
       interfaces = builtins.mapAttrs (

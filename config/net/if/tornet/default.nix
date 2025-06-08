@@ -75,7 +75,7 @@ in
       };
     };
 
-    nftables = {
+    nftables = lib.mkIf enable {
       tables = {
         tornet-filter = {
           enable = true;
