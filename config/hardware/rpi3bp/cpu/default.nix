@@ -1,1 +1,1 @@
-_: { import = [ ./turbo ]; }
+_: { imports = [ ./turbo ]; }

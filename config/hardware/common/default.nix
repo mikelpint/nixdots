@@ -7,6 +7,7 @@
     ./input
     ./memory
     ./output
+    ./power
     ./storage
     ./usb
   ];
