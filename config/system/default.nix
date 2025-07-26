@@ -15,6 +15,7 @@
     ./lsof
     ./nix-ld
     ./nmap
+    ./ssl
   ];
 
   system = {

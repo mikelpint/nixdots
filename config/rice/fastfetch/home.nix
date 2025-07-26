@@ -1,123 +1,120 @@
 { pkgs, ... }:
 {
-  home = {
-    packages = with pkgs; [ fastfetch ];
+  programs = {
+    fastfetch = {
+      enable = true;
+      package = pkgs.fastfetch;
 
-    file = {
-      ".config/fastfetch/config.jsonc" = {
-        text = ''
+      settings = {
+        display = {
+          color = "white";
+
+          key = {
+            width = 6;
+          };
+
+          percent = {
+            color = {
+              green = "white";
+              red = "white";
+              yellow = "white";
+            };
+          };
+          separator = "";
+        };
+
+        logo = {
+          source = "NixOs";
+          type = "builtin";
+        };
+
+        modules = [
           {
-              "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-
-              "logo": {
-                  "type": "builtin",
-                  "source": "NixOs"
-              },
-
-              "display": {
-                  "separator": "",
-                  "key": {
-                    "width": 6
-                  },
-                  "color": "white",
-                  "percent": {
-                      "color": {
-                          "green": "white",
-                          "yellow": "white",
-                          "red": "white"
-                      }
-                  }
-              },
-
-              "modules": [
-                  {
-                      "type": "board",
-                      "key": "╭ "
-                  },
-
-                  {
-                      "type": "cpu",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "memory",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "gpu",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "disk",
-                      "folders": "/",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "battery",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "poweradapter",
-                      "key": "├ ﮣ"
-                  },
-
-                  {
-                      "type": "display",
-                      "key": "╰ 󱡶",
-                      "compactType": "original-with-refresh-rate"
-                  },
-
-                  "break",
-
-                  {
-                      "type": "os",
-                      "key": "╭ "
-                  },
-
-                  {
-                      "type": "kernel",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "wm",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "shell",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "terminal",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "packages",
-                      "key": "├ "
-                  },
-
-                  {
-                      "type": "uptime",
-                      "key": "╰ "
-                  },
-
-                  "break",
-
-                  {
-                      "type": "colors",
-                      "symbol": "circle"
-                  }
-              ]
+            key = "╭ ";
+            type = "board";
           }
-        '';
+
+          {
+            key = "├ ";
+            type = "cpu";
+          }
+
+          {
+            key = "├ ";
+            type = "memory";
+          }
+
+          {
+            key = "├ ";
+            type = "gpu";
+          }
+
+          {
+            folders = "/";
+            key = "├ ";
+            type = "disk";
+          }
+
+          {
+            key = "├ ";
+            type = "battery";
+          }
+
+          {
+            key = "├ ﮣ";
+            type = "poweradapter";
+          }
+
+          {
+            compactType = "original-with-refresh-rate";
+            key = "╰ 󱡶";
+            type = "display";
+          }
+
+          "break"
+
+          {
+            key = "╭ ";
+            type = "os";
+          }
+
+          {
+            key = "├ ";
+            type = "kernel";
+          }
+
+          {
+            key = "├ ";
+            type = "wm";
+          }
+
+          {
+            key = "├ ";
+            type = "shell";
+          }
+
+          {
+            key = "├ ";
+            type = "terminal";
+          }
+
+          {
+            key = "├ ";
+            type = "packages";
+          }
+
+          {
+            key = "╰ ";
+            type = "uptime";
+          }
+
+          "break"
+
+          {
+            symbol = "circle";
+            type = "colors";
+          }
+        ];
       };
     };
   };

@@ -1,13 +1,22 @@
+{ lib, user, ... }:
 {
   hardware = {
     cpu = {
       amd = {
         sev = {
-          enable = true;
+          enable = lib.mkDefault true;
 
           user = "root";
           group = "sev";
         };
+      };
+    };
+  };
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [ "sev" ];
       };
     };
   };

@@ -1,3 +1,4 @@
+{ config, lib, ... }:
 {
   "clock" = {
     interval = 1;
@@ -16,13 +17,51 @@
 
       on-scroll = 1;
 
-      format = {
-        months = "<span color='#f4dbd6'><b>{}</b></span>";
-        days = "<span color='#f5bde6'><b>{}</b></span>";
-        weeks = "<span color='#8bd5ca'><b>W{}</b></span>";
-        weekdays = "<span color='#eed49f'><b>{}</b></span>";
-        today = "<span color='#ed8796'><b>{}</b></span>";
-      };
+      format = lib.mkIf config.catppuccin.enable (
+        let
+          colors = {
+            latte = {
+              rosewater = "dc8a78";
+              pink = "ea76cb";
+              teal = "179299";
+              yellow = "df8e1d";
+              red = "d20f39";
+            };
+
+            frappe = {
+              rosewater = "f2d5cf";
+              pink = "f4b8e4";
+              teal = "81c8be";
+              yellow = "e5c890";
+              red = "e78284";
+            };
+
+            macchiato = {
+              rosewater = "f4dbd6";
+              pink = "f5bde6";
+              teal = "8bd5ca";
+              yellow = "eed49f";
+              red = "ed8796";
+            };
+
+            mocha = {
+              rosewater = "f5e0dc";
+              pink = "f5c2e7";
+              teal = "94e2d5";
+              yellow = "f9e2af";
+              red = "f38ba8";
+            };
+          };
+          inherit (config.catppuccin) flavor;
+        in
+        {
+          months = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Rosewater
+          days = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Pink
+          weeks = "<span color='#${colors."${flavor}".rosewater}'><b>W{}</b></span>"; # Teal
+          weekdays = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Yellow
+          today = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Red
+        }
+      );
     };
 
     actions = {

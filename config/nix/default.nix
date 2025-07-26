@@ -14,6 +14,7 @@
     ./gc
     ./lang
     ./manix
+    ./nh
     ./pkgs
     ./store
   ];

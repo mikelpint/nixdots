@@ -1,8 +1,15 @@
-{ lib, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  user,
+  ...
+}:
 {
   hardware = {
     bluetooth = {
       enable = true;
+      package = pkgs.bluez;
       powerOnBoot = lib.mkDefault true;
 
       settings = {
@@ -24,9 +31,17 @@
     };
   };
 
-  services = {
+  services = lib.mkIf (config.hardware.bluetooth.enable or false) {
     blueman = {
       enable = true;
+    };
+  };
+
+  users = lib.mkIf (config.hardware.bluetooth.enable or false) {
+    users = {
+      "${user}" = {
+        extraGroups = [ "bluetooth" ];
+      };
     };
   };
 }

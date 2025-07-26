@@ -1,9 +1,31 @@
 {
+  pkgs,
+  user,
+  config,
+  lib,
+  ...
+}:
+{
   virtualisation = {
     virtualbox = {
       host = {
-        enable = true;
-        enableExtensionPack = true;
+        enable = lib.mkDefault true;
+        package = pkgs.virtualbox;
+        enableExtensionPack = lib.mkDefault (config.nixpkgs.config.allowUnfree or false);
+        addNetworkInterface = lib.mkDefault (!(config.virtualisation.virtualbox.host.enableKvm or false));
+        enableHardening = true;
+        headless = lib.mkDefault false;
+      };
+    };
+  };
+
+  users = lib.mkIf config.virtualisation.virtualbox.host.enable {
+    users = {
+      "${user}" = {
+        extraGroups = [
+          "vboxsf"
+          "vboxusers"
+        ];
       };
     };
   };

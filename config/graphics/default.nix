@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, user, ... }:
 {
   imports = [
     ./hidpi
+    ./wayland
     ./x
     ./xdg
   ];
@@ -17,5 +18,16 @@
       ffmpeg
       SDL2
     ];
+  };
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [
+          "render"
+          "video"
+        ];
+      };
+    };
   };
 }

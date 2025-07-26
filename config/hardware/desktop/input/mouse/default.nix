@@ -1,4 +1,10 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  user,
+  ...
+}:
 {
   hardware = {
     openrazer = {
@@ -17,7 +23,15 @@
     };
   };
 
-  boot = {
+  users = lib.mkIf config.hardware.openrazer.enable {
+    users = {
+      "${user}" = {
+        extraGroups = [ "openrazer" ];
+      };
+    };
+  };
+
+  boot = lib.mkIf config.hardware.openrazer.enable {
     kernelModules = [ "openrazer" ];
     extraModulePackages = with config.boot.kernelPackages; [ openrazer ];
   };
@@ -30,7 +44,7 @@
     ];
   };
 
-  services = {
+  services = lib.mkIf config.hardware.openrazer.enable {
     udev = {
       packages = with pkgs; [ openrazer-daemon ];
     };

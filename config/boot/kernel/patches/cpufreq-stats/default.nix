@@ -14,7 +14,7 @@
               CONFIG_CPU_FREQ_STAT = yes;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

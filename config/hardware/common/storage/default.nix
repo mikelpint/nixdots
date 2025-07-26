@@ -1,5 +1,6 @@
 {
   lib,
+  user,
   ...
 }:
 {
@@ -39,6 +40,20 @@
         "x-gvfs-show"
         # "x-systemd.automount"
       ];
+    };
+  };
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [
+          "cdrom"
+          "floppy"
+          "plugdev"
+          "storage"
+          "tape"
+        ];
+      };
     };
   };
 }

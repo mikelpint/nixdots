@@ -1,8 +1,18 @@
-{ user, ... }:
+{ user, config, ... }:
 {
   users = {
     users = {
       "${user}" = { };
+    };
+  };
+
+  home-manager = {
+    users = {
+      root = {
+        home = {
+          inherit (config.system) stateVersion;
+        };
+      };
     };
   };
 

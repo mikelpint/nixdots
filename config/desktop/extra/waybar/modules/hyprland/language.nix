@@ -1,4 +1,4 @@
-{
+_: {
   "hyprland/language" = {
     format = "{}";
     format-en = "US";

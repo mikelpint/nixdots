@@ -14,7 +14,7 @@
               CONFIG_TUN = yes;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

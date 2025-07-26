@@ -7,4 +7,8 @@
       ];
     };
   };
+
+  environment = {
+    defaultPackages = [ ];
+  };
 }

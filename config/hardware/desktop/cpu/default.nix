@@ -1,7 +1,5 @@
 {
   config,
-  lib,
-  pkgs,
   ...
 }:
 
@@ -9,21 +7,9 @@
   imports = [
     ../../common/cpu/vendor/amd
     ../../common/cpu/realtime
-  ];
 
-  nixpkgs = {
-    overlays = [
-      (_self: _super: {
-        preempt = pkgs.linuxPackagesFor (
-          config.boot.kernelPackages.kernel.override {
-            structuredExtraConfig = with lib.kernel; {
-              CONFIG_PREEMPT = yes;
-            };
-          }
-        );
-      })
-    ];
-  };
+    ../../../boot/kernel/patches/preempt
+  ];
 
   boot = {
     extraModulePackages = [ config.boot.kernelPackages.kernel ];

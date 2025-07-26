@@ -6,16 +6,12 @@
   ...
 }:
 let
-  inherit
-    (
-      if config.programs.hyprland.enable then
-        inputs.hyprland.inputs.nixpkgs.legacyPackages."${pkgs.system}"
-      else
-        pkgs
-    )
-    mesa
-    pkgsi686Linux
-    ;
+  packages =
+    if config.programs.hyprland.enable or false then
+      inputs.hyprland.inputs.nixpkgs.legacyPackages."${pkgs.system}"
+    else
+      pkgs;
+  inherit (packages) mesa pkgsi686Linux;
 in
 {
   imports = [
@@ -31,41 +27,44 @@ in
       enable = true;
       enable32Bit = true;
 
-      extraPackages = with pkgs; [
-        mesa
+      extraPackages =
+        with pkgs;
+        with packages;
+        [
+          vaapiVdpau
+          libva
+          libvdpau
+          libvdpau-va-gl
+          libva-vdpau-driver
 
-        vaapiVdpau
-        libva
-        libvdpau
-        libvdpau-va-gl
-        libva-vdpau-driver
+          egl-wayland
 
-        egl-wayland
+          libGL
+          libGLU
 
-        libGL
-        libGLU
-
-        vulkan-loader
-        #vulkan-validation-layers
-        vulkan-extension-layer
-      ];
+          vulkan-loader
+          #vulkan-validation-layers
+          vulkan-extension-layer
+        ]
+        ++ (lib.optional (builtins.hasAttr "package" config.hardware.graphics) config.hardware.graphics.package);
 
       extraPackages32 =
-        with pkgsi686Linux;
+        with packages;
         with driversi686Linux;
         [
-          pkgsi686Linux.mesa
           libva
           libvdpau
           libva-vdpau-driver
-        ];
+        ]
+        ++ (lib.optional (builtins.hasAttr "package32" config.hardware.graphics) config.hardware.graphics.package32);
     };
   };
 
   environment = {
     sessionVariables = {
-      LD_LIBRARY_PATH = lib.mkForce "$LD_LIBRARY_PATH:${
-        pkgs.lib.makeLibraryPath (
+      LD_LIBRARY_PATH = [
+        "$LD_LIBRARY_PATH"
+        (pkgs.lib.makeLibraryPath (
           with pkgs;
           with xorg;
           [
@@ -93,8 +92,9 @@ in
             pcscliteWithPolkit
             #stdenv.cc.cc.lib
           ]
-        )
-      }${if false then ":/run/opengl-driver/lib:/run/opengl-driver-32/lib" else ""}";
+        ))
+      ]
+      ++ (lib.optionals false [ "/run/opengl-driver/lib:/run/opengl-driver-32/lib" ]);
     };
   };
 }

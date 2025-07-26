@@ -33,7 +33,6 @@
             ];
 
           privateTmp = true;
-
         };
       };
     };
@@ -43,12 +42,10 @@
         steam = super.steam.overrideAttrs (old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
 
-          postInstall =
-            (old.postInstall or "")
-            + ''
-              substituteInPlace $out/share/applications/steam.desktop \
-                      --replace "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
-            '';
+          postInstall = (old.postInstall or "") + ''
+            substituteInPlace $out/share/applications/steam.desktop \
+                    --replace "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
+          '';
         });
       })
     ];
@@ -59,7 +56,10 @@
       enable = true;
       package = pkgs.steam;
 
-      extraCompatPackages = with pkgs; [ proton-ge-bin ];
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+        boxtron
+      ];
 
       protontricks = {
         enable = true;

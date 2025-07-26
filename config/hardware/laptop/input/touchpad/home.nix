@@ -1,5 +1,5 @@
 _: {
   imports = [
-    #    ../../../../desktop/hyprland/plugins/hyprgrass
+    ../../../../desktop/hyprland/plugins/hyprgrass/home.nix
   ];
 }

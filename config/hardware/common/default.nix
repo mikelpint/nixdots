@@ -13,7 +13,8 @@
   ];
 
   hardware = {
-    enableAllFirmware = true;
+    enableAllFirmware = lib.mkDefault true;
     enableRedistributableFirmware = lib.mkDefault true;
+    firmwareCompression = lib.mkDefault "zstd";
   };
 }

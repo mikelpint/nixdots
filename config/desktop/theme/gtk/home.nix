@@ -1,19 +1,38 @@
-{ pkgs, config, ... }:
-
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
-  inherit (config.catppuccin) flavor;
-  inherit (config.catppuccin) accent;
+  light = (config.catppucin.enable or false) && (config.catppuccin.flavour or null) == "latte";
 in
 {
-  home = {
-    packages = with pkgs; [
-      gsettings-desktop-schemas
-      dconf-editor
-    ];
+  home =
+    let
+      GTK_THEME = if light then "Adwaita" else "Adwaita-dark";
+    in
+    {
+      sessionVariables = {
+        inherit GTK_THEME;
+      };
 
-    sessionVariables = {
-      GTK_THEME = "Adwaita-dark";
-      # GTK_THEME = "catppuccin-${flavor}-${accent}";
+      packages =
+        with pkgs;
+        [
+          gsettings-desktop-schemas
+          dconf
+          dconf-editor
+        ]
+        ++ (lib.optional (GTK_THEME == "Adwaita" || GTK_THEME == "Adwaita-dark") pkgs.adwaita-icon-theme);
+    };
+
+  dconf = {
+    enable = true;
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-${if light then "light" else "dark"}";
+      };
     };
   };
 
@@ -26,34 +45,14 @@ in
 
     gtk3 = {
       extraConfig = {
-        gtk-application-prefer-dark-theme = true;
+        gtk-application-prefer-dark-theme = !light;
       };
     };
 
     gtk4 = {
       extraConfig = {
-        gtk-application-prefer-dark-theme = true;
+        gtk-application-prefer-dark-theme = !light;
       };
-    };
-  };
-
-  catppuccin = {
-    gtk = {
-      inherit flavor;
-      inherit accent;
-
-      icon = {
-        enable = true;
-
-        inherit flavor;
-        inherit accent;
-      };
-
-      size = "compact";
-      tweaks = [
-        "rimless"
-        "black"
-      ];
     };
   };
 

@@ -2,6 +2,7 @@
   user,
   lib,
   osConfig,
+  config,
   ...
 }:
 {
@@ -21,8 +22,9 @@
 
     nix-index = {
       enable = true;
+
       enableBashIntegration = true;
-      enableZshIntegration = true;
+      enableZshIntegration = config.programs.zsh.enable or false;
     };
   };
 

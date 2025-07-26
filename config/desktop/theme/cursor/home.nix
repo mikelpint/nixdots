@@ -4,10 +4,6 @@
   config,
   ...
 }:
-let
-  flavor = "macchiato";
-  accent = "pink";
-in
 {
   home = {
     pointerCursor = {
@@ -21,7 +17,7 @@ in
         enable = true;
       };
 
-      name = "catppuccin-${flavor}-${accent}-cursors";
+      name = "catppuccin-${config.catppuccin.cursors.flavor}-${config.catppuccin.cursors.accent}-cursors";
       size = 24;
     };
   };
@@ -36,8 +32,7 @@ in
     cursors = {
       enable = true;
 
-      inherit flavor;
-      inherit accent;
+      inherit (config.catppuccin) flavor accent;
     };
   };
 }

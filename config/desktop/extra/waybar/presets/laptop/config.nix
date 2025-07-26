@@ -1,17 +1,19 @@
-_:
-
+{
+  lib,
+  pkgs,
+  config,
+  osConfig,
+  user,
+  ...
+}:
 let
-  "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
-
-  inherit ((import ../../modules/backlight.nix)) backlight;
-  inherit ((import ../../modules/battery.nix)) battery;
-  inherit ((import ../../modules/clock.nix)) clock;
-  inherit ((import ../../modules/cpu.nix)) cpu;
-  inherit ((import ../../modules/disk.nix)) disk;
-  inherit ((import ../../modules/memory.nix)) memory;
-  inherit ((import ../../modules/network.nix)) network;
-  inherit ((import ../../modules/pulseaudio.nix)) pulseaudio;
-  inherit ((import ../../modules/tray.nix)) tray;
+  args = {
+    inherit config;
+    inherit lib;
+    inherit osConfig;
+    inherit pkgs;
+    inherit user;
+  };
 in
 {
   mainBar = {
@@ -37,14 +39,16 @@ in
       "clock"
     ];
 
-    inherit backlight;
-    inherit battery;
-    inherit clock;
-    inherit cpu;
-    inherit disk;
-    inherit memory;
-    inherit network;
-    inherit pulseaudio;
-    inherit tray;
+    "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix args)."hyprland/workspaces";
+
+    inherit ((import ../../modules/backlight.nix args)) backlight;
+    inherit ((import ../../modules/battery.nix args)) battery;
+    inherit ((import ../../modules/clock.nix args)) clock;
+    inherit ((import ../../modules/cpu.nix args)) cpu;
+    inherit ((import ../../modules/disk.nix args)) disk;
+    inherit ((import ../../modules/memory.nix args)) memory;
+    inherit ((import ../../modules/network.nix args)) network;
+    inherit ((import ../../modules/pulseaudio.nix args)) pulseaudio;
+    inherit ((import ../../modules/tray.nix args)) tray;
   };
 }

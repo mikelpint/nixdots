@@ -15,8 +15,11 @@ in
     ./protonvpn
   ];
 
-  environment = {
-    systemPackages = with pkgs; [ wireguard-tools ];
+  environment = lib.mkIf config.networking.wireguard.enable {
+    systemPackages = with pkgs; [
+      wireguard-tools
+      wireguard-ui
+    ];
   };
 
   networking =
@@ -116,6 +119,8 @@ in
           // {
             postSetup = value.postSetup or postSetup;
             preShutdown = value.postSetup or preShutdown;
+
+            peers = builtins.map (peer: { persistentKeepalive = 25; } // peer) value.peers;
           }
         ) (wireguard.interfaces or { });
       };
@@ -141,30 +146,29 @@ in
           ++ (builtins.attrNames (config.networking.wg-quick.interfaces or { }));
       };
 
-      firewall =
-        {
-          logReversePathDrops = true;
-          allowedUDPPorts = ports;
-        }
-        // lib.mkIf (!config.networking.nftables.enable) {
-          extraCommands = lib.strings.concatLines (
-            builtins.map (port: ''
-              iptables  -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
-              iptables  -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
-              ip6tables -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
-              ip6tables -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
-            '') ports
-          );
+      firewall = {
+        logReversePathDrops = true;
+        allowedUDPPorts = ports;
+      }
+      // lib.mkIf (!config.networking.nftables.enable) {
+        extraCommands = lib.strings.concatLines (
+          builtins.map (port: ''
+            iptables  -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
+            iptables  -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
+            ip6tables -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
+            ip6tables -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
+          '') ports
+        );
 
-          extraStopCommands = lib.strings.concatLines (
-            builtins.map (port: ''
-              iptables  -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
-              iptables  -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
-              ip6tables -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
-              ip6tables -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
-            '') ports
-          );
-        };
+        extraStopCommands = lib.strings.concatLines (
+          builtins.map (port: ''
+            iptables  -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
+            iptables  -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
+            ip6tables -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
+            ip6tables -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
+          '') ports
+        );
+      };
 
       nftables = lib.mkIf config.networking.nftables.enable {
         tables = {

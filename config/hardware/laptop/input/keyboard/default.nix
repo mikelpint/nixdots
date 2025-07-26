@@ -14,7 +14,7 @@
 
     udev = {
       extraRules = ''
-        ACTION=="add", SUBSYSTEM=="usb", RUN+="${pkgs.coreutils}/bin/echo auto > /sys/bus/usb/devices/1-3/power/control"
+        ACTION=="add", SUBSYSTEM=="usb", RUN+="${lib.getBin pkgs.coreutils}/bin/echo auto > /sys/bus/usb/devices/1-3/power/control"
       '';
     };
   };

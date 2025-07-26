@@ -1,4 +1,4 @@
-{
+_: {
   "keyboard-state" = {
     format = "{icon}";
     format-icons = {

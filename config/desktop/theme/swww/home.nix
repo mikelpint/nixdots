@@ -47,7 +47,6 @@ in
             Requires = [ "swww.service" ];
             After = [
               "swww.service"
-              "hyprland-session.target"
             ];
             PartOf = [ "swww.service" ];
           };
@@ -55,7 +54,6 @@ in
           Install = {
             WantedBy = [
               "swww.service"
-              "hyprland-session.target"
             ];
           };
 

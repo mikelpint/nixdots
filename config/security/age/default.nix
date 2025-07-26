@@ -67,7 +67,8 @@ in
         depends = [
           "/run"
           "/tmp"
-        ] ++ paths;
+        ]
+        ++ paths;
       };
     }
     // (builtins.listToAttrs (

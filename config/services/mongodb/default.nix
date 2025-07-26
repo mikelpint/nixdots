@@ -11,11 +11,9 @@ in
         "${package}" = super.${package}.overrideAttrs (old: {
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
 
-          postInstall =
-            (old.postInstall or "")
-            + ''
-              wrapProgram $out/bin/mongod --set GLIBC_TUNABLES="glibc.pthread.rseq=0"
-            '';
+          postInstall = (old.postInstall or "") + ''
+            wrapProgram $out/bin/mongod --set GLIBC_TUNABLES="glibc.pthread.rseq=0"
+          '';
         });
       })
     ];
@@ -63,7 +61,7 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''
-            /bin/sh -c 'echo always | tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null && echo defer+madvise | tee /sys/kernel/mm/transparent_hugepage/defrag > /dev/null && echo 0 | tee /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none > /dev/null && echo 1 | tee /proc/sys/vm/overcommit_memory > /dev/null'
+            ${lib.getBin pkgs.bashInteractive}/bin/sh -c 'echo always | ${lib.getBin pkgs.coreutils}/bin/tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null && echo defer+madvise | tee /sys/kernel/mm/transparent_hugepage/defrag > /dev/null && echo 0 | tee /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none > /dev/null && echo 1 | tee /proc/sys/vm/overcommit_memory > /dev/null'
           '';
         };
 

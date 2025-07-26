@@ -1,27 +1,45 @@
-{ lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  osConfig,
+  ...
+}:
 {
   programs = {
     fzf = {
       enable = true;
-      enableZshIntegration = true;
+
+      enableZshIntegration = config.programs.zsh.enable or false;
+
       tmux = {
         enableShellIntegration = true;
       };
+    };
 
-      colors = lib.mkForce {
-        bg = "-1";
-        "bg+" = "-1";
-        hl = "#ed8796";
-        "hl+" = "#ed8796";
-        fg = "#cad3f5";
-        "fg+" = "#cad3f5";
-        header = "#ed8796";
-        info = "#c6a0f6";
-        pointer = "#f4dbd6";
-        marker = "#f4dbd6";
-        prompt = "#c6a0f6";
-        spinner = "#f4dbd6";
+    zsh = lib.mkIf (config.programs.fzf.enable or osConfig.programs.fzf.enable or false) {
+      oh-my-zsh = {
+        plugins = [ "fzf" ];
       };
+
+      plugins = with pkgs; [
+        {
+          name = "fzf-tab";
+          file = "fzf-tab.plugin.zsh";
+          src = fetchFromGitHub {
+            owner = "Aloxaf";
+            repo = "fzf-tab";
+            rev = "fc6f0dcb2d5e41a4a685bfe9af2f2393dc39f689";
+            sha256 = "1g3kToboNGXNJTd+LEIB/j76VgPdYqG2PNs3u6Zke9s=";
+          };
+        }
+      ];
+    };
+  };
+
+  catppuccin = {
+    fzf = {
+      inherit (osConfig.catppuccin) enable flavor accent;
     };
   };
 }

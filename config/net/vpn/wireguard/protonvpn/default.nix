@@ -25,8 +25,8 @@ let
           endpoint = "149.102.245.129:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };
@@ -50,8 +50,8 @@ let
           endpoint = "130.195.250.66:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };
@@ -75,8 +75,8 @@ let
           endpoint = "185.51.134.194:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };
@@ -100,8 +100,8 @@ let
           endpoint = "146.70.179.34:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };
@@ -125,8 +125,8 @@ let
           endpoint = "146.70.179.34:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };
@@ -150,8 +150,8 @@ let
           endpoint = "217.138.216.130:51820";
           allowedIPs = [
             "0.0.0.0/0"
-            "::/0"
-          ];
+          ]
+          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
         }
       ];
     };

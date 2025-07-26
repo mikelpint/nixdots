@@ -1,3 +1,4 @@
+{ user, ... }:
 {
   services = {
     journald = {
@@ -8,6 +9,17 @@
         RuntimeMaxUse=16M
         SystemMaxUse=16M
       '';
+    };
+  };
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [
+          "adm"
+          "systemd-journal"
+        ];
+      };
     };
   };
 }

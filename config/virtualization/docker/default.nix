@@ -224,7 +224,7 @@ in
       };
 
       nftables = {
-        tables = {
+        tables = lib.mkIf false {
           docker-filter = {
             enable = true;
 
@@ -417,9 +417,13 @@ in
   };
 
   environment = {
-    systemPackages = with pkgs; [
-      docker-compose
-      docker
-    ];
+    systemPackages = lib.optionals (config.virtualization.docker.enable or false) (
+      with pkgs;
+      [
+        docker
+        docker-buildx
+        docker-compose
+      ]
+    );
   };
 }

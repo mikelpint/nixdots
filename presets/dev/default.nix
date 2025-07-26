@@ -1,8 +1,9 @@
-{
+_: {
   imports = [
-    # ../../config/apps/beekeeper-studio
+    ../../config/apps/beekeeper-studio
     ../../config/apps/bruno
     ../../config/apps/figma
+    ../../config/apps/godot
     ../../config/apps/intellij
     ../../config/apps/mongodb-compass
     ../../config/apps/pgadmin
@@ -12,11 +13,18 @@
     ../../config/apps/vscode
     ../../config/apps/zed
 
+    ../../config/cli/curlie
     ../../config/cli/git
     ../../config/cli/helix
     ../../config/cli/httpie
+    ../../config/cli/hyperfine
+    ../../config/cli/make
+    ../../config/cli/ngrok
     ../../config/cli/onefetch
     ../../config/cli/rainfrog
+    ../../config/cli/task
+    ../../config/cli/turbo
+    ../../config/cli/vegeta
 
     ../../config/langs
 

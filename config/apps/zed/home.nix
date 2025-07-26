@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   config,
   lib,
   ...
@@ -9,41 +8,10 @@
   programs = {
     zed-editor = {
       enable = true;
-      package = inputs.nixpkgs-small.legacyPackages."${pkgs.system}".zed-editor;
+      package = pkgs.zed-editor;
+      # package = inputs.nixpkgs-small.legacyPackages."${pkgs.system}".zed-editor or pkgs.zed-editor;
 
-      extraPackages = with pkgs; [
-        nixd
-        clang-tools
-        gnome-keyring
-      ];
-
-      extensions = [
-        "biome"
-        "catppuccin-icons"
-        "csv"
-        "deno"
-        "docker-compose"
-        "dockerfile"
-        "git-firefly"
-        "html"
-        "http"
-        "ini"
-        "java"
-        "latex"
-        "log"
-        "make"
-        "mermaid"
-        "nginx"
-        "nix"
-        "prisma"
-        "python"
-        "rainbow-csv"
-        "ruby"
-        "sql"
-        "terraform"
-        "toml"
-        "xml"
-      ];
+      extensions = lib.optional (config.catppuccin.enable or false) "catppuccin-icons";
 
       userSettings = {
         use_autoclose = true;
@@ -101,130 +69,14 @@
         hard_tabs = false;
         tab_size = 4;
 
-        auto_install_extensions = {
-          biome = true;
-          catppuccin-icons = true;
-          csv = true;
-          deno = true;
-          docker-compose = true;
-          dockerfile = true;
-          git-firefly = true;
-          html = true;
-          http = true;
-          ini = true;
-          java = true;
-          latex = true;
-          log = true;
-          make = true;
-          mermaid = true;
-          nginx = true;
-          nix = true;
-          prisma = true;
-          python = true;
-          rainbow-csv = true;
-          ruby = true;
-          sql = true;
-          terraform = true;
-          toml = true;
-          xml = true;
-        };
+        auto_install_extensions = builtins.listToAttrs (
+          builtins.map (name: {
+            inherit name;
+            value = true;
+          }) config.programs.zed-editor.extensions
+        );
 
         enable_language_server = true;
-
-        lsp = {
-          clangd = {
-            binary = {
-              path = "${lib.getBin pkgs.clang-tools}/bin/clangd";
-              arguments = [
-                "--background-index"
-                "--compile-commands-dir=build"
-              ];
-            };
-          };
-
-          nixd = {
-            binary = {
-              path = "${lib.getBin pkgs.nixd}/bin/nixd";
-            };
-
-            settings = {
-              autoArchive = true;
-            };
-          };
-
-          tailwindcss-language-server = {
-            settings = {
-              classAttributes = [
-                "class"
-                "className"
-                "ngClass"
-                "styles"
-              ];
-            };
-          };
-
-          typescript-language-server = {
-            preferences = {
-              includeInlayParameterNameHints = "all";
-              includeInlayParameterNameHintsWhenArgumentMatchesName = true;
-              includeInlayFunctionParameterTypeHints = true;
-              includeInlayVariableTypeHints = true;
-              includeInlayVariableTypeHintsWhenTypeMatchesName = true;
-              includeInlayPropertyDeclarationTypeHints = true;
-              includeInlayFunctionLikeReturnTypeHints = true;
-              includeInlayEnumMemberValueHints = true;
-            };
-          };
-
-          texlab = {
-            binary = {
-              path = "${lib.getBin pkgs.texlab}/bin/texlab";
-            };
-
-            settings = {
-              texlab = {
-                build = {
-                  onSave = false;
-                };
-              };
-            };
-          };
-        };
-
-        languages = {
-          Nix = {
-            language_servers = [
-              "nixd"
-              "!nil"
-            ];
-
-            # formatter = {
-            # external = {
-            # command = "nix";
-            # arguments = [
-            # "fmt"
-            # "--quiet"
-            # ];
-            # };
-            # };
-          };
-
-          TypeScript = {
-            language_servers = [
-              "biome"
-              "!eslint"
-              "!prettier"
-              "..."
-            ];
-
-            inlay_hints = {
-              enabled = true;
-              show_parameter_hints = false;
-              show_other_hints = true;
-              show_type_hints = true;
-            };
-          };
-        };
 
         vim_mode = false;
         vim = {
@@ -301,17 +153,8 @@
           selections_menu = true;
         };
 
-        load_direnv = "shell_hook";
-
         format_on_save = "on";
         formatter = "language_server";
-
-        git = {
-          git_gutter = "tracked_files";
-          inline_blame = {
-            enabled = true;
-          };
-        };
 
         telemetry = {
           diagnostics = false;
@@ -333,15 +176,48 @@
           };
         };
 
-        icon_theme = "Catppuccin Macchiato";
-        theme = {
-          mode = "system";
-          light = "Catppuccin Macchiato (pink)";
-          dark = "Catppuccin Macchiato (pink)";
-        };
-
         auto_update = false;
-      };
+      }
+      // (
+        let
+          inherit
+            (config.catppuccin or {
+              enable = false;
+              flavor = "mocha";
+              accent = "mauve";
+            }
+            )
+            enable
+            flavor
+            accent
+            ;
+        in
+        lib.mkIf enable (
+          let
+            flavorName =
+              if flavor == "frappe" then
+                "Frappé"
+              else if flavor == "latte" then
+                "Latte"
+              else if flavor == "macchiato" then
+                "Macchiato"
+              else
+                "Mocha";
+          in
+          {
+            icon_theme = "Catppuccin ${flavorName}";
+
+            theme =
+              let
+                theme = "Catppuccin ${flavorName} (${accent})";
+              in
+              {
+                light = theme;
+                dark = theme;
+              };
+          }
+        )
+      );
     };
 
     mangohud = {
@@ -356,17 +232,64 @@
     };
   };
 
-  nixGL = lib.mkIf config.programs.zed-editor.enable {
+  nixGL = lib.mkIf (config.programs.zed-editor.enable or false) {
     vulkan = {
       enable = true;
     };
   };
 
-  xdg = {
+  xdg = lib.mkIf false {
     configFile = {
-      "zed/themes/catppuccin-pink.json" = {
-        source = ./themes/catppuccin-pink.json;
-      };
+      "zed/themes/catppuccin.json" =
+        let
+          inherit
+            (config.catppuccin or {
+              enable = false;
+              accent = "mauve";
+            }
+            )
+            enable
+            accent
+            ;
+        in
+        lib.mkIf enable {
+          source = "${pkgs.fetchurl {
+            urls = [
+              "https://github.com/catppuccin/zed/releases/download/v0.2.23/catppuccin-${accent}.json"
+            ];
+            sha256 =
+              {
+                pink = "ZGVeYY8QYU5wv//aKBQpZKQ2RHSHGkE0jXrrRCLLj3U=";
+              }
+              .${accent} or lib.fakeSha256;
+          }}";
+        };
     };
+  };
+
+  catppuccin = {
+    zed =
+      let
+        inherit
+          (config.catppuccin or {
+            enable = false;
+            flavour = "mocha";
+            accent = "mauve";
+          }
+          )
+          enable
+          flavor
+          accent
+          ;
+      in
+      {
+        inherit enable flavor accent;
+
+        icons = {
+          inherit enable flavor;
+        };
+
+        italics = true;
+      };
   };
 }

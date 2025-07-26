@@ -1,35 +1,28 @@
 { pkgs, lib, ... }:
-let
-  inherit (pkgs) file-roller nautilus sushi;
-in
 {
   nixpkgs = {
     overlays = [
       (_self: super: {
-        gnome = super.gnome.overrideScope (
-          _gself: gsuper: {
-            nautilus = gsuper.nautilus.overrideAttrs (nsuper: {
-              buildInputs =
-                nsuper.buildInputs
-                ++ (
-                  with pkgs;
-                  with gst_all_1;
-                  [
-                    gstreamer
-                    gstreamer.dev
+        nautilus = super.nautilus.overrideAttrs (nsuper: {
+          buildInputs =
+            nsuper.buildInputs
+            ++ (
+              with pkgs;
+              with gst_all_1;
+              [
+                gstreamer
+                gstreamer.dev
 
-                    gst-plugins-base
-                    gst-plugins-good
-                    gst-plugins-bad
-                    gst-plugins-ugly
+                gst-plugins-base
+                gst-plugins-good
+                gst-plugins-bad
+                gst-plugins-ugly
 
-                    gst-libav
-                    gst-vaapi
-                  ]
-                );
-            });
-          }
-        );
+                gst-libav
+                gst-vaapi
+              ]
+            );
+        });
       })
     ];
   };
@@ -45,7 +38,7 @@ in
   };
 
   home = {
-    packages = [
+    packages = with pkgs; [
       file-roller
       nautilus
       sushi

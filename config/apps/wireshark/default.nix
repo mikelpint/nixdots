@@ -2,27 +2,26 @@
   user,
   pkgs,
   lib,
+  config,
   ...
 }:
-let
-  package = pkgs.wireshark-cli;
-in
 {
   programs = {
     wireshark = {
       enable = true;
-      inherit package;
+      package = pkgs.wireshark-cli;
 
       dumpcap = {
         enable = true;
       };
+
       usbmon = {
         enable = true;
       };
     };
   };
 
-  users = {
+  users = lib.mkIf (config.programs.wireshark.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [ "wireshark" ];
@@ -37,15 +36,27 @@ in
   programs = {
     firejail = {
       wrappedBinaries = {
-        wireshark-cli = {
-          executable = "${lib.getBin package}/bin/tshark";
+        wireshark-cli = lib.mkIf (config.progams.wireshark.enable or false) {
+          executable = "${lib.getBin (config.progams.wireshark.package or pkgs.wireshark-cli)}/bin/tshark";
           profile = "${pkgs.firejail}/etc/firejail/tshark.profile";
         };
 
-        wireshark-qt = {
-          executable = "${lib.getBin pkgs.wireshark-qt}/bin/wireshark-qt";
-          profile = "${pkgs.firejail}/etc/firejail/wireshark-qt.profile";
-        };
+        wireshark-qt =
+          let
+            find = lib.lists.findFirst (
+              let
+                wireshark-qt = lib.getName pkgs.wireshark-qt;
+              in
+              x: (if lib.attrsets.isDerivation x then lib.getName x else null) == wireshark-qt
+            );
+            wireshark-qt =
+              find (find null config.environment.systemPackages)
+                config.home-manager.users.${user}.home.packages;
+          in
+          lib.mkIf (wireshark-qt != null) {
+            executable = "${lib.getBin pkgs.wireshark-qt}/bin/wireshark-qt";
+            profile = "${pkgs.firejail}/etc/firejail/wireshark-qt.profile";
+          };
       };
     };
   };

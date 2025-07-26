@@ -1,7 +1,13 @@
-{ pkgs, osConfig, ... }:
+{
+  pkgs,
+  osConfig,
+  lib,
+  config,
+  ...
+}:
 
 {
-  home = {
+  home = lib.mkIf (config.services.ssh.enable or false) {
     packages = with pkgs; [
       openfortivpn
       (writeShellScriptBin "deustovpn" ''

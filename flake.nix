@@ -16,6 +16,19 @@
       url = "github:NixOs/nixpkgs/nixos-unstable-small";
     };
 
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
+
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
+
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
       inputs = {
@@ -85,14 +98,23 @@
       };
     };
 
-    # hyprgrass = {
-    #   url = "github:horriblename/hyprgrass?ref=refs/tags/v0.8.1";
-    #   inputs = {
-    #     hyprland = {
-    #       follows = "hyprland";
-    #     };
-    #   };
-    # };
+    hyprgrass = {
+      url = "github:horriblename/hyprgrass";
+      inputs = {
+        hyprland = {
+          follows = "hyprland";
+        };
+      };
+    };
+
+    hyprlock = {
+      url = "github:hyprwm/hyprlock";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
 
     waybar-hyprland = {
       url = "github:hyprwm/hyprland";
@@ -169,21 +191,27 @@
     swww = {
       url = "github:LGFae/swww";
     };
+
+    television = {
+      url = "github:alexpasmantier/television";
+    };
   };
 
   outputs =
     {
       self,
-      flake-utils,
       agenix,
       agenix-rekey,
-      nur,
-      home-manager,
-      spicetify-nix,
       catppuccin,
+      flake-utils,
+      home-manager,
       lanzaboote,
-      treefmt-nix,
+      nix-index-database,
       nixcord,
+      nixos-hardware,
+      nur,
+      spicetify-nix,
+      treefmt-nix,
       ...
     }@inputs:
     let
@@ -192,11 +220,35 @@
       hosts = [
         "desktop"
         "laptop"
+
+        {
+          enabled = false;
+
+          name = "gnawty";
+        }
+
         {
           enabled = false;
 
           name = "rpi3bp";
           system = "aarch64-linux";
+          hardware = "raspberry-pi-3";
+        }
+
+        {
+          enabled = false;
+
+          name = "rpi4b";
+          system = "aarch64-linux";
+          hardware = "raspberry-pi-4";
+        }
+
+        {
+          enabled = false;
+
+          name = "compblade";
+          system = "aarch64-linux";
+          hardware = "raspberry-pi-4";
         }
       ];
 
@@ -261,6 +313,8 @@
           modules = [
             # lix-module.nixosModules.default
 
+            ./pkgs
+            ./config
             ./hosts/${name}/configuration.nix
 
             lanzaboote.nixosModules.lanzaboote
@@ -271,7 +325,6 @@
             agenix-rekey.nixosModules.default
 
             nur.modules.nixos.default
-            # nur.modules.homeManager.default
 
             home-manager.nixosModules.home-manager
             {
@@ -290,21 +343,27 @@
                 users = {
                   ${value.user} = {
                     imports = [
+                      ./pkgs/home.nix
                       ./config/home.nix
                       ./hosts/${name}/home.nix
-                      catppuccin.homeModules.catppuccin
                     ];
                   };
                 };
 
                 sharedModules = [
+                  catppuccin.homeModules.catppuccin
                   nixcord.homeModules.nixcord
+                  nix-index-database.homeModules.nix-index
+                  nur.modules.homeManager.default
                 ];
 
                 backupFileExtension = "hm-backup";
               };
             }
-          ];
+          ]
+          ++ (nixpkgs.lib.optionals (builtins.isString (value.hardware or null)) [
+            nixos-hardware.nixosModules."${value.hardware}"
+          ]);
         }
       );
 

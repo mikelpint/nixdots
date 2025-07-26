@@ -33,7 +33,7 @@ in
 
       extensions =
         ps: with ps; [
-          postgis
+          # postgis
           pg_repack
         ];
 

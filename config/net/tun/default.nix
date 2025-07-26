@@ -14,7 +14,7 @@
               CONFIG_TUN = lib.mkDefault module;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

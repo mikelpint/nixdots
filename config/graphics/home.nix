@@ -1,1 +1,6 @@
-_: { imports = [ ./hidpi/home.nix ]; }
+_: {
+  imports = [
+    ./hidpi/home.nix
+    ./x/home.nix
+  ];
+}

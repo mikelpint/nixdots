@@ -7,7 +7,7 @@
 {
   programs = {
     firejail = {
-      enable = true;
+      enable = lib.mkDefault false;
     };
   };
 

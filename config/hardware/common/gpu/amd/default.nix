@@ -2,11 +2,18 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
 let
   ifamdgpu = lib.mkIf (builtins.elem "amdgpu" config.services.xserver.videoDrivers);
+
+  packages =
+    if config.programs.hyprland.enable then
+      inputs.hyprland.inputs.nixpkgs.legacyPackages."${pkgs.system}"
+    else
+      pkgs;
 in
 {
   hardware = ifamdgpu {
@@ -17,11 +24,11 @@ in
 
       amdvlk = {
         enable = true;
-        package = pkgs.amdvlk;
+        package = packages.amdvlk or pkgs.amdvlk;
 
         support32Bit = {
           enable = true;
-          package = pkgs.driversi686Linux.amdvlk;
+          package = packages.driversi686Linux.amdvlk or pkgs.driversi686Linux.amdvlk;
         };
 
         supportExperimental = {
@@ -41,12 +48,19 @@ in
     graphics = {
       extraPackages =
         with pkgs;
+        with packages;
         [
           amdvlk
-          amf
+          # amf
         ]
         ++ (
-          if pkgs ? rocmPackages.clr then
+          if packages ? rocmPackages.clr then
+            with packages.rocmPackages;
+            [
+              clr
+              clr.icd
+            ]
+          else if pkgs ? rocmPackages.clr then
             with pkgs.rocmPackages;
             [
               clr
@@ -54,26 +68,29 @@ in
             ]
           else
             with pkgs;
+            with packages;
             [
               rocm-opencl-icd
               rocm-opencl-runtime
             ]
         );
 
-      extraPackages32 = with pkgs; [ driversi686Linux.amdvlk ];
+      extraPackages32 = with pkgs; with packages; with pkgsi686Linux; with driversi686Linux; [ amdvlk ];
     };
   };
 
   environment = ifamdgpu {
-    systemPackages = with pkgs; [
-      lact
-      radeontop
-      amdgpu_top
-    ];
+    systemPackages =
+      with pkgs;
+      with packages;
+      [
+        lact
+        radeontop
+        amdgpu_top
+      ];
 
     sessionVariables = {
       VDPAU_DRIVER = "radeonsi";
-      # LIBVA_DRIVER_NAME = lib.mkForce "amdgpu";
       LIBVA_DRIVER_NAME = lib.mkForce "radeonsi";
 
       AMD_VULKAN_ICD = "RADV";
@@ -89,17 +106,21 @@ in
         "L+    /opt/rocm/hip   -    -    -     -    ${
           pkgs.symlinkJoin {
             name = "rocm-combined";
-            paths = with pkgs.rocmPackages; [
-              rocblas
-              hipblas
-              clr
-            ];
+            paths =
+              with pkgs;
+              with packages;
+              with rocmPackages;
+              [
+                rocblas
+                hipblas
+                clr
+              ];
           }
         }"
       ];
     };
 
-    packages = with pkgs; [ lact ];
+    packages = with pkgs; with packages; [ lact ];
 
     services = {
       lactd = {
@@ -121,10 +142,15 @@ in
               CONFIG_DRM_AMDGPU_USERPTR = yes;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })
     ];
+
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "amf" ];
+    };
   };
 }

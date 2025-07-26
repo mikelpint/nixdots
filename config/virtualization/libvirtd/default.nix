@@ -1,6 +1,12 @@
 # https://github.com/bryansteiner/gpu-passthrough-tutorial
 
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  user,
+  ...
+}:
 let
   kvmConf = "/var/lib/libvirt/hooks/kvm.conf";
 
@@ -111,9 +117,29 @@ in
 {
   imports = [ ./vm ];
 
+  users = lib.mkIf config.virtualisation.libvirtd.enable {
+    users = {
+      "${user}" = {
+        extraGroups = [ "libvirtd" ];
+      };
+    };
+
+    groups = {
+      libvirtd = { };
+    };
+  };
+
+  boot = lib.mkIf config.virtualisation.libvirtd.enable {
+    extraModprobeConfig = ''
+      options kvm_intel nested=1
+      options kvm_intel emulate_invalid_guest_state=0
+      options kvm ignore_msrs=1 report_ignored_msrs=0
+    '';
+  };
+
   virtualisation = {
     libvirtd = {
-      enable = true;
+      enable = lib.mkDefault true;
 
       qemu = {
         package = pkgs.qemu_kvm;

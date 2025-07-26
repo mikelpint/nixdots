@@ -1,6 +1,5 @@
 {
   imports = [
-    ./btop
     ./cava
     ./fastfetch
   ];

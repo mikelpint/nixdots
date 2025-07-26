@@ -5,14 +5,59 @@
   inputs,
   ...
 }:
-
 {
-  home = lib.mkIf (!(builtins.hasAttr "nixcord" inputs)) {
-    packages = with pkgs; [
-      legcord
+  home = {
+    packages =
+      with pkgs;
+      [
+        kdePackages.xwaylandvideobridge
 
-      kdePackages.xwaylandvideobridge
-    ];
+        # krisp-patcher
+      ]
+      ++ lib.optional (!(builtins.hasAttr "nixcord" inputs)) legcord;
+
+    # activation =
+    #   let
+    #     find = lib.lists.findFirst (
+    #       if builtins.hasAttr "krisp-patcher" krisp-patcher then
+    #         (
+    #           let
+    #             krisp-patcher = lib.getName pkgs.krisp-patcher;
+    #           in
+    #           x: (if lib.attrsets.isDerivation x then lib.getName x else null) == krisp-patcher
+    #         )
+    #       else
+    #         (_x: false)
+    #     );
+
+    #     krisp-patcher = find (find null osConfig.environment.systemPackages) config.home.packages;
+    #   in
+    #   lib.mkIf (krisp-patcher != null) {
+    #     "krisp-patch-discord" =
+    #       let
+    #         discord =
+    #           if (config.programs.nixcord.enable or false) then
+    #             config.programs.nixcord.discord.package or pkgs.discord
+    #           else
+    #             find pkgs.discord;
+    #       in
+    #       if discord == null then
+    #         ""
+    #       else
+    #         ''
+    #           MODULE="/home/${user}/.config/discord/${lib.getVersion discord}/modules/discord_krisp/discord_krisp.node"
+
+    #           if [ ! -f "$MODULE" ]
+    #           then
+    #             ${discord}/bin/Discord & disown
+    #           fi
+
+    #           ${pkgs.procps}/bin/pkill Discord
+    #           sleep 1
+
+    #           ${krisp-patcher}/bin/krisp-patcher "$MODULE"
+    #         '';
+    #   };
   };
 
   programs = lib.mkIf (builtins.hasAttr "nixcord" inputs) {
@@ -38,9 +83,9 @@
       };
 
       config = {
-        themeLinks = [
-          "https://catppuccin.github.io/discord/dist/catppuccin-${config.catppuccin.flavor}-${config.catppuccin.accent}.theme.css"
-        ];
+        themeLinks =
+          lib.optional (config.catppuccin.enable or false)
+            "https://catppuccin.github.io/discord/dist/catppuccin-${config.catppuccin.flavor}-${config.catppuccin.accent}.theme.css";
 
         plugins = {
           accountPanelServerProfile = {

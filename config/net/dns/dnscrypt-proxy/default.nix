@@ -1,7 +1,11 @@
 # https://github.com/XNM1/linux-nixos-hyprland-config-dotfiles/blob/main/nixos/dns.nix
 
-{ lib, config, ... }:
-
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   port = 51;
 in
@@ -95,6 +99,24 @@ in
               tcp dport 53 redirect to :${toString port}
             }
           '';
+        };
+      };
+    };
+  };
+
+  programs = {
+    firejail = {
+      wrappedBinaries = {
+        dnscrypt-proxy = lib.mkIf (config.services.dnscrypt-proxy2.enable or false) {
+          executable = "${
+            lib.getBin (config.services.dnscrypt-proxy.package or pkgs.dnscrypt-proxy)
+          }/bin/dnscrypt-proxy";
+          profile = "${pkgs.firejail}/etc/firejail/dnscrypt-proxy.profile";
+        };
+
+        dnscrypt-proxy2 = lib.mkIf (config.services.dnscrypt-proxy2.enable or false) {
+          executable = "${lib.getBin pkgs.dnscrypt-proxy2}/bin/dnscrypt-proxy2";
+          profile = "${pkgs.firejail}/etc/firejail/dnscrypt-proxy.profile";
         };
       };
     };

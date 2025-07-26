@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   boot = {
     initrd = {
@@ -18,8 +23,7 @@
 
   catppuccin = {
     plymouth = {
-      enable = true;
-      flavor = "macchiato";
+      inherit (config.catppuccin) enable flavor;
     };
   };
 }

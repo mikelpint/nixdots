@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   imports = [ ./memtest86 ];
 
@@ -23,7 +23,7 @@
   catppuccin = {
     grub = {
       enable = true;
-      flavor = "macchiato";
+      inherit (config.catppuccin) flavor;
     };
   };
 }

@@ -20,7 +20,7 @@
               DEFAULT_SECURITY_SELINUX = no;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

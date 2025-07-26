@@ -1,4 +1,10 @@
-{ pkgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  osConfig,
+  ...
+}:
 {
   programs = {
     tmux = {
@@ -14,7 +20,7 @@
         {
           plugin = catppuccin;
           extraConfig = ''
-            set -g @catppuccin_flavour 'macchiato'
+            set -g @catppuccin_flavour '${config.catppuccin.flavor}'
 
             set -g @catppuccin_window_status_enable "yes"
             set -g @catppuccin_window_status_icon_enable "yes"
@@ -48,10 +54,6 @@
             set -g pane-active-border-style fg="#c6a0f6"
           '';
         }
-        {
-          plugin = rose-pine;
-          extraConfig = builtins.readFile ./rose-pine.conf;
-        }
         yank
         sensible
         tmux-fzf
@@ -59,7 +61,7 @@
       ];
       extraConfig = ''
         if-shell 'test "$(uname)" = "Darwin"' 'set-option -g default-command "reattach-to-user-namespace -l zsh"'
-        set -g default-shell '${pkgs.zsh}/bin/zsh'
+        set -g default-shell '${lib.getBin pkgs.zsh}/bin/zsh'
 
         set -g default-terminal "screen-256color"
 
@@ -104,6 +106,14 @@
         bind-key -r f run-shell "tmux neww tmux-sessionizer-script"
       '';
     };
+
+    zsh = {
+      oh-my-zsh = {
+        plugins = lib.optional (
+          (config.programs.tmux.enable or false) || (osConfig.programs.tmux.enable or false)
+        ) "tmux";
+      };
+    };
   };
 
   home = {
@@ -113,7 +123,9 @@
             if [[ $# -eq 1 ]]; then
             selected=$1
         else
-            selected=$(find ~/ ~/projects ~/tests -mindepth 1 -maxdepth 1 -type d | fzf)
+            selected=$(find ~/ ~/projects ~/tests -mindepth 1 -maxdepth 1 -type d | ${
+              lib.getBin (config.programs.fzf.package or pkgs.fzf)
+            }/bin/fzf)
         fi
 
         if [[ -z $selected ]]; then

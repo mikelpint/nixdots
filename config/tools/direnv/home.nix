@@ -1,4 +1,5 @@
-_: {
+{ lib, config, ... }:
+{
   programs = {
     direnv = {
       enable = true;
@@ -8,7 +9,13 @@ _: {
         enable = true;
       };
 
-      enableZshIntegration = true;
+      enableZshIntegration = config.programs.zsh.enable or false;
+
+      config = {
+        global = {
+          hide_env_diff = true;
+        };
+      };
     };
 
     git = {
@@ -17,10 +24,16 @@ _: {
         ".direnv"
       ];
     };
+
+    zed-editor = {
+      userSettings = lib.mkIf (config.programs.direnv.enable or false) {
+        load_direnv = "shell_hook";
+      };
+    };
   };
 
   home = {
-    sessionVariables = {
+    sessionVariables = lib.mkIf (config.programs.direnv.enable or false) {
       DIRENV_LOG_FORMAT = "";
     };
   };

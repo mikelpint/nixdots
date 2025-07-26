@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, ... }:
 {
   services = {
     pipewire = {
@@ -110,16 +110,12 @@
       };
 
       jack = {
-        enable = true;
+        enable = !config.services.jack.jackd.enable;
       };
 
       pulse = {
         enable = true;
       };
     };
-  };
-
-  environment = {
-    systemPackages = with pkgs; [ pavucontrol ];
   };
 }

@@ -1,8 +1,16 @@
+{ user, ... }:
 {
   imports = [
-    ./noisetorch
+    ./jack
     ./pipewire
     ./pulseaudio
-    ./rtkit
   ];
+
+  users = {
+    users = {
+      "${user}" = {
+        extraGroups = [ "audio" ];
+      };
+    };
+  };
 }

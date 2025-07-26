@@ -2,45 +2,26 @@
   lib,
   user,
   config,
-  pkgs,
   ...
 }:
-let
-  command =
-    if config.programs.hyprland.withUWSM then
-      ''
-        [ $(uwsm check may-start) ] && \
-        ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
-      ''
-    else
-      "dbus-run-session Hyprland &> /dev/null";
-in
 {
-  environment = {
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
-  };
-
   services = {
     xserver = {
       enable = true;
     };
 
     greetd = {
-      enable = true;
-      vt = 7;
+      enable = lib.mkDefault true;
+      vt = lib.mkDefault 7;
 
       restart = true;
 
       settings = {
         default_session = {
-          inherit command;
           inherit user;
         };
 
         initial_session = {
-          inherit command;
           inherit user;
         };
       };
@@ -51,10 +32,6 @@ in
 
       sddm = {
         enable = false;
-
-        wayland = {
-          enable = true;
-        };
 
         autoLogin = {
           relogin = true;

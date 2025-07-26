@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 let
@@ -37,17 +38,29 @@ in
       edid = {
         enable = true;
         packages = [
-          (pkgs.runCommand "edid-VG24VQE" { } ''
+          (pkgs.runCommand "edid-custom" { } ''
             mkdir -p "$out/lib/firmware/edid"
-            cp ${./VG24VQE.bin} $out/lib/firmware/edid/VG24VQE.bin
+            ${lib.strings.concatLines (
+              builtins.map
+                (edid: ''
+                  sed -rzE \
+                    's/EDID \(hex\):\n(([0-9a-fA-F]+\n)+)\n.*/\1/g' \
+                    < "${self}/config/hardware/desktop/display/edid/${edid}" | \
+                  base64 -d > $out/lib/firmware/edid/${edid}
+                '')
+                [
+                  "ETLAL03385010"
+                  "M3LMTF048855"
+                ]
+            )}
           '')
         ];
       };
 
       outputs = {
-        "DP-1" = mkifnvidia { edid = "VG24VQE.bin"; };
-
-        "DP-2" = mkifamd { edid = "VG24VQE.bin"; };
+        "DVI-D-1" = mkifnvidia { edid = "ETLAL03385010.bin"; };
+        "DP-1" = mkifamd { edid = "ETLAL03385010.bin"; } // (mkifnvidia { edid = "M3LMTF048855.bin"; });
+        "DP-2" = mkifamd { edid = "M3LMTF048855.bin"; };
       };
     };
   };

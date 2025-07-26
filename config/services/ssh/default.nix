@@ -125,7 +125,6 @@ in
         onionServices = {
           ssh = {
             version = 3;
-            # path = "/var/lib/tor/hidden_service/ssh";
             map = builtins.map (listenAddress: {
               inherit port;
               target = { inherit (listenAddress) addr port; };
@@ -133,6 +132,58 @@ in
           };
         };
       };
+    };
+  };
+
+  programs = {
+    firejail = {
+      wrappedBinaries =
+        let
+          findImpl =
+            pkg: pred:
+            lib.lists.findFirst (
+              let
+                name = lib.getName pkg;
+              in
+              x: (if lib.attrsets.isDerivation x then lib.getName x else null) == name && pred x
+            );
+
+          find =
+            pkg:
+            findImpl pkg (findImpl pkg null
+              config.environment.systemPackages
+            ) config.home-manager.users.${user}.home.packages;
+
+          found = lib.lists.findFirst (pkg: (find null pkg) != null) (
+            with pkgs;
+            [
+              openssh
+              openssh_hpn
+              openssh_gssapi
+              opensshWithKerberos
+              openssh_hpnWithKerberos
+            ]
+          );
+
+          openssh =
+            if config.home-manager.users.${user}.programs.openssh.enable or false then
+              config.home-manager.users.${user}.programs.openssh.package or found
+            else if config.services.openssh.enable or false then
+              config.services.openssh.package or found
+            else
+              found;
+        in
+        lib.mkIf (openssh != null) {
+          ssh = {
+            executable = "${lib.getBin openssh}/bin/ssh";
+            profile = "${pkgs.firejail}/etc/firejail/ssh.profile";
+          };
+
+          ssh-agent = {
+            executable = "${lib.getBin openssh}/bin/ssh-agent";
+            profile = "${pkgs.firejail}/etc/firejail/ssh-agent.profile";
+          };
+        };
     };
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./securetty
@@ -18,6 +18,13 @@
     getty = {
       autologinUser = null;
       loginProgram = "${pkgs.shadow}/bin/login";
+    };
+  };
+
+  catppuccin = {
+    tty = {
+      enable = true;
+      inherit (config.catppuccin) flavor;
     };
   };
 }

@@ -1,6 +1,6 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 {
   environment = {
-    systemPackages = [ inputs.manix ];
+    systemPackages = [ inputs.manix.packages.${pkgs.system}.manix ];
   };
 }

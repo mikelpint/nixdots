@@ -1,5 +1,6 @@
 {
   imports = [
+    ./gdu
     ./lshw
     ./ncdu
     ./pciutils

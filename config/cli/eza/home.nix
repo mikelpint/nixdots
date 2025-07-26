@@ -1,9 +1,15 @@
+{ config, pkgs, ... }:
 {
   programs = {
     eza = {
       enable = true;
+      package = pkgs.eza;
+
+      enableZshIntegration = config.programs.zsh.enable or false;
+
       icons = "auto";
-      enableZshIntegration = true;
+      git = true;
+      colors = "auto";
     };
   };
 }

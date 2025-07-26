@@ -15,7 +15,7 @@
               CONFIG_AUDIT = yes;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

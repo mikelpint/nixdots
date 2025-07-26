@@ -1,18 +1,32 @@
-{
+_: {
   imports = [
     ./archive
+    ./await
     ./bat
     ./bc
+    ./btop
+    ./cheat
+    ./duf
     ./eza
     ./fd
+    ./file
     ./fzf
     ./gping
     ./http
     ./jq
+    ./micro
+    ./miller
+    ./moreutils
+    ./nano
     ./pop
     ./procs
+    ./rename
+    ./ripgrep
+    ./television
+    ./tldr
     ./tmux
     ./tree
+    ./yazi
     ./zoxide
     ./zsh
   ];

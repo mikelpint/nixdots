@@ -6,7 +6,7 @@
 }:
 {
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_14;
+    kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_6_15;
 
     zfs = {
       # package = config.boot.kernelPackages.zfs_unstable or pkgs.zfs_unstable;

@@ -1,4 +1,4 @@
-{
+_: {
   "battery" = {
     interval = 5;
 

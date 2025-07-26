@@ -1,1 +1,6 @@
-_: { imports = [ ./wezterm ]; }
+_: {
+  imports = [
+    ./wezterm
+    ./xterm
+  ];
+}

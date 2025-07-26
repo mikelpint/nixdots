@@ -1,17 +1,32 @@
-{
+_: {
   imports = [
     ./archive/home.nix
+    ./await/home.nix
     ./bat/home.nix
+    ./bc/home.nix
+    ./btop/home.nix
+    ./cheat/home.nix
+    ./duf/home.nix
     ./eza/home.nix
     ./fd/home.nix
+    ./file/home.nix
     ./fzf/home.nix
     ./gping/home.nix
     ./http/home.nix
     ./jq/home.nix
+    ./micro/home.nix
+    ./miller/home.nix
+    ./moreutils/home.nix
+    ./nano/home.nix
     ./pop/home.nix
     ./procs/home.nix
+    ./rename/home.nix
+    ./ripgrep/home.nix
+    ./television/home.nix
+    ./tldr/home.nix
     ./tmux/home.nix
     ./tree/home.nix
+    ./yazi/home.nix
     ./zoxide/home.nix
     ./zsh/home.nix
   ];

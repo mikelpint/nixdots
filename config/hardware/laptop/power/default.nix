@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   services = [
     "docker"
@@ -44,7 +44,7 @@ in
           serviceConfig = {
             Type = "oneshot";
             ExecStart = ''
-              /bin/sh -c 'echo auto | tee /sys/bus/usb/devices/1-3/power/control > /dev/null'
+              ${lib.getBin pkgs.bashInteractive}/bin/sh -c 'echo auto | ${lib.getBin pkgs.coreutils}/bin/tee /sys/bus/usb/devices/1-3/power/control > /dev/null'
             '';
           };
 

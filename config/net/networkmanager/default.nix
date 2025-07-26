@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  user,
+  ...
+}:
 
 let
   ifmacchanger = lib.mkIf (!config.systemd.services.macchanger.enable);
@@ -23,7 +28,7 @@ in
     };
   };
 
-  systemd = {
+  systemd = lib.mkIf config.networking.networkmanager.enable {
     services = {
       NetworkManager-wait-online = {
         enable = false;
@@ -31,10 +36,18 @@ in
     };
   };
 
-  environment = {
+  environment = lib.mkIf config.networking.networkmanager.enable {
     etc = {
       "NetworkManager/NetworkManager.conf" = {
         mode = "0644";
+      };
+    };
+  };
+
+  users = lib.mkIf config.networking.networkmanager.enable {
+    users = {
+      "${user}" = {
+        extraGroups = [ "networkmanager" ];
       };
     };
   };

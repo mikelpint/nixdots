@@ -1,15 +1,23 @@
 {
+  user,
+  lib,
+  config,
+  ...
+}:
+{
   security = {
     sudo = {
-      enable = false;
+      enable = !config.security.doas.enable;
     };
 
     doas = {
-      enable = true;
+      enable = lib.mkDefault true;
       extraRules = [
         {
           noPass = true;
           keepEnv = true;
+
+          users = [ user ];
         }
       ];
     };

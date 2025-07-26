@@ -1,17 +1,16 @@
-{ inputs, config, ... }:
+{ inputs, osConfig, ... }:
 {
   imports = [
     inputs.nix-colors.homeManagerModule
+
     ./cursor/home.nix
     ./gtk/home.nix
     ./nix/home.nix
     ./swww/home.nix
+    ./qtct/home.nix
   ];
 
   catppuccin = {
-    enable = true;
-
-    inherit (config.catppuccin.cursors) flavor;
-    inherit (config.catppuccin.cursors) accent;
+    inherit (osConfig.catppuccin) enable flavor accent;
   };
 }

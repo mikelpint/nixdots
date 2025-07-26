@@ -3,10 +3,6 @@
 
 { pkgs, lib, ... }:
 {
-  boot = {
-    kernelPackages = lib.mkOverride 75 pkgs.linuxKernel.packages.linux_zen;
-  };
-
   imports = [
     ../common
     ../common/output/printer/hp
@@ -24,4 +20,8 @@
     ./storage
     ./usb
   ];
+
+  boot = {
+    kernelPackages = lib.mkOverride 75 pkgs.linuxKernel.packages.linux_zen;
+  };
 }

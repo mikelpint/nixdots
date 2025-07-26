@@ -1,40 +1,35 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  osConfig,
+  ...
+}:
 {
   home = {
-    packages = with pkgs; [
-      dunst
+    packages =
+      with pkgs;
+      (lib.optional
+        ((config.services.dunst.enable or false) && (osConfig.programs.hyprland.enable or false))
+        (
+          writeShellScriptBin "hyprsetup_notifications" ''
+            hyprctl dismissnotify
 
-      (writeShellScriptBin "hyprsetup_notifications" ''
-        hyprctl dismissnotify
-
-        pkill dunst
-        dunst &
-      '')
-    ];
+            ${pkgs.procps}/bin/pkill dunst
+            ${config.services.dunst.package or pkgs.dunst}/bin/dunst &
+          ''
+        )
+      );
   };
 
-  xdg = {
-    configFile = {
-      "dunst/dunstrc" = {
-        text = ''
-          [global]
-          frame_color = "#8aadf4"
-          separator_color= frame
+  services = {
+    dunst = {
+      enable = true;
+    };
+  };
 
-          [urgency_low]
-          background = "#24273a"
-          foreground = "#cad3f5"
-
-          [urgency_normal]
-          background = "#24273a"
-          foreground = "#cad3f5"
-
-          [urgency_critical]
-          background = "#24273a"
-          foreground = "#cad3f5"
-          frame_color = "#f5a97f"
-        '';
-      };
+  catppuccin = {
+    dunst = {
+      inherit (config.catppuccin) enable flavor;
     };
   };
 }

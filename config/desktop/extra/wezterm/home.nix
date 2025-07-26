@@ -1,14 +1,11 @@
-{ inputs, pkgs, ... }:
-let
-  front_end = "WebGpu";
-in
 {
-  home = {
-    shellAliases = {
-      wezterm = "WAYLAND_DISPLAY=1 wezterm";
-    };
-  };
-
+  inputs,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   programs = {
     mangohud = {
       settingsPerApplication = {
@@ -20,8 +17,9 @@ in
 
     wezterm = {
       enable = true;
-      enableZshIntegration = true;
       package = inputs.wezterm.packages.${pkgs.system}.default;
+
+      enableZshIntegration = config.programs.zsh.enable or false;
 
       extraConfig = ''
         local wezterm = require "wezterm"
@@ -34,7 +32,12 @@ in
           cell_width = 0.88,
           cursor_blink_ease_in = 'EaseIn',
           cursor_blink_ease_out = 'EaseOut',
-          color_scheme = "Catppuccin Macchiato",
+          ${
+            if (config.catppuccin.enable or false) then
+              "color_scheme = \"Catppuccin ${"${(lib.strings.toUpper (lib.strings.substring 0 1 config.catppuccin.flavor))}${lib.strings.substring 1 (-1) config.catppuccin.flavor}"}\","
+            else
+              ""
+          },
           default_cursor_style = "SteadyBlock",
           enable_scroll_bar = false,
           enable_tab_bar = false,
@@ -47,7 +50,7 @@ in
           },
           freetype_load_flags = 'NO_HINTING',
           freetype_load_target = 'Normal',
-          front_end = "${front_end}",
+          front_end = "WebGpu",
           hide_tab_bar_if_only_one_tab = true,
           hide_mouse_cursor_when_typing = false,
           line_height = 1.0,

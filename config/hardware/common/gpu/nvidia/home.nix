@@ -1,15 +1,12 @@
 {
+  config,
   osConfig,
   lib,
   pkgs,
   ...
 }:
-
-let
-  ifnvidia = lib.mkIf (builtins.elem "nvidia" osConfig.services.xserver.videoDrivers);
-in
 {
-  wayland = ifnvidia {
+  wayland = lib.mkIf (builtins.elem "nvidia" osConfig.services.xserver.videoDrivers) {
     windowManager = {
       hyprland = {
         settings = {
@@ -28,23 +25,22 @@ in
           opengl = {
             nvidia_anti_flicker = lib.mkForce true;
           };
-
-          render = {
-            explicit_sync = lib.mkForce false;
-          };
         };
       };
     };
   };
 
-  home = ifnvidia {
-    packages = with pkgs; [
-      (writeShellScriptBin "waybar_gpu_json" ''
-        text=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
-        tooltip=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits)
+  home =
+    lib.mkIf
+      ((builtins.elem "nvidia" osConfig.services.xserver.videoDrivers) && config.programs.waybar.enable)
+      {
+        packages = with pkgs; [
+          (writeShellScriptBin "waybar_gpu_json" ''
+            text=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)
+            tooltip=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits)
 
-        printf '{\"text\": "%s", \"tooltip\": "%s"}' "''${text}" "''${tooltip}"
-      '')
-    ];
-  };
+            printf '{\"text\": "%s", \"tooltip\": "%s"}' "''${text}" "''${tooltip}"
+          '')
+        ];
+      };
 }

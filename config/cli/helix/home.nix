@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 {
   imports = [ ./langs ];
@@ -88,7 +93,7 @@
   catppuccin = {
     helix = {
       enable = true;
-      flavor = "macchiato";
+      inherit (config.catppuccin) flavor;
     };
   };
 }

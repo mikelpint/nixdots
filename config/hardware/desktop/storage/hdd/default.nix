@@ -1,1 +1,1 @@
-{ imports = [ ../../../common/storage/hdd ]; }
+_: { imports = [ ../../../common/storage/hdd ]; }

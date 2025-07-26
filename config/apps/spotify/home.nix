@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }:
 
@@ -23,7 +24,7 @@ in
       enable = true;
 
       inherit theme;
-      colorScheme = "macchiato";
+      colorScheme = config.catppuccin.flavor;
 
       enabledExtensions = with spicePkgs.extensions; [
         playlistIcons

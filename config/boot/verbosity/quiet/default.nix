@@ -14,7 +14,7 @@
               CONFIG_FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER = yes;
             };
 
-            ignoreConfigErrors = true;
+            ignoreConfigErrors = false;
           }
         );
       })

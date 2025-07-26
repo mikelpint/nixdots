@@ -1,7 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
-  home = {
-    packages = with pkgs; [ imv ];
+  programs = {
+    imv = {
+      enable = true;
+      package = pkgs.imv;
+    };
   };
 
   xdg = {
@@ -36,8 +39,7 @@
 
   catppuccin = {
     imv = {
-      enable = true;
-      flavor = "macchiato";
+      inherit (config.catppuccin) enable flavor;
     };
   };
 }

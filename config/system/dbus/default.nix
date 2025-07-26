@@ -15,7 +15,7 @@ in
 
       dbusPackage = pkgs.dbus;
       brokerPackage = pkgs.dbus-broker;
-      implementation = if apparmor then "dbus" else "broker"; # https://wiki.archlinux.org/title/D-Bus
+      implementation = lib.mkDefault (if apparmor then "dbus" else "broker"); # https://wiki.archlinux.org/title/D-Bus
     };
   };
 

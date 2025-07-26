@@ -1,8 +1,23 @@
-{ lib, osConfig, ... }:
-
+{
+  lib,
+  config,
+  osConfig,
+  pkgs,
+  user,
+  ...
+}:
 let
-  isamd = builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers;
-  gpuClick = gpu: if isamd then "wezterm -e amdgpu_top --pci ${gpu}" else "wezterm -e nvtop";
+  isamd = builtins.elem "amdgpu" (osConfig.services.xserver.videoDrivers or [ ]);
+  gpuClick =
+    gpu: if isamd then "xdg-terminal-exec amdgpu_top --pci ${gpu}" else "xdg-terminal-exec -e nvtop";
+
+  args = {
+    inherit config;
+    inherit lib;
+    inherit osConfig;
+    inherit pkgs;
+    inherit user;
+  };
 in
 {
   main = {
@@ -38,7 +53,7 @@ in
     ];
 
     "custom/gpu1" = lib.mkMerge [
-      (import ../../modules/custom/gpu.nix)."custom/gpu"
+      (import ../../modules/custom/gpu.nix args)."custom/gpu"
       {
         return-type = lib.mkForce "json";
         exec = lib.mkForce "waybar_gpu_json 0000:07:00.0";
@@ -48,7 +63,7 @@ in
     ];
 
     "custom/gpu2" = lib.mkMerge [
-      (import ../../modules/custom/gpu.nix)."custom/gpu"
+      (import ../../modules/custom/gpu.nix args)."custom/gpu"
       {
         return-type = lib.mkForce "json";
         exec = lib.mkForce "waybar_gpu_json 0000:0d:00.0";
@@ -57,39 +72,39 @@ in
       }
     ];
 
-    "hyprland/language" = (import ../../modules/hyprland/language.nix)."hyprland/language";
-    "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
+    "hyprland/language" = (import ../../modules/hyprland/language.nix args)."hyprland/language";
+    "hyprland/workspaces" = (import ../../modules/hyprland/workspaces.nix args)."hyprland/workspaces";
 
-    inherit ((import ../../modules/clock.nix)) clock;
+    inherit ((import ../../modules/clock.nix args)) clock;
     cpu = lib.mkMerge [
-      (import ../../modules/cpu.nix).cpu
+      (import ../../modules/cpu.nix args).cpu
       { interval = lib.mkForce 1; }
     ];
-    inherit ((import ../../modules/disk.nix)) disk;
+    inherit ((import ../../modules/disk.nix args)) disk;
     keyboard-state = lib.mkMerge [
-      (import ../../modules/keyboard-state.nix).keyboard-state
+      (import ../../modules/keyboard-state.nix args).keyboard-state
       { device-path = "/dev/input/by-id/usb-Keychron_Keychron_Q2-event-kbd"; }
     ];
     memory = lib.mkMerge [
-      (import ../../modules/memory.nix).memory
+      (import ../../modules/memory.nix args).memory
       { interval = lib.mkForce 1; }
     ];
     network = lib.mkMerge [
-      (import ../../modules/network.nix).network
+      (import ../../modules/network.nix args).network
       { interval = lib.mkForce 5; }
     ];
-    inherit ((import ../../modules/pulseaudio.nix)) pulseaudio;
+    inherit ((import ../../modules/pulseaudio.nix args)) pulseaudio;
     "temperature#cpu" = lib.mkMerge [
-      (import ../../modules/temperature.nix).temperature
+      (import ../../modules/temperature.nix args).temperature
       {
         hwmon-path = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input";
         format = lib.mkForce " {temperatureC}°C";
         interval = lib.mkForce 1;
-        on-click = "wezterm -e btop";
+        on-click = "xdg-terminal-exec btop";
       }
     ];
     "temperature#gpu1" = lib.mkMerge [
-      (import ../../modules/temperature.nix).temperature
+      (import ../../modules/temperature.nix args).temperature
       {
         hwmon-path = "/sys/devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:02.0/0000:05:00.0/0000:06:00.0/0000:07:00.0/hwmon/hwmon2/temp1_input";
         format = lib.mkForce " {temperatureC}°C";
@@ -98,7 +113,7 @@ in
       }
     ];
     "temperature#gpu2" = lib.mkMerge [
-      (import ../../modules/temperature.nix).temperature
+      (import ../../modules/temperature.nix args).temperature
       {
         hwmon-path = "/sys/devices/pci0000:00/0000:00:03.1/0000:0d:00.0/hwmon/hwmon3/temp1_input";
         format = lib.mkForce " {temperatureC}°C";
@@ -106,7 +121,7 @@ in
         on-click = lib.mkForce (gpuClick "0000:0d:00.0");
       }
     ];
-    inherit ((import ../../modules/tray.nix)) tray;
+    inherit ((import ../../modules/tray.nix args)) tray;
   };
 
   other = {
@@ -119,7 +134,8 @@ in
     modules-left = [ "hyprland/workspaces#other" ];
     modules-right = [ "clock#other" ];
 
-    "hyprland/workspaces#other" = (import ../../modules/hyprland/workspaces.nix)."hyprland/workspaces";
-    "clock#other" = (import ../../modules/clock.nix).clock;
+    "hyprland/workspaces#other" =
+      (import ../../modules/hyprland/workspaces.nix args)."hyprland/workspaces";
+    "clock#other" = (import ../../modules/clock.nix args).clock;
   };
 }

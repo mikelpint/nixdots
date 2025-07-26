@@ -2,6 +2,8 @@
   config,
   user,
   lib,
+  inputs,
+  pkgs,
   ...
 }:
 {
@@ -9,6 +11,7 @@
     hyprland = {
       enable = true;
       withUWSM = false;
+      portalPackage = inputs.hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland;
     };
   };
 
@@ -20,6 +23,24 @@
       inherit user;
       group = "seat";
     };
+
+    greetd =
+      let
+        command =
+          if config.programs.hyprland.withUWSM then
+            ''
+              [ $(${pkgs.uwsm}/bin/uwsm check may-start) ] && \
+              ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
+            ''
+          else
+            "${config.services.dbus.dbusPackage}/bin/dbus-run-session Hyprland &> /dev/null";
+      in
+      {
+        settings = {
+          default_session = { inherit command; };
+          initial_session = { inherit command; };
+        };
+      };
   };
 
   users = lib.mkIf config.programs.hyprland.enable {

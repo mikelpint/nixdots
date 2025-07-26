@@ -1,8 +1,15 @@
-{ lib, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  osConfig,
+  ...
+}:
 {
   programs = {
     ssh = {
       enable = true;
+      package = osConfig.services.openssh.package or pkgs.openssh;
 
       forwardAgent = true;
       hashKnownHosts = true;
@@ -40,6 +47,12 @@
             ];
           };
         };
+      };
+    };
+
+    zsh = {
+      oh-my-zsh = {
+        plugins = lib.optional (config.programs.ssh.enable or false) "ssh";
       };
     };
   };

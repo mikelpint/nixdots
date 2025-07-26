@@ -7,6 +7,10 @@
   };
 
   services = {
+    xserver = {
+      dpi = lib.mkDefault 300;
+    };
+
     displayManager = {
       sddm = {
         enableHidpi = lib.mkDefault true;

@@ -1,11 +1,16 @@
 {
+  lib,
+  config,
+  osConfig,
+  pkgs,
+  ...
+}:
+{
   "hyprland/workspaces" = {
     active-only = false;
     on-click = "activate";
 
     disable-scroll = false;
-    on-scroll-up = "hyprctl dispatch workspace e+1";
-    on-scroll-down = "hyprctl dispatch workspace e-1";
 
     format = "{icon}";
     format-icons = {
@@ -22,5 +27,22 @@
 
       sort-by-number = true;
     };
-  };
+  }
+  // (lib.mkIf
+    (
+      (config.wayland.windowManager.hyprland.enable or false)
+      || (osConfig.programs.hyprland.enable or false)
+    )
+    (
+      let
+        hyprland =
+          config.wayland.windowManager.hyprland.package or osConfig.programs.hyprland.package
+            or pkgs.hyprland;
+      in
+      {
+        on-scroll-up = "${hyprland}/bin/hyprctl dispatch workspace e+1";
+        on-scroll-down = "${hyprland}/bin/hyprctl dispatch workspace e-1";
+      }
+    )
+  );
 }

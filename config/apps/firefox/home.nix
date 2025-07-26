@@ -18,35 +18,74 @@ let
   }) { };
 
   kagiPrivateTokenPlaceholder = "kagi-private-token-placeholder";
+  stylusId = "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}";
 in
 {
   home = {
-    file = {
-      # ".mozilla/firefox/${user}/user.js" = {
-      #   force = true;
-      # };
-      # ".mozilla/firefox/static-${user}/user.js" = {
-      #   force = true;
-      # };
+    file = lib.mkIf false {
+      ".mozilla/firefox/${user}/user.js" = {
+        force = true;
+      };
+      ".mozilla/firefox/static-${user}/user.js" = {
+        force = true;
+      };
 
-      # ".mozilla/firefox/static-${user}/search.json.mozlz4" = {
-      #   force = true;
-      # };
-      # ".mozilla/firefox/${user}/search.json.mozlz4" = {
-      #   force = true;
-      # };
+      ".mozilla/firefox/static-${user}/search.json.mozlz4" = {
+        force = true;
+      };
+      ".mozilla/firefox/${user}/search.json.mozlz4" = {
+        force = true;
+      };
+
+      ".mozilla/firefox/default/user.js" = {
+        force = true;
+      };
+      ".mozilla/firefox/static-default/user.js" = {
+        force = true;
+      };
+
+      ".mozilla/firefox/static-default/search.json.mozlz4" = {
+        force = true;
+      };
+      ".mozilla/firefox/default/search.json.mozlz4" = {
+        force = true;
+      };
     };
 
-    activation = {
-      "firefox-replaceKagiPrivateToken" =
-        home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "firefox" ]
-          ''
-            TOKEN=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
-            TARGET=$([ -f "/home/${user}/.mozilla/firefox/${user}/user.js" ] && echo -n "/home/${user}/.mozilla/firefox/${user}/user.js" || echo -n "/home/${user}/.mozilla/firefox/static-${user}/user.js")
+    activation =
+      { }
+      // (lib.mkIf false {
+        "firefox-replaceKagiPrivateToken" =
+          home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" "firefox" ]
+            ''
+              TOKEN=$(printf '%s' "$(< ${osConfig.age.secrets.kagi-private-token.path})" | sed -e 's/[\/&]/\\&/g')
+              TARGET=$([ -f "/home/${user}/.mozilla/firefox/${user}/user.js" ] && \
+                echo -n "/home/${user}/.mozilla/firefox/${user}/user.js" || \
+                [ -f "/home/${user}/.mozilla/firefox/static-${user}/user.js" ] && \
+                echo -n "/home/${user}/.mozilla/firefox/static-${user}/user.js" || \
+                [ -f "/home/${user}/.mozilla/firefox/default/user.js" ] && \
+                echo -n "/home/${user}/.mozilla/firefox/default/user.js" || \
+                echo -n "/home/${user}/.mozilla/firefox/static-default/user.js"
+              )
 
-            [ -n TOKEN ] && sed -i "s/${kagiPrivateTokenPlaceholder}/$TOKEN/g" $TARGET || sed -i "s/token=${kagiPrivateTokenPlaceholder}&//g" $TARGET
-          '';
-    };
+              [ -n TOKEN ] && ${pkgs.gnused}/bin/sed -i "s/${kagiPrivateTokenPlaceholder}/$TOKEN/g" $TARGET || ${pkgs.gnused}/bin/sed -i "s/token=${kagiPrivateTokenPlaceholder}&//g" $TARGET
+            '';
+      })
+      // (lib.mkIf (false && (osConfig.catppuccin.enable or false)) {
+        "stylus-catppuccin" = ''
+          INTERNAL_UUID=$(\
+            echo "{$(\
+                cat prefs.js | \
+                ${pkgs.gnused}/bin/sed '/^\/\//d' | \
+                ${pkgs.gnused}/bin/sed '/^[[:space:]]*$/d' | \
+                ${pkgs.gnused}/bin/sed -r 's/^user_pref\(\"(.+)\", (.+)\);$/"\1": \2,/g' | \
+                ${pkgs.gnused}/bin/sed '$s/,$//' \
+            )}" | \
+            ${pkgs.jq}/bin/jq -r '."extensions.webextensions.uuids"' | \
+            ${pkgs.jq}/bin/jq -r '."${stylusId}"' \
+          )
+        '';
+      });
   };
 
   programs = {
@@ -63,9 +102,7 @@ in
 
       policies = {
         AppAutoUpdate = false;
-        Authentication = {
-
-        };
+        Authentication = { };
         DisableFirefoxStudies = true;
         DisableMasterPasswordCreation = true;
         DisablePocket = true;
@@ -79,16 +116,24 @@ in
         DisableTelemetry = true;
         DNSOverHTTPS = {
           Enabled =
-            (osConfig.services.resolved.enable && (toString osConfig.services.resolved.dnsovertls == "true"))
-            || osConfig.services.dnscrypt-proxy2.enable;
+            (
+              (osConfig.services.resolved.enable or false)
+              && (toString (osConfig.services.resolved.dnsovertls or false) == "true")
+            )
+            || (osConfig.services.dnscrypt-proxy2.enable or false);
         };
         DontCheckDefaultBrowser = true;
-        DownloadDirectory = config.home.sessionVariables.XDG_DOWNLOAD_DIR;
+        DownloadDirectory = config.home.sessionVariables.XDG_DOWNLOAD_DIR or "\${HOME}/Downloads";
         EnableTrackingProtection = {
           Value = true;
         };
         EncryptedMediaExtensions = {
           Enabled = true;
+        };
+        ExtensionSettings = {
+          "*" = {
+            installation_mode = "blocked";
+          };
         };
         SearchEngines = {
           Default = "kagi";
@@ -98,13 +143,15 @@ in
       };
 
       profiles = {
-        ${user} = {
+        default = {
           isDefault = true;
 
           search = {
             force = true;
-            default = config.programs.firefox.policies.SearchEngines.Default;
-            privateDefault = config.programs.firefox.profiles."${user}".search.default;
+            default = config.programs.firefox.policies.SearchEngines.Default or "kagi";
+            privateDefault =
+              config.programs.firefox.profiles."${user}".search.default
+                or config.programs.firefox.profiles.default.search.default;
             engines = {
               "kagi" = {
                 name = "Kagi";
@@ -131,6 +178,101 @@ in
                   "@kg"
                 ];
               };
+
+              "nixos-packages" = {
+                name = "NixOS Packages";
+                description = "Search in NixOS Packages";
+                urls = [
+                  {
+                    template = "https://search.nixos.org/packages";
+                    params = [
+                      {
+                        name = "from";
+                        value = "0";
+                      }
+
+                      {
+                        name = "size";
+                        value = "relevance";
+                      }
+
+                      {
+                        name = "type";
+                        value = "packages";
+                      }
+
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [
+                  "@np"
+                  "@nixpkgs"
+                ];
+              };
+
+              "nixos-options" = {
+                name = "NixOS Options";
+                description = "Search in NixOS Options";
+                urls = [
+                  {
+                    template = "https://search.nixos.org/options";
+                    params = [
+                      {
+                        name = "from";
+                        value = "0";
+                      }
+
+                      {
+                        name = "size";
+                        value = "relevance";
+                      }
+
+                      {
+                        name = "type";
+                        value = "packages";
+                      }
+
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [
+                  "@no"
+                  "@nixopts"
+                  "@nixoptions"
+                ];
+              };
+
+              "nixos-wiki" = {
+                name = "NixOS Wiki";
+                description = "Search in the NixOS Wiki";
+                urls = [
+                  {
+                    template = "https://wiki.nixos.org/w/index.php";
+                    params = [
+                      {
+                        name = "search";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                icon = "https://wiki.nixos.org/favicon.ico";
+                updateInterval = 24 * 60 * 60 * 1000;
+                definedAliases = [
+                  "@nw"
+                  "@nixwiki"
+                ];
+              };
             };
           };
 
@@ -152,8 +294,6 @@ in
                 libredirect
                 link-cleaner
                 linkhints
-                protondb-for-steam
-                react-devtools
                 reddit-enhancement-suite
                 skip-redirect
                 stylus
@@ -161,19 +301,74 @@ in
                 ublock-origin
                 user-agent-string-switcher
               ]
-              ++ (lib.optionals ((lib.lists.count (x: x == pkgs.protonvpn-gui) config.home.packages) > 0) [
-                proton-vpn
-              ])
-              ++ (lib.optionals ((lib.lists.count (x: x == pkgs.protonvpn-gui) config.home.packages) > 0) [
-                proton-pass
-              ])
-              ++ (lib.optionals (config.programs.firefox.profiles.${user}.search.default == "ddg") [
-                duckduckgo-privacy-essentials
-              ])
-              ++ (lib.optionals (config.programs.firefox.profiles.${user}.search.default == "kagi") [
-                kagi-privacy-pass
-                kagi-search
-              ]);
+              ++ (lib.optionals (
+                let
+                  any = builtins.any (
+                    let
+                      p = pkgs.nodePackages.nodejs;
+                    in
+                    x: (if lib.attrsets.isDerivation x then lib.getName x else null) == p
+                  );
+                in
+                any config.home.packages || any osConfig.environment.systemPackages
+              ) [ react-devtools ])
+              ++ (lib.optionals (osConfig.programs.steam.enable or false) [ protondb-for-steam ])
+              ++ (lib.optionals (
+                let
+                  any = builtins.any (
+                    let
+                      cli = pkgs.protonvpn-cli;
+                      gui = pkgs.protonvpn-gui;
+                    in
+                    x:
+                    let
+                      name = if lib.attrsets.isDerivation x then lib.getName x else null;
+                    in
+                    name != null && (name == cli || name == gui)
+                  );
+                in
+                any config.home.packages || any osConfig.environment.systemPackages
+              ) [ proton-vpn ])
+              ++ (lib.optionals (
+                let
+                  any = builtins.any (
+                    let
+                      p = pkgs.proton-pass;
+                    in
+                    x: (if lib.attrsets.isDerivation x then lib.getName x else null) == p
+                  );
+                in
+                any config.home.packages || any osConfig.environment.systemPackages
+              ) [ proton-pass ])
+              ++ (lib.optionals
+                (
+                  (config.programs.firefox.profiles."${user}".search.default
+                    or config.programs.firefox.profiles.default.search.default
+                  ) == "ddg"
+                )
+                [
+                  duckduckgo-privacy-essentials
+                ]
+              )
+              ++ (lib.optionals
+                (
+                  (config.programs.firefox.profiles."${user}".search.default
+                    or config.programs.firefox.profiles.default.search.default
+                  ) == "kagi"
+                )
+                [
+                  kagi-privacy-pass
+                  kagi-search
+                ]
+              );
+
+            settings = {
+              "${stylusId}" = {
+                # Stylus
+              };
+            };
+
+            force = true;
           };
 
           userChrome =
@@ -184,7 +379,6 @@ in
                 rev = "f8c6bb5a36f24aba61995204ff5497c865e78e50";
                 sha256 = "aylkbsKLuCJqao8oeEZvSMaZUvjIxhlT/kGJ1DDsEt0=";
               };
-
             in
             lib.strings.concatLines (
               builtins.map (
@@ -344,7 +538,13 @@ in
             "browser.menu.showViewImageInfo" = true;
 
             "browser.newtab.url" =
-              if (config.programs.firefox.profiles.${user}.search.default == "kagi") then
+              if
+                (
+                  (config.programs.firefox.profiles."${user}".search.default
+                    or config.programs.firefox.profiles.default.search.default
+                  ) == "kagi"
+                )
+              then
                 "https://kagi.com"
               else
                 "about:newtab";
@@ -389,7 +589,13 @@ in
 
             "browser.toolbars.bookmarks.visibility" = "never";
             "browser.toolbars.urlbar.placeHolderName" =
-              if (config.programs.firefox.profiles.${user}.search.default == "kagi") then
+              if
+                (
+                  (config.programs.firefox.profiles."${user}".search.default
+                    or config.programs.firefox.profiles.default.search.default
+                  ) == "kagi"
+                )
+              then
                 "Kagi"
               else
                 "DuckDuckGo";

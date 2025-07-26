@@ -3,6 +3,7 @@
 {
   environment = {
     systemPackages = with pkgs; [
+      atool
       libarchive
       p7zip
       unzip
@@ -26,6 +27,11 @@
         "7zr" = {
           executable = "${lib.getBin pkgs.p7zip}/bin/7zr";
           profile = "${pkgs.firejail}/etc/firejail/7zr.profile";
+        };
+
+        "atool" = {
+          executable = "${lib.getBin pkgs.atool}/bin/atool";
+          profile = "${pkgs.firejail}/etc/firejail/atool.profile";
         };
 
         unrar = {
