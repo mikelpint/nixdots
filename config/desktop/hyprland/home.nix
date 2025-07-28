@@ -7,7 +7,6 @@
   user,
   ...
 }:
-
 let
   imports = [
     ./apps/home.nix
@@ -54,11 +53,11 @@ in
         enable = true;
 
         package = inputs.hyprland.packages."${pkgs.system}".hyprland.override {
-          withSystemd = config.wayland.windowManager.hyprland.systemd.enable;
+          withSystemd = config.wayland.windowManager.hyprland.systemd.enable or false;
 
           legacyRenderer = false;
 
-          enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable;
+          enableXWayland = config.wayland.windowManager.hyprland.xwayland.enable or false;
         };
 
         settings =

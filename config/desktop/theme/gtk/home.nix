@@ -5,7 +5,7 @@
   ...
 }:
 let
-  light = (config.catppucin.enable or false) && (config.catppuccin.flavour or null) == "latte";
+  light = (config.catppucin.enable or false) && (config.catppuccin.flavor or null) == "latte";
 in
 {
   home =

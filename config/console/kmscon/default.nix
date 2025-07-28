@@ -8,7 +8,7 @@
 {
   services = {
     kmscon = {
-      enable = lib.mkDefault true;
+      enable = lib.mkDefault false;
       # hwRender = lib.mkDefault (config.hardware.graphics.enable or false);
       autologinUser = lib.mkDefault user;
       fonts = [

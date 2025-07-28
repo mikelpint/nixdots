@@ -149,47 +149,47 @@
               );
           in
           (lib.optionals (config.programs.git.enable or false) [
-              "branch"
-              "git"
-              # "git-auto-fetch"
-              # "git-commit"
-              "git-escape-magic"
-              "gitfast"
-              "gitignore"
-              "git-lfs"
-              "git-prompt"
-            ])
-            ++ (lib.optional (
-              let
-                find = findPkg pkgs.tig;
-              in
-              builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
-            ) "tig")
-            ++ (lib.optional (
-              let
-                find = findPkg pkgs.git-extras;
-              in
-              builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
-            ) "git-extras")
-            ++ (lib.optional (
-              let
-                find = findPkg pkgs.gitflow;
-              in
-              builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
-            ) "git-flow")
-            # ++ (lib.optional (
-            #   let
-            #     find = findPkg pkgs.git-flow-avh;
-            #   in
-            #   builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
-            # ) "git-flow-avh")
-            ++ (lib.optional (
-              let
-                find = findPkg pkgs.hub;
-              in
-              builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
-            ) "github")
-            ++ (lib.optional (config.programs.git.enable or false) "gh");
+            "branch"
+            "git"
+            # "git-auto-fetch"
+            # "git-commit"
+            "git-escape-magic"
+            "gitfast"
+            "gitignore"
+            "git-lfs"
+            # "git-prompt"
+          ])
+          ++ (lib.optional (
+            let
+              find = findPkg pkgs.tig;
+            in
+            builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
+          ) "tig")
+          ++ (lib.optional (
+            let
+              find = findPkg pkgs.git-extras;
+            in
+            builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
+          ) "git-extras")
+          ++ (lib.optional (
+            let
+              find = findPkg pkgs.gitflow;
+            in
+            builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
+          ) "git-flow")
+          # ++ (lib.optional (
+          #   let
+          #     find = findPkg pkgs.git-flow-avh;
+          #   in
+          #   builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
+          # ) "git-flow-avh")
+          ++ (lib.optional (
+            let
+              find = findPkg pkgs.hub;
+            in
+            builtins.any find osConfig.environment.systemPackages || builtins.any find config.home.packages
+          ) "github")
+          ++ (lib.optional (config.programs.git.enable or false) "gh");
       };
 
       plugins = lib.optionals (config.programs.git.enable or false) (

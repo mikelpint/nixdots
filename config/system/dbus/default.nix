@@ -5,7 +5,7 @@
   ...
 }:
 let
-  apparmor = config.security.apparmor.enable;
+  apparmor = config.security.apparmor.enable or false;
   ifapparmor = lib.mkIf apparmor;
 in
 {

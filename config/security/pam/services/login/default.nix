@@ -5,7 +5,7 @@
       services = {
         login = {
           enable = true;
-          enableAppArmor = config.security.apparmor.enable;
+          enableAppArmor = config.security.apparmor.enable or false;
           enableGnomeKeyring = config.services.gnome.gnome-keyring.enable;
 
           rules = {

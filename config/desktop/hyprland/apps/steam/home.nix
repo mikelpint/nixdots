@@ -4,7 +4,7 @@
       hyprland = {
         settings = {
           windowrulev2 = [
-            "float,initialClass:^(steam)$,initialTitle:^(?!.*Steam).*$"
+            "float, initial class:^(steam)$, initial title:^(?!.*Steam).*$"
           ];
         };
       };

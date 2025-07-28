@@ -25,10 +25,6 @@
   xwayland,
 
   enableXWayland ? true,
-  sloppy_focus ? 1,
-  bypass_surface_visibility ? 0,
-  tagcount ? 9,
-  log_level ? "error",
   configH ? null,
 
   ...

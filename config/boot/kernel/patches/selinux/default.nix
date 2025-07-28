@@ -5,7 +5,7 @@
   ...
 }:
 {
-  nixpkgs = lib.mkIf (!config.security.apparmor.enable) {
+  nixpkgs = lib.mkIf (!(config.security.apparmor.enable or false)) {
     overlays = [
       (_self: _super: {
         selinux = pkgs.linuxPackagesFor (

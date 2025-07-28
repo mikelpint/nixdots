@@ -9,6 +9,7 @@
     ../../common/cpu/realtime
 
     ../../../boot/kernel/patches/preempt
+    ../../../boot/kernel/patches/native/x86
   ];
 
   boot = {

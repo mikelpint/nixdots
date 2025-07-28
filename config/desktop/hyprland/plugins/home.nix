@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./hyprexpo/home.nix
+    # ./hyprexpo/home.nix
   ];
 }

@@ -32,7 +32,7 @@ in
 
           render = {
             direct_scanout = lib.mkDefault true;
-            new_rendering_scheduling = lib.mkDefault true;
+            # new_rendering_scheduling = lib.mkDefault true;
           };
 
           misc = {

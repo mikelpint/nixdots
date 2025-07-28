@@ -17,11 +17,7 @@
       };
     };
 
-    zsh = lib.mkIf (config.programs.fzf.enable or osConfig.programs.fzf.enable or false) {
-      oh-my-zsh = {
-        plugins = [ "fzf" ];
-      };
-
+    zsh = lib.mkIf (config.programs.fzf.enable or false) {
       plugins = with pkgs; [
         {
           name = "fzf-tab";

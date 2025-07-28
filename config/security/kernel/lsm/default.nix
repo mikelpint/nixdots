@@ -8,7 +8,7 @@
   boot = {
     kernelParams = [
       "lsm=landlock,lockdown,yama,integrity,safesetid,${
-        if config.security.apparmor.enable then "apparmor" else "selinux"
+        if config.security.apparmor.enable or false then "apparmor" else "selinux"
       },bpf"
       "lockdown=confidentiality"
     ];

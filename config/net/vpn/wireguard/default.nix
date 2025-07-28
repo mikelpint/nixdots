@@ -15,7 +15,7 @@ in
     ./protonvpn
   ];
 
-  environment = lib.mkIf config.networking.wireguard.enable {
+  environment = lib.mkIf (config.networking.wireguard.enable or false) {
     systemPackages = with pkgs; [
       wireguard-tools
       wireguard-ui
@@ -139,7 +139,7 @@ in
         ) (wg-quick.interfaces or { });
       };
     }
-    // (lib.mkIf config.networking.wireguard.enable {
+    // (lib.mkIf (config.networking.wireguard.enable or false) {
       networkmanager = {
         unmanaged =
           (builtins.attrNames (config.networking.wireguard.interfaces or { }))
@@ -150,7 +150,7 @@ in
         logReversePathDrops = true;
         allowedUDPPorts = ports;
       }
-      // lib.mkIf (!config.networking.nftables.enable) {
+      // (lib.optionalAttrs (!(config.networking.nftables.enable or false)) {
         extraCommands = lib.strings.concatLines (
           builtins.map (port: ''
             iptables  -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
@@ -168,9 +168,9 @@ in
             ip6tables -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
           '') ports
         );
-      };
+      });
 
-      nftables = lib.mkIf config.networking.nftables.enable {
+      nftables = lib.mkIf (config.networking.nftables.enable or false) {
         tables = {
           "${table}" = {
             enable = true;

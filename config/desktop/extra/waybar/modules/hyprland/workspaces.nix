@@ -28,7 +28,7 @@
       sort-by-number = true;
     };
   }
-  // (lib.mkIf
+  // (lib.optionalAttrs
     (
       (config.wayland.windowManager.hyprland.enable or false)
       || (osConfig.programs.hyprland.enable or false)

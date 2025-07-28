@@ -36,8 +36,8 @@
   programs = {
     firejail = {
       wrappedBinaries = {
-        wireshark-cli = lib.mkIf (config.progams.wireshark.enable or false) {
-          executable = "${lib.getBin (config.progams.wireshark.package or pkgs.wireshark-cli)}/bin/tshark";
+        wireshark-cli = lib.mkIf (config.programs.wireshark.enable or false) {
+          executable = "${lib.getBin (config.programs.wireshark.package or pkgs.wireshark-cli)}/bin/tshark";
           profile = "${pkgs.firejail}/etc/firejail/tshark.profile";
         };
 

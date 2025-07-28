@@ -23,7 +23,7 @@
         "gedit-theme" =
           home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" (lib.getName gedit) ]
             ''
-              SCHEMADIR="$(${gedit}/share/gsettings-schemas/gedit-$(${gedit}/bin/gedit --version | sed -r 's/gedit - Version (.+)/\1/g')/glib-2.0/schemas)"
+              SCHEMADIR="${gedit}/share/gsettings-schemas/gedit-$(${gedit}/bin/gedit --version | sed -r 's/gedit - Version (.+)/\1/g')/glib-2.0/schemas"
               ${pkgs.glib}/bin/gsettings --schemadir $SCHEMADIR set org.gnome.gedit.preferences.editor editor-font 'JetBrainsMono Nerd Font 12'
               ${lib.optionalString (config.catppuccin.enable or false) ''
                 ${pkgs.glib}/bin/gsettings --schemadir $SCHEMADIR set org.gnome.gedit.preferences.editor style-scheme-for-light-theme-variant 'catppuccin-${config.catppuccin.flavor}'

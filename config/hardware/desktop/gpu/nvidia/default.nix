@@ -42,25 +42,19 @@ in
     };
 
     graphics = ifnvidia {
-      extraPackages =
-        with pkgs;
-        [
-          nvidia-vaapi-driver
-          libvdpau-va-gl
-          vaapiVdpau
-          nv-codec-headers-12
-          egl-wayland
-        ]
-        ++ (lib.optional (builtins.hasAttr "package" config.hardware.graphics) config.hardware.graphics.package);
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+        libvdpau-va-gl
+        vaapiVdpau
+        nv-codec-headers-12
+        egl-wayland
+      ];
 
-      extraPackages32 =
-        with pkgs.pkgsi686Linux;
-        [
-          nvidia-vaapi-driver
-          libvdpau-va-gl
-          vaapiVdpau
-        ]
-        ++ (lib.optional (builtins.hasAttr "package32" config.hardware.graphics) config.hardware.graphics.package32);
+      extraPackages32 = with pkgs.pkgsi686Linux; [
+        nvidia-vaapi-driver
+        libvdpau-va-gl
+        vaapiVdpau
+      ];
     };
   };
 

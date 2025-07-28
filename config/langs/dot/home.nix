@@ -17,8 +17,8 @@
   programs = {
     zed-editor = {
       extensions = lib.optionals (builtins.any (
-          x: (if lib.attrsets.isDerivation x then lib.getName x else null) == (lib.getName pkgs.graphviz)
-        ) config.home.packages) [ "graphviz" ];
+        x: (if lib.attrsets.isDerivation x then lib.getName x else null) == (lib.getName pkgs.graphviz)
+      ) config.home.packages) [ "graphviz" ];
     };
   };
 }

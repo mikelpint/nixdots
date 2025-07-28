@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ../../config/apps/aseprite/home.nix
     ../../config/apps/beekeeper-studio/home.nix
     ../../config/apps/bruno/home.nix
     ../../config/apps/figma/home.nix

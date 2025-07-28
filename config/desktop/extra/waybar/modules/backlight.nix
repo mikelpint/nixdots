@@ -13,7 +13,7 @@
       "󰃠"
     ];
   }
-  // (lib.mkIf (osConfig.programs.light.enable or false) (
+  // (lib.optionalAttrs (osConfig.programs.light.enable or false) (
     let
       light = osConfig.programs.light.package or pkgs.light;
     in

@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   config,
   lib,
@@ -8,8 +9,7 @@
   programs = {
     zed-editor = {
       enable = true;
-      package = pkgs.zed-editor;
-      # package = inputs.nixpkgs-small.legacyPackages."${pkgs.system}".zed-editor or pkgs.zed-editor;
+      package = inputs.nixpkgs-small.legacyPackages."${pkgs.system}".zed-editor or pkgs.zed-editor;
 
       extensions = lib.optional (config.catppuccin.enable or false) "catppuccin-icons";
 
@@ -273,7 +273,7 @@
         inherit
           (config.catppuccin or {
             enable = false;
-            flavour = "mocha";
+            flavor = "mocha";
             accent = "mauve";
           }
           )

@@ -5,7 +5,7 @@
       services = {
         hyprlock = {
           enable = true;
-          enableAppArmor = config.security.apparmor.enable;
+          enableAppArmor = config.security.apparmor.enable or false;
           text = "\n            auth include login\n          ";
         };
       };

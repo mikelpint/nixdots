@@ -130,11 +130,11 @@ in
         EncryptedMediaExtensions = {
           Enabled = true;
         };
-        ExtensionSettings = {
-          "*" = {
-            installation_mode = "blocked";
-          };
-        };
+        # ExtensionSettings = {
+        #   "*" = {
+        #     installation_mode = "blocked";
+        #   };
+        # };
         SearchEngines = {
           Default = "kagi";
         };
@@ -317,8 +317,8 @@ in
                 let
                   any = builtins.any (
                     let
-                      cli = pkgs.protonvpn-cli;
-                      gui = pkgs.protonvpn-gui;
+                      cli = lib.getName pkgs.protonvpn-cli;
+                      gui = lib.getName pkgs.protonvpn-gui;
                     in
                     x:
                     let
@@ -333,7 +333,7 @@ in
                 let
                   any = builtins.any (
                     let
-                      p = pkgs.proton-pass;
+                      p = lib.getName pkgs.proton-pass;
                     in
                     x: (if lib.attrsets.isDerivation x then lib.getName x else null) == p
                   );

@@ -34,7 +34,7 @@ in
   };
 
   hardware = {
-    display = {
+    display = lib.mkIf false {
       edid = {
         enable = true;
         packages = [

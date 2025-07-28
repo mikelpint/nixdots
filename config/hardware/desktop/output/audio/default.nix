@@ -3,7 +3,7 @@
   imports = [
     ../../../common/output/audio
     ../../../common/output/audio/tweaks/lowlatency
-    ../../../common/output/audio/tweaks/virtual-surround
+    # ../../../common/output/audio/tweaks/virtual-surround
 
     ../../../../audio/realtime
   ];

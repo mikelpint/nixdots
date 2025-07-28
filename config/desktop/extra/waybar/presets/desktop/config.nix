@@ -9,7 +9,11 @@
 let
   isamd = builtins.elem "amdgpu" (osConfig.services.xserver.videoDrivers or [ ]);
   gpuClick =
-    gpu: if isamd then "xdg-terminal-exec amdgpu_top --pci ${gpu}" else "xdg-terminal-exec -e nvtop";
+    gpu:
+    if isamd then
+      "xdg-terminal-exec ${lib.getBin pkgs.amdgpu_top}/bin/amdgpu_top --pci ${gpu}"
+    else
+      "xdg-terminal-exec -e ${lib.getBin pkgs.nvtopPackages.nvidia}/bin/nvtop";
 
   args = {
     inherit config;
@@ -100,8 +104,10 @@ in
         hwmon-path = "/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input";
         format = lib.mkForce " {temperatureC}°C";
         interval = lib.mkForce 1;
-        on-click = "xdg-terminal-exec btop";
       }
+      (lib.optionalAttrs (config.programs.btop.enable or false) {
+        on-click = "xdg-terminal-exec btop";
+      })
     ];
     "temperature#gpu1" = lib.mkMerge [
       (import ../../modules/temperature.nix args).temperature

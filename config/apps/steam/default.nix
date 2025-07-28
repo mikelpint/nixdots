@@ -44,7 +44,7 @@
 
           postInstall = (old.postInstall or "") + ''
             substituteInPlace $out/share/applications/steam.desktop \
-                    --replace "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
+                    --replace-fail "PrefersNonDefaultGPU=true" "PrefersNonDefaultGPU=false"
           '';
         });
       })

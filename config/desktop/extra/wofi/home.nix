@@ -29,13 +29,22 @@
         prompt = "";
         columns = 2;
       };
-    }
-    // (
-      let
-        inherit (config.catppuccin) enable flavor accent;
-      in
-      lib.mkIf enable {
-        style = ''
+
+      style =
+        let
+          inherit
+            (config.catppuccin or {
+              enable = false;
+              flavor = "mocha";
+              accent = "mauve";
+            }
+            )
+            enable
+            flavor
+            accent
+            ;
+        in
+        lib.optionalString enable ''
             ${lib.optionalString (flavor == "frappe") ''
               @define-color rosewater      #f2d5cf;
               @define-color rosewater-rgb  rgb(242, 213, 207);
@@ -360,8 +369,7 @@
             background-color: @${accent}!important;
           }
         '';
-      }
-    );
+    };
   };
 
   xdg = {

@@ -89,7 +89,8 @@ stdenv.mkDerivation (finalAttrs: {
             let
               colors =
                 let
-                  cn = assert builtins.isAttrs colorname;
+                  cn =
+                    assert builtins.isAttrs colorname;
                     colorname;
                 in
                 builtins.listToAttrs (
@@ -101,34 +102,34 @@ stdenv.mkDerivation (finalAttrs: {
                           value = cn.${name} or default;
                         in
                         assert (builtins.isList value);
-                          assert (builtins.length value == 3);
-                          assert (builtins.all (color: builtins.isString color) value);
-                          builtins.map (
-                            color:
-                            let
-                              c = lib.strings.toLower color;
+                        assert (builtins.length value == 3);
+                        assert (builtins.all (color: builtins.isString color) value);
+                        builtins.map (
+                          color:
+                          let
+                            c = lib.strings.toLower color;
 
-                              rgbRegex = "^#([0-9a-f]{6})$";
-                              rgb =
-                                let
-                                  matches = builtins.match rgbRegex c;
-                                in
-                                if matches == null then null else builtins.elemAt matches 0;
+                            rgbRegex = "^#([0-9a-f]{6})$";
+                            rgb =
+                              let
+                                matches = builtins.match rgbRegex c;
+                              in
+                              if matches == null then null else builtins.elemAt matches 0;
 
-                              hexRegex = "^0x([0-9a-f]{8})$";
-                              hex =
-                                let
-                                  matches = builtins.match hexRegex c;
-                                in
-                                if matches == null then null else builtins.elemAt matches 0;
-                            in
-                            assert (
-                                lib.asserts.assertMsg (
-                                  rgb != null || hex != null
-                                ) "${c} does not match \"${rgbRegex}\" nor \"${hexRegex}\"."
-                              );
-                              if hex != null then "0x${hex}" else "0x${rgb}ff"
-                          ) value;
+                            hexRegex = "^0x([0-9a-f]{8})$";
+                            hex =
+                              let
+                                matches = builtins.match hexRegex c;
+                              in
+                              if matches == null then null else builtins.elemAt matches 0;
+                          in
+                          assert (
+                            lib.asserts.assertMsg (
+                              rgb != null || hex != null
+                            ) "${c} does not match \"${rgbRegex}\" nor \"${hexRegex}\"."
+                          );
+                          if hex != null then "0x${hex}" else "0x${rgb}ff"
+                        ) value;
                     })
                     {
                       init = [

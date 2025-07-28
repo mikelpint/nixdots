@@ -5,7 +5,7 @@
   ...
 }:
 let
-  ifnotapparmor = lib.mkIf (!config.security.apparmor.enable);
+  ifnotapparmor = lib.mkIf (!(config.security.apparmor.enable or false));
 in
 {
   imports = [ ../../../../boot/kernel/patches/selinux ];

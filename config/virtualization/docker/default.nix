@@ -99,7 +99,7 @@ in
             storage-driver = lib.mkDefault "overlay2";
             data-root = lib.mkDefault "/var/lib/docker";
 
-            selinux-enabled = !config.security.apparmor.enable;
+            selinux-enabled = !(config.security.apparmor.enable or false);
 
             exec-opts = [ "native.cgroupdriver=systemd" ];
             cgroup-parent = "docker.slice";

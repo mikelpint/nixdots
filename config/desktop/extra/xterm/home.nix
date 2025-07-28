@@ -32,7 +32,7 @@
             "XTerm*locale" = "false";
             "XTerm*utf8" = 1;
             "XTerm*renderFont" = true;
-            "XTerm*faceName" = "JetBrains Mono Nerd Font";
+            "XTerm*faceName" = "JetBrainsMono Nerd Font";
             "XTerm*faceSize" = 14;
 
             "XTerm*loginshell" = true;

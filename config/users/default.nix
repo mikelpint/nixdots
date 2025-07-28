@@ -37,7 +37,7 @@
       builtins.map (name: {
         inherit name;
         value = lib.mkDefault { };
-      }) config.users.users.${user}.extraGroups
+      }) config.users.users.${user}.extraGroups or [ ]
     ));
 
     mutableUsers = false;

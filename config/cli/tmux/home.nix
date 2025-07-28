@@ -8,7 +8,7 @@
 {
   programs = {
     tmux = {
-      enable = true;
+      enable = false;
       clock24 = true;
       baseIndex = 1;
       terminal = "xterm-256color";

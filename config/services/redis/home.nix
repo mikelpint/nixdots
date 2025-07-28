@@ -31,7 +31,7 @@
           || (builtins.any (server: server.enabe or false) (
             lib.attrsets.attrValues (osConfig.services.redis.servers or { })
           ))
-        ) "redis";
+        ) "redis-cli";
       };
     };
   };

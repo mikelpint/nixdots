@@ -4,7 +4,11 @@ let
   kver = config.boot.kernelPackages.kernel.version;
 in
 {
-  imports = [ ../../common/cpu/vendor/amd ];
+  imports = [
+    ../../common/cpu/vendor/amd
+
+    ../../../boot/kernel/patches/native/x86
+  ];
 
   boot = lib.mkMerge [
     (lib.mkIf ((lib.versionAtLeast kver "5.17") && (lib.versionOlder kver "6.1")) {

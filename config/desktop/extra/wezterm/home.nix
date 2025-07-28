@@ -17,9 +17,10 @@
 
     wezterm = {
       enable = true;
-      package = inputs.wezterm.packages.${pkgs.system}.default;
+      package = inputs.wezterm.packages.${pkgs.system}.default or pkgs.wezterm;
 
       enableZshIntegration = config.programs.zsh.enable or false;
+      enableBashIntegration = true;
 
       extraConfig = ''
         local wezterm = require "wezterm"
@@ -37,7 +38,7 @@
               "color_scheme = \"Catppuccin ${"${(lib.strings.toUpper (lib.strings.substring 0 1 config.catppuccin.flavor))}${lib.strings.substring 1 (-1) config.catppuccin.flavor}"}\","
             else
               ""
-          },
+          }
           default_cursor_style = "SteadyBlock",
           enable_scroll_bar = false,
           enable_tab_bar = false,

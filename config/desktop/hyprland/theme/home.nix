@@ -18,7 +18,7 @@
 
       (writeShellScriptBin "hyprsetup_theme" ''
         ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface color-schema 'prefer-${
-          if ((config.catppucin.enable or false) && (config.catppuccin.flavour or null) == "latte") then
+          if ((config.catppucin.enable or false) && (config.catppuccin.flavor or null) == "latte") then
             "light"
           else
             "dark"

@@ -1,4 +1,4 @@
-{
+_: {
   imports = [
     ./mako/home.nix
     ./screenshot/home.nix

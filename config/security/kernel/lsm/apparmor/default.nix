@@ -22,7 +22,7 @@
     };
   };
 
-  boot = lib.mkIf config.security.apparmor.enable {
+  boot = lib.mkIf (config.security.apparmor.enable or false) {
     kernelParams = [
       "apparmor=1"
     ];

@@ -5,7 +5,7 @@
       services = {
         passwd = {
           enable = true;
-          enableAppArmor = config.security.apparmor.enable;
+          enableAppArmor = config.security.apparmor.enable or false;
           allowNullPassword = true;
 
           rules = {

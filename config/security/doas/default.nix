@@ -2,12 +2,13 @@
   user,
   lib,
   config,
+  pkgs,
   ...
 }:
 {
   security = {
-    sudo = {
-      enable = !config.security.doas.enable;
+    sudo = lib.mkIf (config.security.doas.enable or false) {
+      enable = false;
     };
 
     doas = {
@@ -23,9 +24,7 @@
     };
   };
 
-  environment = {
-    shellAliases = {
-      sudo = "doas";
-    };
+  environment = lib.mkIf (config.security.doas.enable or false) {
+    systemPackages = with pkgs; [ doas-sudo-shim ];
   };
 }

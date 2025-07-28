@@ -34,7 +34,7 @@
       );
       ncdu = find (find null osConfig.environment.systemPackages) config.home.packages;
     in
-    lib.mkIf (ncdu != null) {
+    lib.optionalAttrs (ncdu != null) {
       on-click = "xdg-terminal-exec ${ncdu}/bin/ncdu / -q -2 -t $(echo -e \"1\\n$(( $(nproc --all) * 3 / 4 ))\" | sort | tail -n 1) --exclude-kernfs --exclude /mnt";
     }
   )
@@ -48,7 +48,7 @@
       );
       gdu = find (find null osConfig.environment.systemPackages) config.home.packages;
     in
-    lib.mkIf (gdu != null) {
+    lib.optionalAttrs (gdu != null) {
       on-click = "xdg-terminal-exec ${lib.getBin gdu}/bin/gdu / -m $(echo -e \"1\\n$(( $(nproc) * 3 / 4 ))\" | sort | tail -n 1) -i /proc,/dev,/sys,/run,/mnt -C";
     }
   );

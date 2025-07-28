@@ -121,7 +121,9 @@
 
   security = {
     pki = {
-      # certificateFiles = [ config.age.secrets."mikelpint.com.crt".path ];
+      certificateFiles = [
+        "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+      ];
     };
   };
 

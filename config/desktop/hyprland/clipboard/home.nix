@@ -1,5 +1,12 @@
-{ pkgs, lib, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
+  imports = [ ../../extra/wofi/home.nix ];
+
   home = {
     packages = with pkgs; [ cliphist ];
   };
@@ -47,7 +54,7 @@
               }
           );
 
-          bind = [
+          bind = lib.optionals (config.programs.wofi.enable or false) [
             "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
           ];
         };

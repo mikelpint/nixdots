@@ -8,7 +8,7 @@
 {
   programs = {
     television = {
-      enable = true;
+      enable = false;
       package = inputs.television.packages.${pkgs.system}.television or pkgs.television;
 
       enableBashIntegration = true;
@@ -196,7 +196,7 @@
           };
         };
       }
-      // (lib.mkIf config.catppuccin.enable (
+      // (lib.optionalAttrs (config.catppuccin.enable or false) (
         let
           inherit (config.catppuccin) flavor accent;
         in

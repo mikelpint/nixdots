@@ -45,8 +45,7 @@ in
           vulkan-loader
           #vulkan-validation-layers
           vulkan-extension-layer
-        ]
-        ++ (lib.optional (builtins.hasAttr "package" config.hardware.graphics) config.hardware.graphics.package);
+        ];
 
       extraPackages32 =
         with packages;
@@ -55,15 +54,13 @@ in
           libva
           libvdpau
           libva-vdpau-driver
-        ]
-        ++ (lib.optional (builtins.hasAttr "package32" config.hardware.graphics) config.hardware.graphics.package32);
+        ];
     };
   };
 
   environment = {
     sessionVariables = {
       LD_LIBRARY_PATH = [
-        "$LD_LIBRARY_PATH"
         (pkgs.lib.makeLibraryPath (
           with pkgs;
           with xorg;

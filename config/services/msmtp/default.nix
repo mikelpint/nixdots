@@ -46,9 +46,9 @@
             auth = true;
             user = "mikelpint@protonmail.com";
           }
-          // lib.mkIf (builtins.hasAttr "proton-smtp-token" config.age.secrets) {
+          // (lib.optionalAttrs (builtins.hasAttr "proton-smtp-token" config.age.secrets) {
             passwordeval = "$(< ${config.age.secrets.proton-smtp-token.path})";
-          }
+          })
         );
       };
     };
