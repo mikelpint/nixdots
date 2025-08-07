@@ -56,10 +56,10 @@
         in
         {
           months = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Rosewater
-          days = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Pink
-          weeks = "<span color='#${colors."${flavor}".rosewater}'><b>W{}</b></span>"; # Teal
-          weekdays = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Yellow
-          today = "<span color='#${colors."${flavor}".rosewater}'><b>{}</b></span>"; # Red
+          days = "<span color='#${colors."${flavor}".pink}'><b>{}</b></span>"; # Pink
+          weeks = "<span color='#${colors."${flavor}".teal}'><b>W{}</b></span>"; # Teal
+          weekdays = "<span color='#${colors."${flavor}".yellow}'><b>{}</b></span>"; # Yellow
+          today = "<span color='#${colors."${flavor}".red}'><b>{}</b></span>"; # Red
         }
       );
     };

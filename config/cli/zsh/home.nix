@@ -61,6 +61,16 @@
         ]
         ++ (lib.optional (
           (osConfig.security.sudo.enable or false)
+          || (
+            let
+              any =
+                let
+                  inherit (pkgs) doas-sudo-shim;
+                in
+                builtins.any (x: (if lib.attrsets.isDerivation x then lib.getName x else null) == doas-sudo-shim);
+            in
+            any osConfig.environment.systemPackages || any config.home.packages
+          )
           || (builtins.hasAttr "sudo" (config.home.shellAliases or { }))
           || (builtins.hasAttr "sudo" (osConfig.environment.shellAliases or { }))
         ) "sudo")

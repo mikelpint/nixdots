@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   imports = [
     ../../presets/desktop/home.nix
     ../../presets/dev/home.nix
@@ -8,8 +9,15 @@ _: {
     ../../presets/video/home.nix
 
     ../../config/desktop/extra/waybar/presets/laptop/home.nix
-    ../../config/desktop/hyprland/wallpaper/hyprpaper/home.nix
 
     ../../config/hardware/laptop/home.nix
   ];
+
+  services = {
+    hyprpaper = {
+      settings = {
+        preload = "${self}/assets/wallpapers/dithered/lighthouse.png";
+      };
+    };
+  };
 }

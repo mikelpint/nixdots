@@ -12,7 +12,7 @@
         plugins = [
           inputs.hyprgrass.packages.${pkgs.system}.default
         ]
-        ++ (lib.optionals osConfig.hardware.pulseaudio.enable [
+        ++ (lib.optionals (osConfig.services.pulseaudio.enable or false) [
           inputs.hyprgrass.packages.${pkgs.system}.hyprgrass-pulse
         ]);
 
