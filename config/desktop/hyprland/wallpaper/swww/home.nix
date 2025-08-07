@@ -1,15 +1,32 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  config,
+  ...
+}:
 {
   imports = [ ../../../theme/swww/home.nix ];
 
-  home = {
-    packages = [
-      (pkgs.writeShellScriptBin "hyprsetup_wallpaper" ''
-        systemctl restart --user swww
-        systemctl restart --user wallpaper
-      '')
-    ];
-  };
+  home =
+    lib.mkIf
+      (
+        (config.systemd.user.services.swww.Service.enable or false)
+        && (true || (config.systemd.user.services.wallpaper.Service.enable or false))
+      )
+      {
+        packages =
+          with pkgs;
+          with inputs.swww.packages.${pkgs.system};
+          [
+            swww
+
+            (writeShellScriptBin "hyprsetup_wallpaper" ''
+              systemctl restart --user swww
+              systemctl restart --user wallpaper
+            '')
+          ];
+      };
 
   systemd = {
     user = {

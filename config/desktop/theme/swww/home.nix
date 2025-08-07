@@ -3,19 +3,14 @@
 {
   pkgs,
   inputs,
-  self,
+  lib,
+  config,
   ...
 }:
-
 let
-  wallpaper = "${self}/assets/wallpapers/gif/wallpaper.gif";
-  swww = inputs.swww.packages.${pkgs.system}.swww or pkgs.swww;
+  inherit (inputs.swww.packages.${pkgs.system} or pkgs) swww;
 in
 {
-  home = {
-    packages = [ swww ];
-  };
-
   systemd = {
     user = {
       services = {
@@ -30,35 +25,33 @@ in
           };
 
           Service = {
+            enable = lib.mkDefault (!(config.services.hyprpaper.enable or false));
             Type = "simple";
 
-            ExecPreStart = "${swww}/bin/sww kill";
-            ExecStart = "${swww}/bin/swww-daemon --no-cache --format xrgb --layer background";
-            ExecStop = "${swww}/bin/swww kill";
+            ExecPreStart = "${lib.getBin swww}/bin/swww kill";
+            ExecStart = "${lib.getBin swww}/bin/swww-daemon --no-cache --format xrgb --layer background";
+            ExecStop = "${lib.getBin swww}/bin/swww kill";
 
             Restart = "on-failure";
             StartLimitIntervalSec = 0;
             StartLimitBurst = 0;
           };
         };
-
+      }
+      // (lib.optionalAttrs (false && (config.systemd.user.services.swww.Service.enable or false)) {
         wallpaper = {
           Unit = {
             Requires = [ "swww.service" ];
-            After = [
-              "swww.service"
-            ];
+            After = [ "swww.service" ];
             PartOf = [ "swww.service" ];
           };
 
           Install = {
-            WantedBy = [
-              "swww.service"
-            ];
+            WantedBy = [ "swww.service" ];
           };
 
           Service = {
-            ExecStart = ''${swww}/bin/swww img "${wallpaper}"'';
+            ExecStart = lib.mkDefault ''${lib.getBin swww}/bin/swww restore'';
 
             Restart = "on-failure";
             StartLimitIntervalSec = 0;
@@ -67,7 +60,7 @@ in
             Type = "oneshot";
           };
         };
-      };
+      });
     };
   };
 }

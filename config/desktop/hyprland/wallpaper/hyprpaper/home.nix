@@ -5,12 +5,11 @@
   inputs,
   ...
 }:
-
 {
-  home = {
+  home = lib.mkIf (config.services.hyprpaper.enable or false) {
     packages =
-      with inputs.hyprland.packages."${pkgs.system}";
       with pkgs;
+      with inputs.hyprland.packages."${pkgs.system}";
       [
         hyprpaper
 
@@ -22,7 +21,7 @@
 
   services = {
     hyprpaper = {
-      enable = true;
+      enable = lib.mkDefault true;
 
       settings = {
         ipc = "off";
@@ -30,8 +29,7 @@
         splash = false;
         splash_offset = 2.0;
 
-        preload = lib.mkDefault "/etc/nixos/assets/wallpapers/waves/cat-waves.png";
-        wallpaper = lib.mkDefault ",${config.services.hyprpaper.preload}";
+        wallpaper = lib.mkDefault ",${config.services.hyprpaper.preload or ""}";
       };
     };
   };

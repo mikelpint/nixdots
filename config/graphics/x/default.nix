@@ -12,7 +12,6 @@
 
     greetd = {
       enable = lib.mkDefault true;
-      vt = lib.mkDefault 7;
 
       restart = true;
 
