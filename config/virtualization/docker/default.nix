@@ -26,7 +26,8 @@ in
 {
   boot =
     let
-      noiptables = config.networking.nftables.enable # && !config.virtualisation.docker.daemon.settings.iptables
+      noiptables = config.networking.nftables.enable or false
+      # && !(config.virtualisation.docker.daemon.settings.iptables or false)
       ;
     in
     lib.mkIf config.virtualisation.docker.enable {
@@ -190,8 +191,9 @@ in
             tlsverify = true;
           })
 
-          (lib.mkIf config.virtualisation.containerd.enable {
-            containerd = config.virtualisation.containerd.settings.grpc.address;
+          (lib.mkIf (config.virtualisation.containerd.enable or false) {
+            containerd =
+              config.virtualisation.containerd.settings.grpc.address or "/run/containerd/containerd.sock";
             containerd-namespace = "docker";
             containerd-plugins-namespace = "docker-plugins";
           })
@@ -203,7 +205,7 @@ in
   networking =
     let
       bridge = config.virtualisation.docker.daemon.settings.bridge or "docker0";
-      inherit (config.virtualisation.docker.daemon.settings) bip;
+      inherit (config.virtualisation.docker.daemon.settings or { bip = null; }) bip;
       interfaces =
         # config.networking.firewall.trustedInterfaces ++
         [
@@ -211,7 +213,7 @@ in
           "eth"
         ];
     in
-    lib.mkIf config.virtualisation.docker.enable {
+    lib.mkIf (config.virtualisation.docker.enable or false) {
       firewall = {
         trustedInterfaces = [ bridge ];
         checkReversePath = lib.mkForce false;
@@ -219,7 +221,8 @@ in
 
         # https://unix.stackexchange.com/a/657786
         extraCommands = lib.mkIf (
-          !config.networking.nftables.enable && config.virtualisation.docker.daemon.settings.iptables
+          !(config.networking.nftables.enable or false)
+          && (config.virtualisation.docker.daemon.settings.iptables or false)
         ) extraCommands;
       };
 

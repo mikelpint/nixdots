@@ -1,4 +1,9 @@
-{ lib, inputs, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   nixpkgs = {
     overlays = with inputs; [
@@ -18,6 +23,24 @@
   };
 
   fonts = {
+    packages = with pkgs; [
+      corefonts
+      font-manager
+      dejavu_fonts
+      font-awesome
+      fira-code-symbols
+      (iosevka-bin.override { variant = "Aile"; })
+      material-design-icons
+      nerd-fonts.ubuntu
+      nerd-fonts.ubuntu-mono
+      nerd-fonts.fira-code
+      nerd-fonts.fira-mono
+      nerd-fonts.jetbrains-mono
+      nerdfix
+      noto-fonts
+      powerline-symbols
+    ];
+
     fontconfig = {
       enable = true;
 
@@ -33,7 +56,12 @@
         autohint = lib.mkDefault false;
         style = lib.mkDefault "none";
       };
+
+      useEmbeddedBitmaps = true;
     };
+
+    enableDefaultPackages = true;
+    enableGhostscriptFonts = true;
   };
 
   environment = {

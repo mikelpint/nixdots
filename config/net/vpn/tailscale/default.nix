@@ -62,10 +62,13 @@
           "network-online.target"
           "sys-subsystem-net-devices-${config.services.tailscale.interfaceName or "tailscale0"}.device"
         ]
-        ++ (lib.optionals config.networking.networkmanager.enable [ "NetworkManager-wait-online.service" ])
-        ++ (lib.optionals config.services.dnscrypt-proxy2.enable [ "dnscrypt-proxy2.service" ])
-        ++ (lib.optionals config.services.resolved.enable [ "systemd-resolved.service" ])
-        ++ (lib.optionals config.networking.resolvconf.enable [ "resolvconf.service" ]);
+        ++ (lib.optionals (config.networking.networkmanager.enable or false) [
+          "NetworkManager-wait-online.service"
+        ])
+        ++ (lib.optionals (config.services.dnscrypt-proxy2.enable or false) [ "dnscrypt-proxy2.service" ])
+        ++ (lib.optionals (config.services.resolved.enable or false) [ "systemd-resolved.service" ])
+        ++ (lib.optionals (config.networking.resolvconf.enable or false) [ "resolvconf.service" ])
+        ++ (lib.optionals (config.networking.wireless.iwd.enable or false) [ "iwd.service" ]);
 
         wants = config.systemd.services.tailscaled.after or [ ];
 

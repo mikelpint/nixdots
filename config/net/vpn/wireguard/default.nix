@@ -19,6 +19,7 @@ in
     systemPackages = with pkgs; [
       wireguard-tools
       wireguard-ui
+      wg-friendly-peer-names
     ];
   };
 
@@ -108,7 +109,7 @@ in
     in
     {
       wireguard = {
-        enable = false;
+        enable = true;
 
         interfaces = builtins.mapAttrs (
           name: value:
@@ -141,31 +142,36 @@ in
     }
     // (lib.mkIf (config.networking.wireguard.enable or false) {
       networkmanager = {
-        unmanaged =
+        unmanaged = [
+          "type:wireguard"
+        ]
+        ++ (builtins.map (name: "interface-name:${name}") (
           (builtins.attrNames (config.networking.wireguard.interfaces or { }))
-          ++ (builtins.attrNames (config.networking.wg-quick.interfaces or { }));
+          ++ (builtins.attrNames (config.networking.wg-quick.interfaces or { }))
+        ));
       };
 
       firewall = {
+        checkReversePath = false;
         logReversePathDrops = true;
         allowedUDPPorts = ports;
       }
       // (lib.optionalAttrs (!(config.networking.nftables.enable or false)) {
         extraCommands = lib.strings.concatLines (
           builtins.map (port: ''
-            iptables  -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
-            iptables  -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
-            ip6tables -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
-            ip6tables -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
+            ${pkgs.iptables}/bin/iptables  -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
+            ${pkgs.iptables}/bin/iptables  -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
+            ${pkgs.iptables}/bin/ip6tables -t mangle -I ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN
+            ${pkgs.iptables}/bin/ip6tables -t mangle -I ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN
           '') ports
         );
 
         extraStopCommands = lib.strings.concatLines (
           builtins.map (port: ''
-            iptables  -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
-            iptables  -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
-            ip6tables -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
-            ip6tables -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
+            ${pkgs.iptables}/bin/iptables  -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
+            ${pkgs.iptables}/bin/iptables  -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
+            ${pkgs.iptables}/bin/ip6tables -t mangle -D ${table} -p udp -m udp --sport ${builtins.toString port} -j RETURN || true
+            ${pkgs.iptables}/bin/ip6tables -t mangle -D ${table} -p udp -m udp --dport ${builtins.toString port} -j RETURN || true
           '') ports
         );
       });
@@ -203,4 +209,8 @@ in
         };
       };
     });
+
+  boot = lib.mkIf (config.networking.wireguard.enable or false) {
+    kernelModules = [ "wireguard" ];
+  };
 }

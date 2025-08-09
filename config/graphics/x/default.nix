@@ -49,7 +49,7 @@
       services = {
         greetd = {
           inherit (config.services.greetd or { enable = false; }) enable;
-          enableGnomeKeyring = config.services.gnome.gnome-keyring.enable;
+          enableGnomeKeyring = config.services.gnome.gnome-keyring.enable or false;
         };
       };
     };

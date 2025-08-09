@@ -33,9 +33,10 @@
               ${pkgs.uwsm}/bin/uwsm start hyprland-uwsm.desktop
             ''
           else
-            "LD_LIBRARY_PATH= ${
-              config.services.dbus.dbusPackage or pkgs.dbus
-            }/bin/dbus-run-session Hyprland &> /dev/null";
+            "${config.services.dbus.dbusPackage or pkgs.dbus}/bin/dbus-run-session Hyprland";
+        # "LD_LIBRARY_PATH=\"\" ${
+        # config.services.dbus.dbusPackage or pkgs.dbus
+        # }/bin/dbus-run-session Hyprland &> /dev/null";
       in
       {
         settings = {

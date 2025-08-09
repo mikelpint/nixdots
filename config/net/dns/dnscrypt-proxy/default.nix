@@ -55,7 +55,7 @@ in
     };
 
     resolved = {
-      enable = !(config.services.dnscrypt-proxy2.enable && port == 53);
+      enable = !((config.services.dnscrypt-proxy2.enable or false) && port == 53);
     };
   };
 
@@ -70,7 +70,7 @@ in
     };
   };
 
-  networking = lib.mkIf config.services.dnscrypt-proxy2.enable {
+  networking = lib.mkIf (config.services.dnscrypt-proxy2.enable or false) {
     # nameservers = [ "127.0.0.1" ] ++ (if config.networking.enableIPv6 then [ "::1" ] else [ ]);
 
     firewall = {
@@ -90,7 +90,7 @@ in
     nftables = {
       tables = {
         nat = {
-          enable = config.networking.nftables.enable && port != 53;
+          enable = (config.networking.nftables.enable or false) && port != 53;
           name = "nat";
           family = "ip6";
           content = ''

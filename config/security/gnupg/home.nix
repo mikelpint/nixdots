@@ -12,23 +12,30 @@
     packages = with pkgs; [
       pinentry-gnome3
       # gnome-keysign
-      gcr
+      gcr_4
       seahorse
     ];
 
     sessionVariables = lib.mkIf (config.services.ssh.enable or false) {
-      SSH_AUTH_SOCK = "${config.home.sessionVariables.XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh";
+      SSH_AUTH_SOCK = "${
+        config.home.sessionVariables.XDG_RUNTIME_DIR or "\${XDG_RUNTIME_DIR}"
+      }/gnupg/S.gpg-agent.ssh";
     };
   };
 
   services = {
     gnome-keyring = {
-      inherit (osConfig.services.gnome.gnome-keyring) enable;
+      inherit (osConfig.services.gnome.gnome-keyring or { enable = false; }) enable;
+      components = [
+        "pkcs11"
+        "secrets"
+        "ssh"
+      ];
     };
 
     gpg-agent = {
       enable = true;
-      enableZshIntegration = config.programs.zsh.enable;
+      enableZshIntegration = config.programs.zsh.enable or false;
 
       enableSshSupport = config.services.ssh.enable or false;
       sshKeys = [

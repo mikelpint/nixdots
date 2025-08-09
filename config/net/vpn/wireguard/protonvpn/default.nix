@@ -8,9 +8,11 @@
 
 let
   listenPort = 51820;
+  mtu = 1360;
+  persistentKeepalive = 25;
 
   interfaces = {
-    wg-proton-fr-196 = {
+    pvpn-fr-196 = {
       # Bouncing = 14
 
       autostart = false;
@@ -27,12 +29,12 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
 
-    wg-proton-es-88 = {
+    pvpn-es-88 = {
       # Bouncing = 0
       # NetShield = 1
       # Moderate NAT = off
@@ -53,12 +55,12 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
 
-    wg-proton-gr-1 = {
+    pvpn-gr-1 = {
       # Bouncing = 5
       # NetShield = 1
       # Moderate NAT = off
@@ -79,12 +81,12 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
 
-    wg-proton-uk-400 = {
+    pvpn-uk-400 = {
       # Bouncing = 11
       # NetShield = 1
       # Moderate NAT = off
@@ -105,12 +107,12 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
 
-    wg-proton-us-ny-175 = {
+    pvpn-us-ny-175 = {
       # Bouncing = 9
       # NetShield = 1
       # Moderate NAT = on
@@ -131,12 +133,12 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
 
-    wg-proton-de-200 = {
+    pvpn-de-200 = {
       # Bouncing = 14
       # NetShield = 1
       # Moderate NAT = off
@@ -157,7 +159,7 @@ let
             "0.0.0.0/0"
             "10.2.0.0/32"
           ]
-          ++ (lib.optionals config.networking.enableIPv6 [ "::/0" ]);
+          ++ (lib.optionals (config.networking.enableIPv6 or false) [ "::/0" ]);
         }
       ];
     };
@@ -165,16 +167,34 @@ let
 in
 {
   age = {
-    secrets = builtins.mapAttrs (name: _value: {
-      owner = user;
-      rekeyFile = "${self}/secrets/${name}.age";
-    }) interfaces;
+    secrets = builtins.listToAttrs (
+      builtins.map (
+        iff:
+        let
+          name =
+            let
+              matches = builtins.match "^pvpn-(.*)$" iff;
+            in
+            if matches != null && (builtins.length matches) > 0 then
+              "wg-proton-${builtins.elemAt matches 0}"
+            else
+              iff;
+        in
+        {
+          inherit name;
+          value = {
+            owner = user;
+            rekeyFile = "${self}/secrets/${name}.age";
+          };
+        }
+      ) (lib.attrsets.attrNames interfaces)
+    );
   };
 
   networking = {
     enableIPv6 = lib.mkForce (config.networking.wireguard.enable or false);
 
-    wg-quick = lib.mkIf false {
+    wg-quick = {
       interfaces = builtins.mapAttrs (
         _name: value:
         {
@@ -188,9 +208,10 @@ in
     wireguard = {
       interfaces = builtins.mapAttrs (_name: value: {
         inherit listenPort;
+        inherit mtu;
         inherit (value) privateKeyFile;
         ips = value.address;
-        inherit (value) peers;
+        peers = builtins.map (peer: peer // { inherit persistentKeepalive; }) (value.peers or [ ]);
       }) interfaces;
     };
   };

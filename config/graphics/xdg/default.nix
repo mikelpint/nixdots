@@ -19,7 +19,7 @@ in
   environment = {
     systemPackages = extraPortals;
 
-    pathsToLink = lib.optionals config.home-manager.useUserPackages [
+    pathsToLink = lib.optionals (config.home-manager.useUserPackages or false) [
       "/share/xdg-desktop-portal"
       "/share/applications"
     ];

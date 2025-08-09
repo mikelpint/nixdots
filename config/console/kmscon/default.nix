@@ -9,11 +9,11 @@
   services = {
     kmscon = {
       enable = lib.mkDefault false;
-      # hwRender = lib.mkDefault (config.hardware.graphics.enable or false);
+      hwRender = lib.mkDefault true;
       autologinUser = lib.mkDefault user;
       fonts = [
         {
-          name = "JetBrainsMono Nerd Font";
+          name = "JetBrainsMono Nerd Font Mono,JetBrainsMono NFM";
           package = pkgs.nerd-fonts.jetbrains-mono;
         }
       ];
@@ -21,8 +21,8 @@
         term=xterm-256color
 
         font-engine=pango
-        font-size=14
-        font-dpi=${toString (config.services.xserver.dpi or 96)}
+        font-size=11
+        font-dpi=${toString 96}
 
         ${
           # black         => surface1
@@ -43,9 +43,9 @@
           # white         => subtext1
           # foreground    => text
           # background    => base
-          lib.optionalString config.catppuccin.enable ''
+          lib.optionalString (config.catppuccin.enable or false) ''
             palette=custom
-            ${lib.optionalString (config.catppuccin.flavor == "frappe") ''
+            ${lib.optionalString ((config.catppuccin.flavor or "mocha") == "frappe") ''
               palette-black=81, 87, 109
               palette-red=231, 130, 132
               palette-green=166, 209, 144
@@ -65,7 +65,7 @@
               palette-foreground=198, 208, 245
               palette-background=48, 52, 70
             ''}
-            ${lib.optionalString (config.catppuccin.flavor == "latte") ''
+            ${lib.optionalString ((config.catppuccin.flavor or "mocha") == "latte") ''
               palette-black=188, 192, 204
               palette-red=210, 15, 57
               palette-green=64, 160, 43
@@ -85,7 +85,7 @@
               palette-foreground=76, 79, 105
               palette-background=239, 241, 245
             ''}
-            ${lib.optionalString (config.catppuccin.flavor == "macchiato") ''
+            ${lib.optionalString ((config.catppuccin.flavor or "mocha") == "macchiato") ''
               palette-black=73, 77, 100
               palette-red=54, 58, 79
               palette-green=166, 218, 149
@@ -105,7 +105,7 @@
               palette-foreground=202, 211, 245
               palette-background=36, 39, 58
             ''}
-            ${lib.optionalString (config.catppuccin.flavor == "mocha") ''
+            ${lib.optionalString ((config.catppuccin.flavor or "mocha") == "mocha") ''
               palette-black=69, 71, 90
               palette-red=243, 139, 168
               palette-green=166, 227, 161
@@ -129,7 +129,7 @@
         }
       '';
       extraOptions = lib.mkDefault "--gpus all --render-engine ${
-        if (config.hardware.graphics.enable or false) then "gltex" else "pixman"
+        if (config.services.kmscon.hwRender or false) then "gltex" else "pixman"
       }";
     };
   };
