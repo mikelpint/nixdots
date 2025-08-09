@@ -3,6 +3,7 @@
   inputs,
   osConfig,
   config,
+  lib,
   ...
 }:
 {
@@ -100,7 +101,11 @@
     windowManager = {
       hyprland = {
         settings = {
-          bind = [ "$mainMod, L, exec, pidof hyprlock || hyprlock" ];
+          bind = [
+            "$mainMod, L, exec, ${
+              lib.optionalString (osConfig.programs.hyprland.withUWSM or false) "uwsm app -- "
+            }pidof hyprlock || hyprlock"
+          ];
         };
       };
     };

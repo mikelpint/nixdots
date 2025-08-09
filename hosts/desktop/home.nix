@@ -22,11 +22,19 @@
     ../../config/hardware/desktop/home.nix
   ];
 
+  services = {
+    hyprpaper = {
+      enable = false;
+    };
+  };
+
   systemd = {
     user = {
       services = {
         swww = {
-          enable = true;
+          Service = {
+            enable = true;
+          };
         };
 
         wallpaper = {
@@ -43,7 +51,8 @@
                 );
               in
               lib.getBin (
-                lib.lists.findFirst find (lib.lists.findFirst find (inputs.swww.packages.${pkgs.system}.swww or pkgs.swww) osConfig.environment.systemPackages) config.home.packages
+                find (find (inputs.swww.packages.${pkgs.system}.swww or pkgs.swww
+                ) osConfig.environment.systemPackages) config.home.packages
               )
             }/bin/swww img "${self}/assets/wallpapers/gif/city-night.gif"'';
           };

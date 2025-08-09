@@ -5,7 +5,7 @@
   boot = {
     loader = {
       grub = {
-        enable = lib.mkDefault true;
+        enable = lib.mkDefault false;
         device = lib.mkDefault "nodev";
 
         useOSProber = lib.mkDefault true;

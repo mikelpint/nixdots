@@ -5,6 +5,7 @@ _: {
     ./fs
     ./kernel
     ./plymouth
+    ./secureboot
     ./systemd
     ./verbosity
   ];

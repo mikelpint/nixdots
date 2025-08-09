@@ -9,13 +9,13 @@
 {
   programs = {
     hyprland = {
-      enable = true;
-      withUWSM = false;
-      portalPackage = inputs.hyprland.packages."${pkgs.system}".xdg-desktop-portal-hyprland;
+      enable = lib.mkDefault true;
+      withUWSM = lib.mkDefault false;
+      portalPackage = (inputs.hyprland.packages."${pkgs.system}" or pkgs).xdg-desktop-portal-hyprland;
     };
   };
 
-  services = lib.mkIf config.programs.hyprland.enable {
+  services = lib.mkIf (config.programs.hyprland.enable or false) {
     seatd = {
       enable = true;
       logLevel = "info";
@@ -27,13 +27,15 @@
     greetd =
       let
         command =
-          if config.programs.hyprland.withUWSM then
+          if (config.programs.hyprland.withUWSM or false) then
             ''
               [ $(${pkgs.uwsm}/bin/uwsm check may-start) ] && \
-              ${pkgs.uwsm}/bin/uwsm start hyprland.desktop
+              ${pkgs.uwsm}/bin/uwsm start hyprland-uwsm.desktop
             ''
           else
-            "LD_LIBRARY_PATH=\"\" ${config.services.dbus.dbusPackage}/bin/dbus-run-session Hyprland &> /dev/null";
+            "LD_LIBRARY_PATH= ${
+              config.services.dbus.dbusPackage or pkgs.dbus
+            }/bin/dbus-run-session Hyprland &> /dev/null";
       in
       {
         settings = {
@@ -43,21 +45,21 @@
       };
   };
 
-  users = lib.mkIf config.programs.hyprland.enable {
+  users = lib.mkIf (config.programs.hyprland.enable or false) {
     users = {
       "${user}" = {
-        extraGroups = [ config.services.seatd.group ];
+        extraGroups = [ config.services.seatd.group or "seat" ];
       };
     };
   };
 
-  environment = lib.mkIf config.programs.hyprland.enable {
+  environment = lib.mkIf (config.programs.hyprland.enable or false) {
     sessionVariables = {
       LIBSEAT_BACKEND = "logind";
     };
   };
 
-  nix = lib.mkIf config.programs.hyprland.enable {
+  nix = lib.mkIf (config.programs.hyprland.enable or false) {
     settings = {
       substituters = [
         "https://hyprland.cachix.org"

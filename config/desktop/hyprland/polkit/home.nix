@@ -6,7 +6,9 @@
 
       (writeShellScriptBin "hyprsetup_polkit" ''
         ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &
-        ${osConfig.services.dbus.dbusPackage}/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
+        ${
+          osConfig.services.dbus.dbusPackage or pkgs.dbus
+        }/bin/dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
       '')
     ];
   };

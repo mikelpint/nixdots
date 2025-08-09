@@ -17,7 +17,7 @@
 
       on-scroll = 1;
 
-      format = lib.mkIf config.catppuccin.enable (
+      format = lib.mkIf (config.catppuccin.enable or false) (
         let
           colors = {
             latte = {

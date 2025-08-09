@@ -1,4 +1,9 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  osConfig,
+  ...
+}:
 {
   imports = [ ../../../extra/wezterm/home.nix ];
 
@@ -12,7 +17,11 @@
     windowManager = {
       hyprland = {
         settings = lib.mkIf (config.programs.wezterm.enable or false) {
-          bind = [ "$mainMod, RETURN, exec, wezterm start --always-new-process" ];
+          bind = [
+            "$mainMod, RETURN, exec, ${
+              lib.optionalString (osConfig.programs.hyprland.withUWSM or false) "uwsm app -- "
+            }wezterm start --always-new-process"
+          ];
 
           windowrule = [ "tile, title:^(wezterm)$" ];
 

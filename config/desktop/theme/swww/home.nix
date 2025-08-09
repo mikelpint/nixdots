@@ -11,6 +11,12 @@ let
   inherit (inputs.swww.packages.${pkgs.system} or pkgs) swww;
 in
 {
+  home = lib.mkIf (config.systemd.user.services.swww.Service.enable or false) {
+    packages = [
+      swww
+    ];
+  };
+
   systemd = {
     user = {
       services = {
@@ -25,7 +31,7 @@ in
           };
 
           Service = {
-            enable = lib.mkDefault (!(config.services.hyprpaper.enable or false));
+            enable = lib.mkDefault false;
             Type = "simple";
 
             ExecPreStart = "${lib.getBin swww}/bin/swww kill";
@@ -37,8 +43,6 @@ in
             StartLimitBurst = 0;
           };
         };
-      }
-      // (lib.optionalAttrs (false && (config.systemd.user.services.swww.Service.enable or false)) {
         wallpaper = {
           Unit = {
             Requires = [ "swww.service" ];
@@ -51,6 +55,7 @@ in
           };
 
           Service = {
+            enable = lib.mkDefault (config.systemd.user.services.swww.Service.enable or false);
             ExecStart = lib.mkDefault ''${lib.getBin swww}/bin/swww restore'';
 
             Restart = "on-failure";
@@ -60,7 +65,7 @@ in
             Type = "oneshot";
           };
         };
-      });
+      };
     };
   };
 }

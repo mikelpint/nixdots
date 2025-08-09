@@ -3,8 +3,6 @@
 { pkgs, lib, ... }:
 {
   imports = [
-    ../../boot/secureboot
-
     ../common
 
     ./bluetooth

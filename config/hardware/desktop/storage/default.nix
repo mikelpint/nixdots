@@ -18,6 +18,18 @@
     zfs = {
       extraPools = [ "zroot" ];
     };
+
+    loader = {
+      systemd-boot = {
+        windows = {
+          "11" = {
+            title = "Windows 11";
+            efiDeviceHandle = "HD1c";
+            sortKey = "o_windows_11";
+          };
+        };
+      };
+    };
   };
 
   systemd = {

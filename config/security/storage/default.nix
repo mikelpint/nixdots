@@ -45,6 +45,10 @@
         "nosuid"
         "noexec"
         "nodev"
+      ]
+      ++ lib.optionals ((config.fileSystems.boot.fstype or "vfat") == "vfat") [
+        "fmask=0137"
+        "dmask=0027"
       ];
     };
 

@@ -906,11 +906,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1754583328,
-        "narHash": "sha256-1BsOxbpoMdtdeWv0OYtY3g3GmI+KWBOP+ldM7SEse0U=",
+        "lastModified": 1754662442,
+        "narHash": "sha256-YVplPMfoePKV2L+GOmdsS1fJQ5CCwWbyoPLMpEfWTco=",
         "ref": "refs/heads/main",
-        "rev": "afbd8796859775a50687daacb254cdd1ba22328f",
-        "revCount": 6354,
+        "rev": "00da4450db9bab1abfda169eefec8dab98f63a0b",
+        "revCount": 6355,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/hyprwm/Hyprland"
@@ -1868,11 +1868,11 @@
     },
     "nixpkgs-small": {
       "locked": {
-        "lastModified": 1754628633,
-        "narHash": "sha256-aMWlXZb4J2oQuXBMW6U5STYzpUWHEkoxgmXawYMMVIk=",
+        "lastModified": 1754668346,
+        "narHash": "sha256-96YTQ36zFf2pjzwGQR5kMPV+0kF8Xq8yxS6qjFwAvkM=",
         "owner": "NixOs",
         "repo": "nixpkgs",
-        "rev": "743e9cab3a205b9d45158eaf47741d2a30a0c118",
+        "rev": "55abd9841e394d3149e8a895c458d7808830a7dd",
         "type": "github"
       },
       "original": {
@@ -2158,11 +2158,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1754643644,
-        "narHash": "sha256-bvkmLidMha5W9O5gdTghWjvn9eV0sR7H6iUsQIVlcm0=",
+        "lastModified": 1754689711,
+        "narHash": "sha256-GVb7+6D6QSavLyqcWrMMbe8RGUJ+htc1OZawL/LYFfg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "5eb12df7acee0a88b9d099bcfe458101d9774e9a",
+        "rev": "72feb9594806cfe8a68b171d9f47e818a5999b5c",
         "type": "github"
       },
       "original": {
@@ -2632,11 +2632,11 @@
         "nixpkgs-mozilla": "nixpkgs-mozilla"
       },
       "locked": {
-        "lastModified": 1754590056,
-        "narHash": "sha256-mMAyGrQDTNiyNZiabyywNU2vagWzFVwOqW/D1WUrONI=",
+        "lastModified": 1754650281,
+        "narHash": "sha256-wCPLw27hCDCdk1HcDFmDUzRQY+ZsTVumD8P8ZmQgKyw=",
         "owner": "alexpasmantier",
         "repo": "television",
-        "rev": "d6fd1793817f5e8999fc7c4251e54644c99a03c2",
+        "rev": "4b784f76e4df89263af4ee7b50508db5274b30d3",
         "type": "github"
       },
       "original": {
@@ -2700,11 +2700,11 @@
         "xdph": "xdph_2"
       },
       "locked": {
-        "lastModified": 1754583328,
-        "narHash": "sha256-UyM03UZbu5MMil/iz1dSQv1BlfmzlfGdAZcE9ZV5DwY=",
+        "lastModified": 1754662442,
+        "narHash": "sha256-+nJzzAL+YcU17uuQyfv9KqVIwitbjPf+ZS5P3Qw3E1c=",
         "owner": "hyprwm",
         "repo": "hyprland",
-        "rev": "afbd8796859775a50687daacb254cdd1ba22328f",
+        "rev": "00da4450db9bab1abfda169eefec8dab98f63a0b",
         "type": "github"
       },
       "original": {

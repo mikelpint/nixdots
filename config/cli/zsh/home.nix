@@ -65,9 +65,17 @@
             let
               any =
                 let
-                  inherit (pkgs) doas-sudo-shim;
+                  doas-sudo-shim = lib.getName pkgs.doas-sudo-shim;
+                  sudo = lib.getName pkgs.sudo;
+                  sudo-rs = lib.getName pkgs.sudo-rs;
                 in
-                builtins.any (x: (if lib.attrsets.isDerivation x then lib.getName x else null) == doas-sudo-shim);
+                builtins.any (
+                  x:
+                  let
+                    name = if lib.attrsets.isDerivation x then lib.getName x else null;
+                  in
+                  name == doas-sudo-shim || name == sudo || name == sudo-rs
+                );
             in
             any osConfig.environment.systemPackages || any config.home.packages
           )

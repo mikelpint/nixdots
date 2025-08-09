@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  osConfig,
   ...
 }:
 {
@@ -55,7 +56,9 @@
           );
 
           bind = lib.optionals (config.programs.wofi.enable or false) [
-            "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+            "$mainMod, V, exec, ${
+              lib.optionalString (osConfig.programs.hyprland.withUWSM or false) "uwsm app -- "
+            }cliphist list | wofi --dmenu | cliphist decode | wl-copy"
           ];
         };
       };

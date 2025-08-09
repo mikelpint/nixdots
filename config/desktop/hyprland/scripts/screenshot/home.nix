@@ -8,7 +8,7 @@
         (
           type:
           (pkgs.writeShellScriptBin "screenshot-${type}" ''
-            grimblast copysave ${type} $XDG_PICTURES_DIR/screenshots/$(date +"%F_%H-%M-%S-%N").png
+            ${lib.getBin pkgs.grimblast}/bin/grimblast copysave ${type} $XDG_PICTURES_DIR/screenshots/$(date +"%F_%H-%M-%S-%N").png
           '')
         )
         [

@@ -56,11 +56,11 @@
     };
   };
 
-  environment = lib.mkIf config.networking.wireless.iwd.enable {
-    systemPackages = [ config.networking.wireless.iwd.package ];
+  environment = lib.mkIf (config.networking.wireless.iwd.enable or false) {
+    systemPackages = [ config.networking.wireless.iwd.package or pkgs.iwd ];
   };
 
-  systemd = lib.mkIf config.networking.wireless.iwd.enable {
+  systemd = lib.mkIf (config.networking.wireless.iwd.enable or false) {
     services = {
       iwd = {
         after = [

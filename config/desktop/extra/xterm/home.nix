@@ -32,7 +32,7 @@
             "XTerm*locale" = "false";
             "XTerm*utf8" = 1;
             "XTerm*renderFont" = true;
-            "XTerm*faceName" = "JetBrainsMono Nerd Font";
+            "XTerm*faceName" = "JetBrainsMono Nerd Font Mono, JetBrainsMono NFM"; # fc-list | cut -f2 -d: | sort -u | less -r
             "XTerm*faceSize" = 14;
 
             "XTerm*loginshell" = true;
