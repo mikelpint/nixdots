@@ -5,12 +5,7 @@
   user,
   ...
 }:
-
 let
-  listenPort = 51820;
-  mtu = 1360;
-  persistentKeepalive = 25;
-
   interfaces = {
     pvpn-fr-196 = {
       # Bouncing = 14
@@ -168,50 +163,45 @@ in
 {
   age = {
     secrets = builtins.listToAttrs (
-      builtins.map (
-        iff:
-        let
-          name =
-            let
-              matches = builtins.match "^pvpn-(.*)$" iff;
-            in
-            if matches != null && (builtins.length matches) > 0 then
-              "wg-proton-${builtins.elemAt matches 0}"
-            else
-              iff;
-        in
-        {
-          inherit name;
-          value = {
-            owner = user;
-            rekeyFile = "${self}/secrets/${name}.age";
-          };
-        }
-      ) (lib.attrsets.attrNames interfaces)
+      builtins.map
+        (
+          iff:
+          let
+            name =
+              let
+                matches = builtins.match "^pvpn-(.*)$" iff;
+              in
+              if matches != null && (builtins.length matches) > 0 then
+                "wg-proton-${builtins.elemAt matches 0}"
+              else
+                iff;
+          in
+          {
+            inherit name;
+            value = {
+              owner = user;
+              rekeyFile = "${self}/secrets/${name}.age";
+            };
+          }
+        )
+        (
+          lib.lists.unique (
+            (lib.attrsets.attrNames (config.networking.wireguard.interfaces or { }))
+            ++ (lib.attrsets.attrNames (config.networking.wg-quick.interfaces or { }))
+          )
+        )
     );
   };
 
   networking = {
-    enableIPv6 = lib.mkForce (config.networking.wireguard.enable or false);
-
     wg-quick = {
-      interfaces = builtins.mapAttrs (
-        _name: value:
-        {
-          autostart = lib.mkDefault false;
-          inherit listenPort;
-        }
-        // value
-      ) interfaces;
+      inherit interfaces;
     };
 
     wireguard = {
       interfaces = builtins.mapAttrs (_name: value: {
-        inherit listenPort;
-        inherit mtu;
-        inherit (value) privateKeyFile;
+        inherit (value) privateKeyFile peers;
         ips = value.address;
-        peers = builtins.map (peer: peer // { inherit persistentKeepalive; }) (value.peers or [ ]);
       }) interfaces;
     };
   };

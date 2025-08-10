@@ -15,7 +15,7 @@
       };
 
       banaction =
-        if config.networking.nftables.enable then "nftables-multiport" else "iptables-multiport";
+        if (config.networking.nftables.enable or "") then "nftables-multiport" else "iptables-multiport";
     };
   };
 }

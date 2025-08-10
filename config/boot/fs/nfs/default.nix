@@ -14,7 +14,7 @@
     };
   };
 
-  networking = lib.mkIf config.services.nfs.server.enable {
+  networking = lib.mkIf (config.services.nfs.server.enable or false) {
     firewall = {
       allowedTCPPorts = [
         111

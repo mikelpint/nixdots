@@ -37,35 +37,33 @@
     };
   };
 
-  networking = lib.mkMerge [
-    {
-      hosts = { };
-    }
-
-    # (
-    #   let
-    #     machineId = lib.strings.trim (
-    #       config.environment.etc.machine-id.text or (
-    #         if
-    #           builtins.isPath (config.environment.etc.machine-id.source or null)
-    #           || builtins.isString (config.environment.etc.machine-id.source or null)
-    #         then
-    #           builtins.readFile config.environment.etc.machine-id.source
-    #         else
-    #           ""
-    #       )
-    #     );
-    #   in
-    #   lib.mkIf (builtins.isString machineId && builtins.stringLength machineId >= 0) {
-    #     hostId = builtins.substring 0 7 (
-    #       if (builtins.stringLength machineId) >= 8 then
-    #         machineId
-    #       else
-    #         (builtins.hashString machineId "sha256")
-    #     );
-    #   }
-    # )
-  ];
+  networking = {
+    hosts = { };
+  }
+  # // (
+  #   let
+  #     machineId = lib.strings.trim (
+  #       config.environment.etc.machine-id.text or (
+  #         if
+  #           builtins.isPath (config.environment.etc.machine-id.source or null)
+  #           || builtins.isString (config.environment.etc.machine-id.source or null)
+  #         then
+  #           builtins.readFile config.environment.etc.machine-id.source
+  #         else
+  #           ""
+  #       )
+  #     );
+  #   in
+  #   lib.mkIf (builtins.isString machineId && builtins.stringLength machineId >= 0) {
+  #     hostId = builtins.substring 0 7 (
+  #       if (builtins.stringLength machineId) >= 8 then
+  #         machineId
+  #       else
+  #         (builtins.hashString machineId "sha256")
+  #     );
+  #   }
+  # )
+  ;
 
   environment = {
     systemPackages = with pkgs; [

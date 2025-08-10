@@ -9,7 +9,7 @@
       };
     };
 
-    networkmanager = lib.mkIf config.networking.wireless.enable {
+    networkmanager = lib.mkIf (config.networking.wireless.enable or false) {
       unmanaged = [
         "*"
         "except:type:wwan"

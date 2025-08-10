@@ -8,7 +8,7 @@
   ...
 }:
 let
-  host = lib.strings.removeSuffix user config.networking.hostName;
+  host = lib.strings.removeSuffix user (config.networking.hostName or "");
 in
 {
   environment = {

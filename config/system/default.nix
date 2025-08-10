@@ -19,7 +19,7 @@
   ];
 
   system = {
-    name = lib.mkDefault (lib.strings.removeSuffix user config.networking.hostName);
+    name = lib.mkDefault (lib.strings.removeSuffix user (config.networking.hostName or ""));
     stateVersion = "25.11";
 
     tools = {

@@ -19,7 +19,7 @@
       "2.nixos.pool.ntp.org"
       "3.nixos.pool.ntp.org"
     ]
-    ++ options.networking.timeServers.default;
+    ++ (options.networking.timeServers.default or [ ]);
   };
 
   services = {

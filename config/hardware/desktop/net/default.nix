@@ -13,6 +13,7 @@ _: {
 
     defaultGateway = {
       address = "192.168.1.1";
+      interface = "wifi";
     };
   };
 }

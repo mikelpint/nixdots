@@ -63,7 +63,7 @@
           (osConfig.security.sudo.enable or false)
           || (
             let
-              any =
+              has-sudo =
                 let
                   doas-sudo-shim = lib.getName pkgs.doas-sudo-shim;
                   sudo = lib.getName pkgs.sudo;
@@ -77,7 +77,7 @@
                   name == doas-sudo-shim || name == sudo || name == sudo-rs
                 );
             in
-            any osConfig.environment.systemPackages || any config.home.packages
+            has-sudo osConfig.environment.systemPackages || has-sudo config.home.packages
           )
           || (builtins.hasAttr "sudo" (config.home.shellAliases or { }))
           || (builtins.hasAttr "sudo" (osConfig.environment.shellAliases or { }))
