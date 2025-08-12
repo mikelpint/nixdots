@@ -14,6 +14,7 @@
         hyprpaper
 
         (writeShellScriptBin "hyprsetup_wallpaper" ''
+          pkill hyprpaper
           hyprpaper &
         '')
       ];
@@ -28,8 +29,6 @@
 
         splash = false;
         splash_offset = 2.0;
-
-        wallpaper = lib.mkDefault ",${config.services.hyprpaper.preload or ""}";
       };
     };
   };

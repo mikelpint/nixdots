@@ -19,7 +19,8 @@
   ];
 
   boot = {
-    kernelPackages = lib.mkOverride 75 pkgs.linuxKernel.packages.linux_hardened;
+    # kernelPackages = lib.mkOverride 75 pkgs.linuxKernel.packages.linux_hardened;
+    kernelPackages = lib.mkOverride 75 pkgs.linuxKernel.packages.linux_6_16;
   };
 
   services = {

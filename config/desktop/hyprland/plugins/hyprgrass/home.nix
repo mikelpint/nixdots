@@ -36,7 +36,7 @@
 
           gestures = {
             workspace_swipe = true;
-            workspace_swip_cancel_ratio = 0.15;
+            workspace_swipe_cancel_ratio = 0.15;
           };
         };
       };

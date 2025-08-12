@@ -41,6 +41,7 @@
           home-manager.lib.hm.dag.entryAfter [ "writeBoundary" "installPackages" (lib.getName ghidra) ]
             ''
               DIR="/home/${user}/.config/ghidra/ghidra_${lib.getVersion ghidra}_NIX"
+              mkdir -p "$DIR"
 
               if [[ ! -f "$DIR/preferences" ]]
               then

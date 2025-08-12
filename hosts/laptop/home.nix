@@ -15,9 +15,14 @@
 
   services = {
     hyprpaper = {
-      settings = {
-        preload = "${self}/assets/wallpapers/dithered/lighthouse.png";
-      };
+      settings =
+        let
+          preload = "${self}/assets/wallpapers/dithered/lighthouse.png";
+        in
+        {
+          inherit preload;
+          wallpaper = ",${preload}";
+        };
     };
   };
 }
