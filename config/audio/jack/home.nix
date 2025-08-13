@@ -5,11 +5,11 @@
   ...
 }:
 {
-  home = lib.mkIf osConfig.services.jack.jackd.enable {
+  home = lib.mkIf (osConfig.services.jack.jackd.enable or false) {
     packages = with pkgs; [ qjackctl ];
   };
 
-  xdg = lib.mkIf osConfig.services.jack.jackd.enable {
+  xdg = lib.mkIf (osConfig.services.jack.jackd.enable or false) {
     configFile = {
       "pulse/client.conf" = {
         text = ''
@@ -19,7 +19,7 @@
     };
   };
 
-  systemd = lib.mkIf osConfig.services.jack.jackd.enable {
+  systemd = lib.mkIf (osConfig.services.jack.jackd.enable or false) {
     user = {
       services = {
         pulseaudio = {

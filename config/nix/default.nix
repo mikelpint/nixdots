@@ -26,6 +26,7 @@
       allowed-users = [
         "root"
         "@wheel"
+        user
       ];
 
       trusted-users = config.nix.settings.allowed-users ++ [ user ];

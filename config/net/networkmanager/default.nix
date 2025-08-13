@@ -28,7 +28,7 @@ in
     };
   };
 
-  systemd = lib.mkIf config.networking.networkmanager.enable {
+  systemd = lib.mkIf (config.networking.networkmanager.enable or false) {
     services = {
       NetworkManager-wait-online = {
         enable = false;
@@ -36,7 +36,7 @@ in
     };
   };
 
-  environment = lib.mkIf config.networking.networkmanager.enable {
+  environment = lib.mkIf (config.networking.networkmanager.enable or false) {
     etc = {
       "NetworkManager/NetworkManager.conf" = {
         mode = "0644";
@@ -44,7 +44,7 @@ in
     };
   };
 
-  users = lib.mkIf config.networking.networkmanager.enable {
+  users = lib.mkIf (config.networking.networkmanager.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [ "networkmanager" ];

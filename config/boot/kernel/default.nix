@@ -1,5 +1,11 @@
-{ pkgs, lib, ... }:
 {
+  pkgs,
+  lib,
+  ...
+}:
+{
+  # https://github.com/NixOS/nixpkgs/blob/master/pkgs/os-specific/linux/kernel/common-config.nix
+
   imports = [
     ./modules
     ./patches
@@ -15,6 +21,12 @@
         "1"
         "boot.shell_on_fail"
       ];
+    };
+  };
+
+  programs = {
+    ccache = {
+      packageNames = [ "linux" ];
     };
   };
 }

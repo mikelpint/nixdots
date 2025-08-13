@@ -75,12 +75,14 @@ in
         );
       }
 
-      (lib.mkIf (!(config.services.tor.enable && config.services.tor.relay.enable)) {
-        ports = lib.mkDefault [ port ];
-        openFirewall = lib.mkDefault true;
-      })
+      (lib.mkIf (!((config.services.tor.enable or false) && (config.services.tor.relay.enable or false)))
+        {
+          ports = lib.mkDefault [ port ];
+          openFirewall = lib.mkDefault true;
+        }
+      )
 
-      (lib.mkIf (config.services.tor.enable && config.services.tor.relay.enable) {
+      (lib.mkIf ((config.services.tor.enable or false) && (config.services.tor.relay.enable or false)) {
         listenAddresses = [
           {
             addr = "127.0.0.1";
@@ -89,6 +91,30 @@ in
         ];
       })
     ];
+
+    tailscale = {
+      extraUpFlags = lib.optional (config.services.openssh.enable or false) "--ssh";
+    };
+  };
+
+  systemd = {
+    services = lib.mkIf (config.services.tailscale.enable or false) {
+      sshd = {
+        serviceConfig = {
+          # https://discourse.nixos.org/t/tailscale-service-not-initializing-network-interface-on-fresh-boot/62447/2
+          ExecStartPre = [
+            "${lib.getBin pkgs.bash}/bin/bash -c 'until ${lib.getBin pkgs.iproute2}/bin/ip -4 addr show dev tailscale0 | ${lib.getBin pkgs.gnugrep}/bin/grep -qE \"\\binet ((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])\\.?){4}/([0-2][0-9]|3[0-2])\"; do sleep 1; done'"
+          ];
+        };
+
+        after = [ "tailscaled.service" ];
+        wants = [ "tailscaled.service" ];
+      };
+
+      tailscaled = {
+        before = [ "sshd.service" ];
+      };
+    };
   };
 
   programs = {

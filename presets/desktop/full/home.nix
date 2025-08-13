@@ -4,6 +4,7 @@ _: {
     ../../../config/apps/chromium/home.nix
     ../../../config/apps/drawio/home.nix
     ../../../config/apps/easyeffects/home.nix
+    ../../../config/apps/filezilla/home.nix
     ../../../config/apps/firefox/home.nix
     ../../../config/apps/gedit/home.nix
     ../../../config/apps/gimp/home.nix

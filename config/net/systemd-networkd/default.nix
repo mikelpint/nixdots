@@ -1,10 +1,10 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   systemd = {
     network = {
       enable = lib.mkDefault false;
       wait-online = {
-        enable = false;
+        enable = lib.mkDefault false;
       };
 
       config = {
@@ -13,5 +13,9 @@
         };
       };
     };
+  };
+
+  networking = {
+    useNetworkd = false;
   };
 }

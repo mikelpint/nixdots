@@ -1,1 +1,1 @@
-{ imports = [ ./direnv/home.nix ]; }
+_: { imports = [ ./direnv/home.nix ]; }

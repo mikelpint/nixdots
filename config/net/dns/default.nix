@@ -31,7 +31,7 @@
     };
 
     resolvconf = {
-      enable = !config.services.resolved.enable;
+      enable = !(config.services.resolved.enable or false);
       useLocalResolver = true;
     };
   };

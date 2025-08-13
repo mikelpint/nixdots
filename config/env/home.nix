@@ -1,1 +1,1 @@
-{ imports = [ ./xdg/home.nix ]; }
+_: { imports = [ ./xdg/home.nix ]; }

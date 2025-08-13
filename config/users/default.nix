@@ -20,7 +20,10 @@
         home = lib.mkDefault "/home/${user}";
 
         group = lib.mkDefault user;
-        extraGroups = [ "users" ];
+        extraGroups = [
+          "users"
+          "wheel"
+        ];
 
         hashedPassword = lib.mkDefault "";
 

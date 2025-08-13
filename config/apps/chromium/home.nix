@@ -2,11 +2,12 @@
   pkgs,
   lib,
   config,
+  osConfig,
   ...
 }:
 {
   programs = {
-    chromium = lib.mkIf false {
+    chromium = {
       enable = true;
       package = pkgs.ungoogled-chromium.override {
         commandLineArgs = [
@@ -20,7 +21,7 @@
         enableWideVine = true;
       };
 
-      nativeMessagingHosts = [ pkgs.web-eid-app ];
+      nativeMessagingHosts = with pkgs; [ web-eid-app ];
     };
   };
 
@@ -43,5 +44,26 @@
           source = "${web-eid-app}/share/web-eid/eu.webeid.json";
         };
       };
+  };
+
+  nixpkgs = {
+    config = builtins.listToAttrs (
+      builtins.map
+        (name: {
+          inherit name;
+
+          value = {
+            cupsSupport = true;
+            proprietaryCodecs =
+              config.nixpkgs.config.allowUnfree or osConfig.nixpkgs.config.allowUnfree or false;
+            pulseSupport = false;
+          };
+        })
+        [
+          "ungoogled-chromium"
+          "chromium"
+          "google-chrome"
+        ]
+    );
   };
 }

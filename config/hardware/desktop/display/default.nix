@@ -30,11 +30,15 @@ in
       grub = {
         gfxmodeEfi = "2560x1440x32";
       };
+
+      systemd-boot = {
+        consoleMode = "auto";
+      };
     };
   };
 
   hardware = {
-    display = lib.mkIf false {
+    display = {
       edid = {
         enable = true;
         packages = [

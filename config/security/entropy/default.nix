@@ -17,7 +17,7 @@
 
   services = {
     jitterentropy-rngd = {
-      enable = !config.boot.isContainer;
+      enable = !(config.boot.isContainer or false);
       package = pkgs.jitterentropy-rngd;
     };
   };

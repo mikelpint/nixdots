@@ -4,6 +4,7 @@ _: {
     ../../../config/apps/chromium
     ../../../config/apps/drawio
     ../../../config/apps/easyeffects
+    ../../../config/apps/filezilla
     ../../../config/apps/firefox
     ../../../config/apps/gedit
     ../../../config/apps/gimp

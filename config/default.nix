@@ -21,6 +21,7 @@
     ./boot
     ./console
     ./cli
+    ./env
     ./fonts
     ./graphics
     ./input

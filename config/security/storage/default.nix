@@ -40,7 +40,7 @@
       ];
     };
 
-    "/boot" = lib.mkIf (!config.boot.isContainer) {
+    "/boot" = lib.mkIf (!(config.boot.isContainer or false)) {
       options = [
         "nosuid"
         "noexec"
@@ -62,7 +62,7 @@
       ];
     };
 
-    "/etc" = lib.mkIf (!config.boot.isContainer) {
+    "/etc" = lib.mkIf (!(config.boot.isContainer or false)) {
       device = lib.mkDefault "/etc";
       options = [
         "bind"

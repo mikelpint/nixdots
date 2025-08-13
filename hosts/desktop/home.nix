@@ -54,7 +54,7 @@
                 find (find (inputs.swww.packages.${pkgs.system}.swww or pkgs.swww
                 ) osConfig.environment.systemPackages) config.home.packages
               )
-            }/bin/swww img "${self}/assets/wallpapers/gif/city-night.gif"'';
+            }/bin/swww img "${self}/assets/wallpapers/gif/mountain-night.gif"'';
           };
         };
       };

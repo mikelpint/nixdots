@@ -26,7 +26,9 @@
       };
 
       delta = {
-        enable = !(config.programs.git.difftastic.enable or false);
+        enable = builtins.any (plugin: builtins.isAttrs plugin && plugin.name == "forgit") (
+            config.programs.zsh.plugins or [ ]
+          );
         package = pkgs.delta;
 
         options = {
@@ -42,7 +44,7 @@
       };
 
       difftastic = {
-        enable = true;
+        enable = !(config.programs.git.delta.enable or false);
         enableAsDifftool = true;
         package = pkgs.difftastic;
 
@@ -200,7 +202,7 @@
               inherit (zsh-forgit) src;
             }
             // {
-              name = "zsh-forgit";
+              name = "forgit";
               file = "forgit.plugin.zsh";
             }
           )

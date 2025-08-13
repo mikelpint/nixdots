@@ -21,7 +21,7 @@
       };
     };
 
-    pipewire = lib.mkIf config.services.pipewire.enable {
+    pipewire = lib.mkIf (config.services.pipewire.enable or false) {
       extraConfig = {
         jack = {
           "10-clock-rate" = {
@@ -34,39 +34,51 @@
       };
     };
 
-    pulseaudio = lib.mkIf (config.services.jack.jackd.enable || config.services.pipewire.jack.enable) {
-      package = (config.services.pulseaudio.package or pkgs.pulseaudio).override {
-        jackaudioSupport = true;
+    pulseaudio =
+      lib.mkIf
+        ((config.services.jack.jackd.enable or false) || (config.services.pipewire.jack.enable or false))
+        {
+          package = (config.services.pulseaudio.package or pkgs.pulseaudio).override {
+            jackaudioSupport = true;
+          };
+        };
+  };
+
+  boot =
+    lib.mkIf
+      ((config.services.jack.jackd.enable or false) || (config.services.pipewire.jack.enable or false))
+      {
+        kernelModules = [
+          "snd-seq"
+          "snd-rawmidi"
+        ];
       };
-    };
-  };
 
-  boot = lib.mkIf (config.services.jack.jackd.enable || config.services.pipewire.jack.enable) {
-    kernelModules = [
-      "snd-seq"
-      "snd-rawmidi"
-    ];
-  };
-
-  users = lib.mkIf (config.services.jack.jackd.enable || config.services.pipewire.jack.enable) {
-    users = {
-      "${user}" = {
-        extraGroups = [ "jackaudio" ];
+  users =
+    lib.mkIf
+      ((config.services.jack.jackd.enable or false) || (config.services.pipewire.jack.enable or false))
+      {
+        users = {
+          "${user}" = {
+            extraGroups = [ "jackaudio" ];
+          };
+        };
       };
-    };
-  };
 
-  environment = lib.mkIf (config.services.jack.jackd.enable || config.services.pipewire.jack.enable) {
-    systemPackages = with pkgs; [
-      libjack2
-      jack2
-      jack_capture
-    ];
+  environment =
+    lib.mkIf
+      ((config.services.jack.jackd.enable or false) || (config.services.pipewire.jack.enable or false))
+      {
+        systemPackages = with pkgs; [
+          libjack2
+          jack2
+          jack_capture
+        ];
 
-    sessionVariables = {
-      LD_LIBRARY_PATH = [
-        (pkgs.lib.makeLibraryPath (with pkgs; [ pipewire.jack ]))
-      ];
-    };
-  };
+        sessionVariables = {
+          LD_LIBRARY_PATH = [
+            (pkgs.lib.makeLibraryPath (with pkgs; [ pipewire.jack ]))
+          ];
+        };
+      };
 }

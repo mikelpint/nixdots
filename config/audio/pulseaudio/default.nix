@@ -20,7 +20,7 @@
 
   nixpkgs = {
     config = {
-      pulseaudio = config.services.pulseaudio.enable;
+      pulseaudio = config.services.pulseaudio.enable or false;
     };
   };
 }

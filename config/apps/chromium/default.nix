@@ -6,12 +6,58 @@
   ...
 }:
 {
-  programs = lib.mkIf false {
-    chromium = {
+  programs = {
+    chromium = lib.mkIf (config.home-manager.users.${user}.programs.chromium.enable or false) {
       extraOpts = {
         "ExtensionManifestV2Availability" = 2;
       };
     };
+
+    ccache = {
+      packageNames = [
+        "ungoogled-chromium"
+        "chromium"
+        "google-chrome"
+      ];
+    };
+
+    # ccache = {
+    #   packageNames = builtins.map lib.getName (
+    #     builtins.filter
+    #       (
+    #         x:
+    #         if lib.attrsets.isDerivation x then
+    #           (
+    #             (config.home-manager.users.${user}.programs.chromium.enable or false)
+    #             && (
+    #               (lib.getName (config.home-manager.users.${user}.programs.chromium.package or pkgs.chromium))
+    #               == (lib.getName x)
+    #             )
+    #           )
+    #           || (
+    #             let
+    #               has = builtins.any (
+    #                 let
+    #                   name = lib.getName x;
+    #                 in
+    #                 pkg: name == (lib.getName pkg)
+    #               );
+    #             in
+    #             has config.environment.systemPackages || has config.home-manager.users.${user}.home.packages
+    #           )
+    #         else
+    #           false
+    #       )
+    #       (
+    #         with pkgs;
+    #         [
+    #           ungoogled-chromium
+    #           chromium
+    #           google-chrome
+    #         ]
+    #       )
+    #   );
+    # };
 
     firejail = {
       wrappedBinaries = builtins.listToAttrs (
@@ -98,9 +144,10 @@
     };
   };
 
-  security = lib.mkIf false {
+  security = lib.mkIf (config.home-manager.users.${user}.programs.chromium.enable or false) {
     chromiumSuidSandbox = {
       enable = true;
     };
   };
+
 }

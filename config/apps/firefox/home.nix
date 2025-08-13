@@ -289,13 +289,15 @@ in
                 cookie-autodelete
                 decentraleyes
                 enhanced-github
-                enhancer-for-youtube
                 firefox-color
+                ghostery
+                improved-tube
                 libredirect
                 link-cleaner
                 linkhints
                 reddit-enhancement-suite
                 skip-redirect
+                sponsorblock
                 stylus
                 tampermonkey
                 ublock-origin
@@ -303,19 +305,19 @@ in
               ]
               ++ (lib.optionals (
                 let
-                  any = builtins.any (
+                  hasnode = builtins.any (
                     let
                       p = pkgs.nodePackages.nodejs;
                     in
                     x: (if lib.attrsets.isDerivation x then lib.getName x else null) == p
                   );
                 in
-                any config.home.packages || any osConfig.environment.systemPackages
+                hasnode config.home.packages || hasnode osConfig.environment.systemPackages
               ) [ react-devtools ])
               ++ (lib.optionals (osConfig.programs.steam.enable or false) [ protondb-for-steam ])
               ++ (lib.optionals (
                 let
-                  any = builtins.any (
+                  hasprotonvpn = builtins.any (
                     let
                       cli = lib.getName pkgs.protonvpn-cli;
                       gui = lib.getName pkgs.protonvpn-gui;
@@ -327,18 +329,18 @@ in
                     name != null && (name == cli || name == gui)
                   );
                 in
-                any config.home.packages || any osConfig.environment.systemPackages
+                hasprotonvpn config.home.packages || hasprotonvpn osConfig.environment.systemPackages
               ) [ proton-vpn ])
               ++ (lib.optionals (
                 let
-                  any = builtins.any (
+                  hasproton-pass = builtins.any (
                     let
                       p = lib.getName pkgs.proton-pass;
                     in
                     x: (if lib.attrsets.isDerivation x then lib.getName x else null) == p
                   );
                 in
-                any config.home.packages || any osConfig.environment.systemPackages
+                hasproton-pass config.home.packages || hasproton-pass osConfig.environment.systemPackages
               ) [ proton-pass ])
               ++ (lib.optionals
                 (
