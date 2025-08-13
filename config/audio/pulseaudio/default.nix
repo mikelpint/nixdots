@@ -19,7 +19,7 @@
   };
 
   nixpkgs = {
-    config = {
+    config = lib.mkIf false {
       pulseaudio = config.services.pulseaudio.enable or false;
     };
   };

@@ -17,6 +17,7 @@
   };
 
   imports = [
+    ./apps
     ./audio
     ./boot
     ./console

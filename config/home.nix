@@ -29,6 +29,7 @@
   };
 
   imports = [
+    ./apps/home.nix
     ./audio/home.nix
     ./cli/home.nix
     ./env/home.nix
