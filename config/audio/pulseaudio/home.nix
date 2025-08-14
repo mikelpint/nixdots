@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, osConfig, ... }:
 {
   home = {
     packages = with pkgs; [ pavucontrol ];
@@ -11,6 +11,12 @@
           no_display = true;
         };
       };
+    };
+  };
+
+  nixpkgs = {
+    config = {
+      pulseaudio = osConfig.nixpkgs.config.pulseaudio or false;
     };
   };
 }

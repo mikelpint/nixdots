@@ -7,4 +7,16 @@ _: {
       ];
     };
   };
+
+  nixpkgs = {
+    config = {
+      electron = {
+        pulseaudio = false;
+      };
+
+      electron-unwrapped = {
+        pulseaudio = false;
+      };
+    };
+  };
 }
