@@ -18,10 +18,9 @@ in
         listen_addresses = [
           "127.0.0.1:${toString port}"
         ]
-        # ++ (if config.networking.enableIPv6 then [ "::1:${toString port}" ] else [ ])
-        ;
+        ++ (lib.optional (false || (config.networking.enableIPv6 or false)) "::1:${toString port}");
 
-        ipv6_servers = config.networking.enableIPv6;
+        ipv6_servers = config.networking.enableIPv6 or false;
         require_dnssec = true;
 
         server_names = [
@@ -71,7 +70,9 @@ in
   };
 
   networking = lib.mkIf (config.services.dnscrypt-proxy2.enable or false) {
-    # nameservers = [ "127.0.0.1" ] ++ (if config.networking.enableIPv6 then [ "::1" ] else [ ]);
+    nameservers = lib.mkMerge [
+      (lib.mkAfter ([ "127.0.0.1" ] ++ (lib.optional (config.networking.enableIPv6 or false) "::1")))
+    ];
 
     firewall = {
       allowedTCPPorts = [ 53 ];

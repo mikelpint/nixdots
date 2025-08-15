@@ -8,7 +8,7 @@ let
   device = if id == null then "@DEFAULT_AUDIO_SINK@" else (builtins.toString id);
 in
 {
-  wayland = lib.mkIf config.wayland.windowManager.hyprland.enable {
+  wayland = lib.mkIf (config.wayland.windowManager.hyprland.enable or false) {
     windowManager = {
       hyprland = {
         settings = {

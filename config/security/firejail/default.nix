@@ -11,7 +11,7 @@
     };
   };
 
-  security = lib.mkIf config.programs.firejail.enable {
+  security = lib.mkIf (config.programs.firejail.enable or false) {
     apparmor = {
       policies = {
         firejail-default = {

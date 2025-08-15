@@ -30,7 +30,7 @@ in
       # && !(config.virtualisation.docker.daemon.settings.iptables or false)
       ;
     in
-    lib.mkIf config.virtualisation.docker.enable {
+    lib.mkIf (config.virtualisation.docker.enable or false) {
       kernel = {
         sysctl = {
           "net.ipv4.ip_nonlocal_bind" = 1;
@@ -56,7 +56,7 @@ in
       ];
     };
 
-  security = lib.mkIf config.virtualisation.docker.enable {
+  security = lib.mkIf (config.virtualisation.docker.enable or false) {
     lockKernelModules = false;
   };
 
@@ -119,7 +119,7 @@ in
             # bridge = "docker0";
 
             # ip = lib.mkDefault "0.0.0.0";
-            # ipv6 = config.networking.enableIPv6;
+            # ipv6 = config.networking.enableIPv6 or false;
             # default-gateway = lib.mkDefault (
             # config.virtualisation.docker.daemon.settings.bip or config.networking.defaultGateway.address or null
             # );

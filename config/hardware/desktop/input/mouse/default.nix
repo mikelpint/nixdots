@@ -23,7 +23,7 @@
     };
   };
 
-  users = lib.mkIf config.hardware.openrazer.enable {
+  users = lib.mkIf (config.hardware.openrazer.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [ "openrazer" ];
@@ -31,7 +31,7 @@
     };
   };
 
-  boot = lib.mkIf config.hardware.openrazer.enable {
+  boot = lib.mkIf (config.hardware.openrazer.enable or false) {
     kernelModules = [ "openrazer" ];
     extraModulePackages = with config.boot.kernelPackages; [ openrazer ];
   };
@@ -44,7 +44,7 @@
     ];
   };
 
-  services = lib.mkIf config.hardware.openrazer.enable {
+  services = lib.mkIf (config.hardware.openrazer.enable or false) {
     udev = {
       packages = with pkgs; [ openrazer-daemon ];
     };

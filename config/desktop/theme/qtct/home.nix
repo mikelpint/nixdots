@@ -41,7 +41,17 @@
 
   xdg =
     let
-      inherit (config.catppuccin) enable flavor accent;
+      inherit
+        (config.catppuccin or {
+          enable = false;
+          flavor = "mocha";
+          accent = "mauve";
+        }
+        )
+        enable
+        flavor
+        accent
+        ;
     in
     lib.mkIf enable {
       configFile =

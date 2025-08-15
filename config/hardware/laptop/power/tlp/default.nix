@@ -102,7 +102,7 @@
     };
   };
 
-  boot = lib.mkIf config.services.tlp.enable {
+  boot = lib.mkIf (config.services.tlp.enable or false) {
     kernelModules = [ "acpi_call" ];
     extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   };

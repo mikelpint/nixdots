@@ -110,13 +110,15 @@ in
     ./protonvpn
   ];
 
-  environment = lib.mkIf (config.networking.wireguard.enable or false) {
-    systemPackages = with pkgs; [
-      wireguard-tools
-      wireguard-ui
-      wg-friendly-peer-names
-    ];
-  };
+  environment =
+    lib.mkIf (config.networking.wireguard.enable or config.networking.wg-quick.enable or false)
+      {
+        systemPackages = with pkgs; [
+          wireguard-tools
+          wireguard-ui
+          wg-friendly-peer-names
+        ];
+      };
 
   networking = {
     wireguard = {
@@ -165,8 +167,6 @@ in
         )
       ) (wg-quick.interfaces or { });
     };
-
-    enableIPv6 = config.networking.wireguard.enable or config.networking.wg-quick.enable or false;
 
     networkmanager = {
       unmanaged = [

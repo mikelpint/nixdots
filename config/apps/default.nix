@@ -1,5 +1,6 @@
-_: {
-  programs = {
+{ lib, ... }:
+{
+  programs = lib.mkIf false {
     ccache = {
       packageNames = [
         "electron"
@@ -8,7 +9,7 @@ _: {
     };
   };
 
-  nixpkgs = {
+  nixpkgs = lib.mkIf false {
     config = {
       electron = {
         pulseaudio = false;

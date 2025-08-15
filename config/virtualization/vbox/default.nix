@@ -19,7 +19,7 @@
     };
   };
 
-  users = lib.mkIf config.virtualisation.virtualbox.host.enable {
+  users = lib.mkIf (config.virtualisation.virtualbox.host.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [

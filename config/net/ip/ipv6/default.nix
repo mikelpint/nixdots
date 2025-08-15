@@ -1,11 +1,11 @@
 { config, lib, ... }:
 {
   networking = {
-    enableIPv6 = lib.mkDefault false;
+    enableIPv6 = lib.mkDefault true;
   };
 
   boot = {
-    kernelParams = [ "ipv6.disable=${if config.networking.enableIPv6 then "0" else "1"}" ];
+    kernelParams = [ "ipv6.disable=${if (config.networking.enableIPv6 or false) then "0" else "1"}" ];
 
     kernel = {
       sysctl = {
@@ -42,7 +42,7 @@
 
   services = {
     clatd = {
-      enable = config.networking.enableIPv6;
+      enable = config.networking.enableIPv6 or false;
     };
   };
 }

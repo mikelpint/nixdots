@@ -9,7 +9,7 @@
 let
   sameHostAuth = "trust";
   owner = "postgres";
-  ssl = (builtins.hasAttr "domain" config.networking) && config.networking.domain != null;
+  ssl = (builtins.hasAttr "domain" (config.networking or { })) && config.networking.domain != null;
 in
 {
   age = lib.mkIf ssl {
@@ -69,7 +69,7 @@ in
           host${if ssl then "ssl" else ""}    all         all     127.0.0.1/32      ${sameHostAuth}
         # ipv6
         ${
-          if config.networking.enableIPv6 then "" else "#"
+          if config.networking.enableIPv6 or false then "" else "#"
         }  host${if ssl then "ssl" else ""}    all         all     ::1/128           ${sameHostAuth}
       '';
 

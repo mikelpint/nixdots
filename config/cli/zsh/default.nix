@@ -11,7 +11,7 @@
     };
   };
 
-  users = lib.mkIf config.programs.zsh.enable {
+  users = lib.mkIf (config.programs.zsh.enable or false) {
     defaultUserShell = pkgs.zsh;
   };
 }

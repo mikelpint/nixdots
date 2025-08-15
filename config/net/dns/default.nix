@@ -12,13 +12,9 @@
   ];
 
   networking = {
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-
-      "127.0.0.1"
-    ]
-    ++ (if config.networking.enableIPv6 then [ "::1" ] else [ ]);
+    nameservers = lib.mkMerge [
+      (lib.mkAfter ([ "127.0.0.1" ] ++ (lib.optional (config.networking.enableIPv6 or false) "::1")))
+    ];
 
     dhcpcd = {
       extraConfig = "nohook resolv.conf";
@@ -27,7 +23,7 @@
     networkmanager = {
       dns = lib.mkOverride 75 "none";
 
-      insertNameservers = config.networking.nameservers;
+      insertNameservers = config.networking.nameservers or [ ];
     };
 
     resolvconf = {

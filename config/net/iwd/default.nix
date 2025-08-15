@@ -22,7 +22,7 @@
           };
 
           IPv6 = {
-            Enabled = config.networking.enableIPv6;
+            Enabled = config.networking.enableIPv6 or false;
           };
 
           Settings = {

@@ -11,11 +11,11 @@
     };
   };
 
-  boot = lib.mkIf config.hardware.i2c.enable {
+  boot = lib.mkIf (config.hardware.i2c.enable or false) {
     kernelModules = [ "i2c-dev" ];
   };
 
-  users = lib.mkIf config.hardware.i2c.enable {
+  users = lib.mkIf (config.hardware.i2c.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [ "i2c" ];

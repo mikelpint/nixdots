@@ -17,7 +17,7 @@
     };
   };
 
-  users = lib.mkIf config.services.printing.enable {
+  users = lib.mkIf (config.services.printing.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [

@@ -26,7 +26,7 @@
     };
   };
 
-  security = lib.mkIf config.services.usbguard.enable {
+  security = lib.mkIf (config.services.usbguard.enable or false) {
     polkit = {
       extraConfig = ''
         polkit.addRule(

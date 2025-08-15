@@ -1,8 +1,16 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   environment = {
-    systemPackages = with pkgs; [
-      nixd # Disable when using Lix, not compatible
-    ];
+    systemPackages = lib.optionals (config.lix.enable or false) (
+      with pkgs;
+      [
+        nixd
+      ]
+    );
   };
 }

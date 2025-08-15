@@ -37,7 +37,7 @@
           exit
         fi
 
-        PASSWD=$(< ${osConfig.age.secrets.deustopasswd.path})
+        PASSWD=$(< ${osConfig.age.secrets.deustopasswd.path or "/dev/null"})
 
         OTP=$1
         if [[ -z $OTP ]]
@@ -70,8 +70,8 @@
           exit $?
         fi
 
-        HOST=$(< ${osConfig.age.secrets."dspace.host".path})
-        ssh $HOST -i ${osConfig.age.secrets."dspace.pem".path}
+        HOST=$(< ${osConfig.age.secrets."dspace.host".path or "/dev/null"})
+        ssh $HOST -i ${osConfig.age.secrets."dspace.pem".path or "/dev/null"}
       '')
     ];
   };

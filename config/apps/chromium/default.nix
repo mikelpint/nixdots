@@ -13,7 +13,7 @@
       };
     };
 
-    ccache = {
+    ccache = lib.mkIf (false && (config.home-manager.users.${user}.programs.chromium.enable or false)) {
       packageNames = [
         "ungoogled-chromium"
         "chromium"
@@ -59,7 +59,7 @@
     #   );
     # };
 
-    firejail = {
+    firejail = lib.mkIf false {
       wrappedBinaries = builtins.listToAttrs (
         let
           binExists = pkg: bin: builtins.pathExists "${lib.getBin pkg}/bin/${bin}";
@@ -149,5 +149,4 @@
       enable = true;
     };
   };
-
 }

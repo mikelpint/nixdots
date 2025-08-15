@@ -30,7 +30,7 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";
@@ -206,6 +206,7 @@
       flake-utils,
       home-manager,
       lanzaboote,
+      lix-module,
       nix-index-database,
       nixcord,
       nixos-hardware,
@@ -311,8 +312,6 @@
           };
 
           modules = [
-            # lix-module.nixosModules.default
-
             ./pkgs
             ./config
             ./hosts/${name}/configuration.nix
@@ -361,9 +360,10 @@
               };
             }
           ]
-          ++ (nixpkgs.lib.optionals (builtins.isString (value.hardware or null)) [
-            nixos-hardware.nixosModules."${value.hardware}"
-          ]);
+          ++ (nixpkgs.lib.optional (value.lix or false) lix-module.nixosModules.default)
+          ++ (nixpkgs.lib.optional (builtins.isString (
+            value.hardware or null
+          )) nixos-hardware.nixosModules."${value.hardware}");
         }
       );
 

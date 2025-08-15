@@ -117,7 +117,7 @@ in
 {
   imports = [ ./vm ];
 
-  users = lib.mkIf config.virtualisation.libvirtd.enable {
+  users = lib.mkIf (config.virtualisation.libvirtd.enable or false) {
     users = {
       "${user}" = {
         extraGroups = [ "libvirtd" ];
@@ -129,7 +129,7 @@ in
     };
   };
 
-  boot = lib.mkIf config.virtualisation.libvirtd.enable {
+  boot = lib.mkIf (config.virtualisation.libvirtd.enable or false) {
     extraModprobeConfig = ''
       options kvm_intel nested=1
       options kvm_intel emulate_invalid_guest_state=0

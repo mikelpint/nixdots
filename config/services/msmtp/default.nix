@@ -36,8 +36,8 @@
             port = 587;
 
             from = lib.mkDefault (
-              if ((builtins.hasAttr "domain" config.networking) && config.networking.domain != null) then
-                "${lib.strings.removeSuffix user config.networking.hostName}@${config.networkin.domain}"
+              if ((builtins.hasAttr "domain" (config.networking or { })) && config.networking.domain != null) then
+                "${lib.strings.removeSuffix user (config.networking.hostName or "")}@${config.networkin.domain}"
               else
                 "mikelpint@protonmail.com"
             );
