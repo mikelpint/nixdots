@@ -51,6 +51,7 @@
     systemPackages = with pkgs; [
       dig
       doggo
+      wtfis
     ];
   };
 

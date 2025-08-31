@@ -85,6 +85,8 @@
           use_system_clipboard = "always";
         };
 
+        disable_ai = true;
+
         show_call_status_icon = true;
         calls = {
           mute_on_join = false;

@@ -27,8 +27,8 @@
 
       delta = {
         enable = builtins.any (plugin: builtins.isAttrs plugin && plugin.name == "forgit") (
-            config.programs.zsh.plugins or [ ]
-          );
+          config.programs.zsh.plugins or [ ]
+        );
         package = pkgs.delta;
 
         options = {

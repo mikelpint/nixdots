@@ -15,11 +15,14 @@ _: {
     ../../config/apps/zed
 
     ../../config/cli/curlie
+    ../../config/cli/flamelens
+    ../../config/cli/fq
     ../../config/cli/git
     ../../config/cli/helix
     ../../config/cli/httpie
     ../../config/cli/hyperfine
     ../../config/cli/make
+    ../../config/cli/monolith
     ../../config/cli/ngrok
     ../../config/cli/onefetch
     ../../config/cli/rainfrog

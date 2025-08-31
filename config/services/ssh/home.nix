@@ -11,15 +11,18 @@
       enable = true;
       package = osConfig.services.openssh.package or pkgs.openssh;
 
-      forwardAgent = true;
-      hashKnownHosts = true;
-
+      enableDefaultConfig = false;
       extraConfig = ''
         Match host * exec "gpg-connect-agent UPDATESTARTUPTTY /bye"
         AddKeysToAgent yes
       '';
 
       matchBlocks = {
+        "*" = {
+          forwardAgent = true;
+          hashKnownHosts = true;
+        };
+
         GitHub = {
           host = "github.com";
           extraOptions = {

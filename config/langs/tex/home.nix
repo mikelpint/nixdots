@@ -11,6 +11,7 @@
       texliveFull
       texlab
       inkscape
+      bibiman
     ];
   };
 

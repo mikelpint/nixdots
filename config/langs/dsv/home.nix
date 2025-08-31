@@ -16,6 +16,7 @@
       csvq
       xlsx2csv
       json2tsv
+      xan
     ];
   };
 }

@@ -14,6 +14,7 @@ _: {
     ./gping/home.nix
     ./http/home.nix
     ./jq/home.nix
+    ./kalker/home.nix
     ./micro/home.nix
     ./miller/home.nix
     ./moreutils/home.nix
@@ -22,10 +23,13 @@ _: {
     ./procs/home.nix
     ./rename/home.nix
     ./ripgrep/home.nix
+    ./sttr/home.nix
     ./television/home.nix
+    ./termscp/home.nix
     ./tldr/home.nix
     ./tmux/home.nix
     ./tree/home.nix
+    ./wiki-tui/home.nix
     ./yazi/home.nix
     ./zoxide/home.nix
     ./zsh/home.nix

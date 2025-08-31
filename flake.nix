@@ -5,7 +5,7 @@
 
   inputs = {
     nixpkgs-stable = {
-      url = "github:nixos/nixpkgs/nixos-24.11";
+      url = "github:nixos/nixpkgs/nixos-25.05";
     };
 
     nixpkgs = {
@@ -13,7 +13,7 @@
     };
 
     nixpkgs-small = {
-      url = "github:NixOs/nixpkgs/nixos-unstable-small";
+      url = "github:nixos/nixpkgs/nixos-unstable-small";
     };
 
     nix-index-database = {

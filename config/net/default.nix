@@ -73,6 +73,7 @@
       inetutils
       mtr
       traceroute
+      trippy
     ];
   };
 

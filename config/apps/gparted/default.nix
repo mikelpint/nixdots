@@ -7,7 +7,7 @@
 }:
 {
   security = {
-    wrappers = lib.mkIf false {
+    wrappers = {
       gparted =
         let
           find = lib.lists.findFirst (

@@ -18,6 +18,8 @@
       ghidra-extensions.ghidra-delinker-extension
       ghidra-extensions.gnudisassembler
       ghidra-extensions.wasm
+
+      binsider
     ];
   }
   // (

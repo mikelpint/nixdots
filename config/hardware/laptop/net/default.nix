@@ -1,5 +1,6 @@
-{
+_: {
   imports = [
+    ./dns
     ./if
     ./mac
   ];

@@ -15,10 +15,13 @@ _: {
     ../../config/apps/zed/home.nix
 
     ../../config/cli/curlie/home.nix
+    ../../config/cli/flamelens/home.nix
+    ../../config/cli/fq/home.nix
     ../../config/cli/git/home.nix
     ../../config/cli/helix/home.nix
     ../../config/cli/httpie/home.nix
     ../../config/cli/hyperfine/home.nix
+    ../../config/cli/monolith/home.nix
     ../../config/cli/make/home.nix
     ../../config/cli/ngrok/home.nix
     ../../config/cli/onefetch/home.nix

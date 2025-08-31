@@ -3,7 +3,7 @@
   wayland = {
     windowManager = {
       hyprland = {
-        settings = {
+        settings = lib.mkIf false {
           gestures = {
             workspace_swipe = lib.mkDefault false;
           };

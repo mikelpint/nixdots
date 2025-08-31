@@ -16,7 +16,7 @@
 
   nixpkgs = {
     config = {
-      pulseaudio = osConfig.nixpkgs.config.pulseaudio or false;
+      pulseaudio = osConfig.nixpkgs.config.pulseaudio or true;
     };
   };
 }

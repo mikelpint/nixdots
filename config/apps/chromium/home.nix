@@ -56,10 +56,11 @@
             cupsSupport = true;
             proprietaryCodecs =
               config.nixpkgs.config.allowUnfree or osConfig.nixpkgs.config.allowUnfree or false;
-            pulseSupport = false;
+            # pulseSupport = false;
           };
         })
         [
+          "chromiumUnwrapped"
           "ungoogled-chromium"
           "chromium"
           "google-chrome"

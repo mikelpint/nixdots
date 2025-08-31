@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   systemd = {
     settings = {
@@ -5,5 +6,9 @@
         DefaultTimeoutStopSec = "10s";
       };
     };
+  };
+
+  environment = {
+    systemPackages = with pkgs; [ isd ];
   };
 }

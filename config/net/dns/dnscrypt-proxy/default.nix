@@ -18,7 +18,7 @@ in
         listen_addresses = [
           "127.0.0.1:${toString port}"
         ]
-        ++ (lib.optional (false || (config.networking.enableIPv6 or false)) "::1:${toString port}");
+        ++ (lib.optional (config.networking.enableIPv6 or false) "[::1]:${toString port}");
 
         ipv6_servers = config.networking.enableIPv6 or false;
         require_dnssec = true;
@@ -121,5 +121,10 @@ in
         };
       };
     };
+  };
+
+  environment = {
+    systemPackages = lib.optional (config.services.dnscrypt-proxy2.enable or false
+    ) pkgs.dnscrypt-proxy2;
   };
 }

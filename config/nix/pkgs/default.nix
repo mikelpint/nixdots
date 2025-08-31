@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 {
   nixpkgs = {
     config = {
@@ -21,11 +21,18 @@
 
   documentation = {
     enable = lib.mkDefault true;
+
     man = {
       generateCaches = lib.mkDefault true;
     };
+
     dev = {
       enable = lib.mkDefault true;
+    };
+
+    nixos = {
+      enable = lib.mkDefault false;
+      includeAllModules = lib.mkDefault ((config.age.rekey.storageMode or "local") != "derivation");
     };
   };
 
